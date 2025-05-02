@@ -1,13 +1,13 @@
-package deu.dto;
+package deu.dto.request;
 
 import java.io.Serializable;
 
 public class LoginRequest implements Serializable {
-    public String username;
+    public String number;
     public String password;
 
-    public LoginRequest(String username, String password) {
-        this.username = username;
+    public LoginRequest(String number, String password) {
+        this.number = number;
         this.password = password;
     }
 }

@@ -1,12 +1,30 @@
 package deu.service;
 
-/**
- * [사용자 관리 서비스 인터페이스]
- *
- * <p>
- * 1. 이 인터페이스는 예약 처리에 필요한 메서드를 정의합니다.<br>
- * 2. 해당 인터페이스를 구현하는 클래스에서 실제 예약 로직을 구현합니다.
- * </p>
- */
-public interface UserService {
+import deu.dto.response.BasicResponse;
+import deu.dto.request.LoginRequest;
+import deu.dto.request.SignupRequest;
+import deu.repository.UserRepository;
+
+public class UserService {
+    public BasicResponse login(LoginRequest payload) {
+        String valid = UserRepository.getInstance().validate(payload.number, payload.password);
+        if (valid.equals("200")) {
+            return new BasicResponse(valid,"로그인 성공");
+        }else if(valid.equals("401")) {
+            return new BasicResponse(valid, "비밀번호 입력 오류 입니다.");
+        }else{
+            return new BasicResponse(valid, "존재하지 않는 아이디 입니다.");
+        }
+    }
+
+    public BasicResponse signup(SignupRequest payload) {
+        String valid = UserRepository.getInstance().save(payload.number, payload.password, payload.name, payload.major);
+        if(valid.equals("200")) {
+            return new BasicResponse(valid, "회원가입 성공");
+        }else if(valid.equals("400")) {
+            return new BasicResponse(valid, "이미 가입된 사용자 정보 입니다.");
+        }else{
+            return new BasicResponse(valid, "회원가입 실패");
+        }
+    }
 }

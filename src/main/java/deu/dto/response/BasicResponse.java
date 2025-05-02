@@ -1,13 +1,13 @@
-package deu.dto;
+package deu.dto.response;
 
 import java.io.Serializable;
 
 public class BasicResponse implements Serializable {
-    public boolean success;
+    public String code;
     public String message;
 
-    public BasicResponse(boolean success, String message) {
-        this.success = success;
+    public BasicResponse(String code, String message) {
+        this.code = code;
         this.message = message;
     }
 }
