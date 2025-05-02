@@ -13,6 +13,7 @@ import deu.dto.response.BasicResponse;
 import deu.dto.request.LoginRequest;
 import deu.dto.request.LogoutRequest;
 import deu.dto.request.SignupRequest;
+import deu.dto.response.CurrentResponse;
 import deu.service.UserService;
 
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class UserController {
         return result;
     }
 
+    // 회원 가입 컨트롤러
     public Object handleSignup(SignupRequest payload) {
         return userService.signup(payload);
     }
@@ -63,5 +65,11 @@ public class UserController {
         }else{
             return new BasicResponse("400", "로그아웃 실패");
         }
+    }
+
+
+    // 동시접속자 수 컨트롤러
+    public CurrentResponse handleCurrentUser(){
+        return new CurrentResponse(userNumbers.size());
     }
 }
