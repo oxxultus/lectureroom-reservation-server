@@ -1,0 +1,11 @@
+package deu.controller;
+
+/**
+ * [예약 관리 컨트롤러]
+ *
+ * <p>
+ * 1. 해당 컨트롤러에서 서비스를 호출해서 기능을 처리합니다.
+ * </p>
+ */
+public class ReservationController {
+}
