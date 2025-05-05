@@ -81,12 +81,4 @@
 - 👥 **팀원**: 김영진, 김원형, 이건일, 이시연
 
 ---
-
-## UI
-![로그인](https://github.com/oxxultus/LectureRoomReservationSystem/blob/main/UI%20IMAGES/%EB%A1%9C%EA%B7%B8%EC%9D%B8.png)
-![회원가입](https://github.com/oxxultus/LectureRoomReservationSystem/blob/main/UI%20IMAGES/%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85.png)
-![내 예약 정보](https://github.com/oxxultus/LectureRoomReservationSystem/blob/main/UI%20IMAGES/%EB%82%B4%20%EC%98%88%EC%95%BD%20%EC%A0%95%EB%B3%B4.png)
-![강의실 예약](https://github.com/oxxultus/LectureRoomReservationSystem/blob/main/UI%20IMAGES/%EA%B0%95%EC%9D%98%EC%8B%A4%20%EC%98%88%EC%95%BD.png)
-![강의실 예약 관리](https://github.com/oxxultus/LectureRoomReservationSystem/blob/main/UI%20IMAGES/%EA%B0%95%EC%9D%98%EC%8B%A4%20%EC%98%88%EC%95%BD%EA%B4%80%EB%A6%AC.png)
-![사용자 관리](https://github.com/oxxultus/LectureRoomReservationSystem/blob/main/UI%20IMAGES/%EC%82%AC%EC%9A%A9%EC%9E%90%20%EA%B4%80%EB%A6%AC.png)
 > 이 프로젝트는 향후 웹 기반 리팩토링을 고려하고 있으며, 구조적 확장성을 중시하여 설계되었습니다.
