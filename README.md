@@ -68,10 +68,8 @@
     │       ├── controller      # 사용자 요청 처리, 이벤트 흐름 제어
     │       ├── model           # Entity, DTO 등 데이터 구조 정의
     │       ├── repository      # 파일 기반 CRUD 및 데이터 접근
-    │       ├── service         # 비즈니스 로직, 검증 및 처리
-    │       └── view            # Swing 기반 사용자 인터페이스
+    │       └── service         # 비즈니스 로직, 검증 및 처리
     └── resources
-    └── Images-new.logo     # 이미지 및 정적 리소스 파일
 
 ---
 
