@@ -1,8 +1,8 @@
 package deu.service;
 
-import deu.dto.response.BasicResponse;
-import deu.dto.request.LoginRequest;
-import deu.dto.request.SignupRequest;
+import deu.model.dto.response.BasicResponse;
+import deu.model.dto.request.LoginRequest;
+import deu.model.dto.request.SignupRequest;
 import deu.repository.UserRepository;
 
 public class UserService {

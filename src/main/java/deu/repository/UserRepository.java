@@ -7,7 +7,7 @@ package deu.repository;
  * 1. 해당 클래스는 파일과의 직접적인 통신을 구현합니다.
  * </p>
  */
-import deu.model.User;
+import deu.model.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,12 +1,14 @@
-package deu.model;
+package deu.model.dto.request;
 
-public class User {
+import java.io.Serializable;
+
+public class SignupRequest implements Serializable {
     public String number;
     public String password;
     public String name;
     public String major;
 
-    public User(String number, String password, String name, String major) {
+    public SignupRequest(String number, String password, String name, String major) {
         this.number = number;
         this.password = password;
         this.name = name;

@@ -1,10 +1,10 @@
 package deu.controller;
 
-import deu.dto.request.LoginRequest;
-import deu.dto.request.LogoutRequest;
-import deu.dto.request.SignupRequest;
-import deu.dto.request.UserCommandRequest;
-import deu.dto.response.BasicResponse;
+import deu.model.dto.request.LoginRequest;
+import deu.model.dto.request.LogoutRequest;
+import deu.model.dto.request.SignupRequest;
+import deu.model.dto.request.UserCommandRequest;
+import deu.model.dto.response.BasicResponse;
 
 public class SystemController {
     private final UserController userController = UserController.getInstance();

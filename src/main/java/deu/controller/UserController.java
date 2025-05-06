@@ -9,11 +9,11 @@ package deu.controller;
  * </p>
  */
 
-import deu.dto.response.BasicResponse;
-import deu.dto.request.LoginRequest;
-import deu.dto.request.LogoutRequest;
-import deu.dto.request.SignupRequest;
-import deu.dto.response.CurrentResponse;
+import deu.model.dto.response.BasicResponse;
+import deu.model.dto.request.LoginRequest;
+import deu.model.dto.request.LogoutRequest;
+import deu.model.dto.request.SignupRequest;
+import deu.model.dto.response.CurrentResponse;
 import deu.service.UserService;
 
 import java.util.ArrayList;

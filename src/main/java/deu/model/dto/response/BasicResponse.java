@@ -1,4 +1,4 @@
-package deu.dto.response;
+package deu.model.dto.response;
 
 import java.io.Serializable;
 

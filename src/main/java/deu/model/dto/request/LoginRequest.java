@@ -1,4 +1,4 @@
-package deu.dto.request;
+package deu.model.dto.request;
 
 import java.io.Serializable;
 
