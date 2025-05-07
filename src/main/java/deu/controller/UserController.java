@@ -1,13 +1,6 @@
 package deu.controller;
 
-/**
- * [사용자 관리 컨트롤러 - Singleton]
- *
- * <p>
- * 1. 해당 컨트롤러에서 서비스를 호출해서 기능을 처리합니다.
- * 2. 최대 3명까지 동시에 로그인 가능하며, 중복 로그인은 불가합니다.
- * </p>
- */
+
 import deu.model.dto.response.BasicResponse;
 import deu.model.dto.request.LoginRequest;
 import deu.model.dto.request.LogoutRequest;
@@ -19,13 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserController {
-    // 싱글턴 인스턴스
+
     private static final UserController instance = new UserController();
 
-    // 외부에서 객체 생성 불가
     private UserController() {}
 
-    // 인스턴스 반환 메서드
     public static UserController getInstance() {
         return instance;
     }

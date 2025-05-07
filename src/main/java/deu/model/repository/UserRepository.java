@@ -1,12 +1,5 @@
 package deu.model.repository;
 
-/**
- * [사용자 리포지토리]
- *
- * <p>
- * 1. 해당 클래스는 파일과의 직접적인 통신을 구현합니다.
- * </p>
- */
 import deu.model.entity.User;
 
 import java.util.ArrayList;
@@ -45,7 +38,7 @@ public class UserRepository {
     public String save(String number, String pw, String name, String major) {
         for (User user : users) {
             if (user.number.equals(number)) {
-                return "400"; // 이미 존재하는 고유번호 → 저장 실패
+                return "400"; // 이미 존재하는 고유번호 -> 저장 실패
             }
         }
         users.add(new User(number, pw, name, major));
