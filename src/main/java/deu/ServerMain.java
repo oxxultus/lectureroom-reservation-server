@@ -8,7 +8,7 @@ public class ServerMain {
         try (ServerSocket serverSocket = new ServerSocket(9999)) {
             System.out.println("================================================================================");
             System.out.println("");
-            System.out.println("📡 서버 실행 중... 포트 번호: 9999");
+            System.out.println("    서버 실행 중... 포트 번호: 9999");
             System.out.println("");
             System.out.println("================================================================================");
 
