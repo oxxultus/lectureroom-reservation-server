@@ -1,4 +1,4 @@
-package deu.repository;
+package deu.model.repository;
 
 /**
  * [사용자 리포지토리]

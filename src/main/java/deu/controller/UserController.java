@@ -8,13 +8,12 @@ package deu.controller;
  * 2. 최대 3명까지 동시에 로그인 가능하며, 중복 로그인은 불가합니다.
  * </p>
  */
-
 import deu.model.dto.response.BasicResponse;
 import deu.model.dto.request.LoginRequest;
 import deu.model.dto.request.LogoutRequest;
 import deu.model.dto.request.SignupRequest;
 import deu.model.dto.response.CurrentResponse;
-import deu.service.UserService;
+import deu.model.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,12 +60,12 @@ public class UserController {
     public synchronized Object handleLogout(LogoutRequest payload) {
         // 로그아웃 시 번호 제거
         if(userNumbers.remove(payload.number)){
+            System.out.println("현재 접속자 수 " + userNumbers.size() + "명");
             return new BasicResponse("200", "로그아웃 성공");
         }else{
             return new BasicResponse("400", "로그아웃 실패");
         }
     }
-
 
     // 동시접속자 수 컨트롤러
     public CurrentResponse handleCurrentUser(){
