@@ -12,7 +12,7 @@ public class UserRepository {
     // 임시 메모리 데이터
     private UserRepository() {
         // 테스트용 계정
-        users.add(new User("20213000", "020504", "김영진", "컴퓨터 소프트웨어 공학과"));
+        users.add(new User("admin", "admin", "admin", "컴퓨터 소프트웨어 공학과"));
     }
 
     public static UserRepository getInstance() {
