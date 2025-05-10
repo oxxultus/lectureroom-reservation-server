@@ -1,6 +1,5 @@
 package deu.controller;
 
-
 import deu.model.dto.response.BasicResponse;
 import deu.model.dto.request.LoginRequest;
 import deu.model.dto.request.LogoutRequest;
