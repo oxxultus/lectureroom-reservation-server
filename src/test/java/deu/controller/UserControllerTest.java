@@ -7,7 +7,7 @@ import deu.model.dto.request.LogoutRequest;
 import deu.model.dto.request.SignupRequest;
 import deu.model.dto.response.BasicResponse;
 import deu.model.dto.response.CurrentResponse;
-import deu.model.service.UserService;
+import deu.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;

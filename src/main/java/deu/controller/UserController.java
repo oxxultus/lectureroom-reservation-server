@@ -5,7 +5,7 @@ import deu.model.dto.request.LoginRequest;
 import deu.model.dto.request.LogoutRequest;
 import deu.model.dto.request.SignupRequest;
 import deu.model.dto.response.CurrentResponse;
-import deu.model.service.UserService;
+import deu.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
