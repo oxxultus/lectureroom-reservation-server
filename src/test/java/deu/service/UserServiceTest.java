@@ -1,4 +1,4 @@
-package deu.model.service;
+package deu.service;
 
 import deu.model.dto.request.LoginRequest;
 import deu.model.dto.request.SignupRequest;

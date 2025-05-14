@@ -1,4 +1,4 @@
-package deu.model.repository;
+package deu.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
