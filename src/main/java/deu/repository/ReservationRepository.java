@@ -1,6 +1,6 @@
 package deu.repository;
 
-import deu.model.Reservation;
+import deu.model.entity.Reservation;
 
 import java.util.ArrayList;
 import java.util.List;
