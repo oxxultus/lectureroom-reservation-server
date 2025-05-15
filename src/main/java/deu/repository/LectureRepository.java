@@ -66,5 +66,11 @@ public class LectureRepository {
         return new ArrayList<>(lectureList); // 원본 보호
     }
 
+    // 강의 삭제
+    public void deleteById(String id) {
+        lectureList.removeIf(l -> l.id.equals(id));
+        saveAllToFile();
+    }
+
 
 }
