@@ -15,7 +15,6 @@ import java.util.Optional;
  * @modifier oxxultus
  * @since 2025.05.16
  */
-
 public class LectureRepository {
     // Singleton instance
     private static final LectureRepository instance = new LectureRepository();
@@ -23,18 +22,23 @@ public class LectureRepository {
     // 강의 리스트
     private final List<Lecture> lectureList = new ArrayList<>();
 
-    // YAML 파일 경로
-    private final String FILE_PATH = "data/lectures.yaml";
+    // YAML 파일 경로 (JAR 또는 IDE 실행 경로 기준)
+    // 해당 데이터 구조로 지정하면 추후 JAR 로 실행시 해당 JAR 폴더에 data/lectures.yaml로 생성된다.
+    private final String FILE_PATH = System.getProperty("user.dir") + File.separator + "data" + File.separator + "lectures.yaml";
 
     // SnakeYAML 객체
     private final Yaml yaml;
 
-    // 강의 데이터를 감싸는 내부 클래스
+    /* 강의 데이터를 감싸는 내부 클래스 - 아래 형식을 유지하기 위해 사용한다.
+    * lectures:
+    *    - id: CS101
+    *       ...
+    * */
     public static class LectureWrapper {
         public List<Lecture> lectures = new ArrayList<>();
     }
 
-    // 생성자 (private)
+    // 생성자
     private LectureRepository() {
         // YAML 저장 시 옵션 (예쁘게 출력)
         DumperOptions options = new DumperOptions();
@@ -53,10 +57,20 @@ public class LectureRepository {
 
     // 파일 저장
     private void saveAllToFile() {
-        try (Writer writer = new FileWriter(FILE_PATH)) {
-            LectureWrapper wrapper = new LectureWrapper();
-            wrapper.lectures = lectureList;
-            yaml.dump(wrapper, writer);
+        try {
+            // 디렉토리 없으면 생성
+            File file = new File(FILE_PATH);
+            File parentDir = file.getParentFile();
+            if (!parentDir.exists()) {
+                parentDir.mkdirs();
+            }
+
+            // 파일 쓰기
+            try (Writer writer = new FileWriter(file)) {
+                LectureWrapper wrapper = new LectureWrapper();
+                wrapper.lectures = lectureList;
+                yaml.dump(wrapper, writer);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,14 +94,16 @@ public class LectureRepository {
 
     // 강의 저장 (수정 포함)
     public void save(Lecture lecture) {
-        deleteById(lecture.id);  // 중복 제거 후
+        deleteById(lecture.getId());  // getter 사용
         lectureList.add(lecture);
-        saveAllToFile();         // 파일로 저장
+        saveAllToFile();
     }
 
     // 강의 ID로 조회
     public Optional<Lecture> findById(String id) {
-        return lectureList.stream().filter(l -> l.id.equals(id)).findFirst();
+        return lectureList.stream()
+                .filter(l -> l.getId().equals(id))
+                .findFirst();
     }
 
     // 전체 강의 리스트 반환
@@ -97,21 +113,21 @@ public class LectureRepository {
 
     // 강의 삭제
     public void deleteById(String id) {
-        lectureList.removeIf(l -> l.id.equals(id));
+        lectureList.removeIf(l -> l.getId().equals(id));
         saveAllToFile();
     }
 
     // 해당 ID 존재 여부
     public boolean existsById(String id) {
-        return lectureList.stream().anyMatch(l -> l.id.equals(id));
+        return lectureList.stream()
+                .anyMatch(l -> l.getId().equals(id));
     }
 
     // 강의명 + 교수명으로 ID 조회
-    public Optional<String> findIdByLectureNameAndProfessor(String lectureName, String professorName) {
+    public Optional<String> findIdByLectureNameAndProfessor(String title, String professor) {
         return lectureList.stream()
-                .filter(l -> l.강의명.equals(lectureName) && l.담당교수.equals(professorName))
-                .map(l -> l.id)
+                .filter(l -> l.getTitle().equals(title) && l.getProfessor().equals(professor))
+                .map(Lecture::getId)
                 .findFirst();
     }
-
 }
