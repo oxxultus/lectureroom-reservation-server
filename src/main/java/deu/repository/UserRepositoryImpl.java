@@ -9,8 +9,11 @@ import java.util.ArrayList;
 public class UserRepositoryImpl {
     //저장경로
     private static UserRepositoryImpl instance;
-    private final List<User> users;
+
+    // TODO: final 변수는 초기화를 진행해야 합니다.
+    // private final List<User> users;
     private final String filePath = "user_data.ser";
+
     // singleton 패턴으로 구현한다
     public static UserRepositoryImpl getInstance() {
         if (instance == null) {
@@ -18,13 +21,17 @@ public class UserRepositoryImpl {
         }
         return instance;
     }
-    //singleton 패턴으로 구현한다
-    public UserRepositoryImpl getInstance() {
-        if (instance == null) {
-            instance = new UserRepositoryImpl();
+    // TODO: 아래 코드는 중복 된 코드입니다. 싱글톤 패턴에서는 static으로 메서드를 구현해야 합니다.
+    /*
+        public UserRepositoryImpl getInstance() {
+
+            if (instance == null) {
+                instance = new UserRepositoryImpl();
+            }
+            return instance;
         }
-        return instance;
-    }
+    */
+
 
     // 생성자
 
