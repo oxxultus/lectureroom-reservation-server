@@ -1,18 +1,19 @@
 package deu.repository;
 
-import deu.model.entity.LectureList;
+import deu.model.entity.Lecture;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
  *
  * @author oixikite
+ * @modifier oxxultus
+ * @since 2025.05.16
  */
 
 public class LectureRepository {
@@ -50,6 +51,33 @@ public class LectureRepository {
         return instance;
     }
 
+    // 파일 저장
+    private void saveAllToFile() {
+        try (Writer writer = new FileWriter(FILE_PATH)) {
+            LectureWrapper wrapper = new LectureWrapper();
+            wrapper.lectures = lectureList;
+            yaml.dump(wrapper, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 파일에서 불러오기
+    private void loadAllFromFile() {
+        File file = new File(FILE_PATH);
+        if (!file.exists()) return;
+
+        try (InputStream input = new FileInputStream(file)) {
+            LectureWrapper wrapper = yaml.loadAs(input, LectureWrapper.class);
+            if (wrapper != null && wrapper.lectures != null) {
+                lectureList.clear();
+                lectureList.addAll(wrapper.lectures);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     // 강의 저장 (수정 포함)
     public void save(Lecture lecture) {
         deleteById(lecture.id);  // 중복 제거 후
@@ -85,33 +113,5 @@ public class LectureRepository {
                 .map(l -> l.id)
                 .findFirst();
     }
-
-    // ✅ 파일 저장
-    private void saveAllToFile() {
-        try (Writer writer = new FileWriter(FILE_PATH)) {
-            LectureWrapper wrapper = new LectureWrapper();
-            wrapper.lectures = lectureList;
-            yaml.dump(wrapper, writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // ✅ 파일에서 불러오기
-    private void loadAllFromFile() {
-        File file = new File(FILE_PATH);
-        if (!file.exists()) return;
-
-        try (InputStream input = new FileInputStream(file)) {
-            LectureWrapper wrapper = yaml.loadAs(input, LectureWrapper.class);
-            if (wrapper != null && wrapper.lectures != null) {
-                lectureList.clear();
-                lectureList.addAll(wrapper.lectures);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
 }
