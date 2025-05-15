@@ -57,21 +57,26 @@ public class LectureRepository {
 
     // 파일 저장
     private void saveAllToFile() {
-        try {
-            // 디렉토리 없으면 생성
-            File file = new File(FILE_PATH);
-            File parentDir = file.getParentFile();
-            if (!parentDir.exists()) {
-                parentDir.mkdirs();
-            }
+        File file = new File(FILE_PATH);
+        File parentDir = file.getParentFile();
 
-            // 파일 쓰기
-            try (Writer writer = new FileWriter(file)) {
-                LectureWrapper wrapper = new LectureWrapper();
-                wrapper.lectures = lectureList;
-                yaml.dump(wrapper, writer);
+        // 디렉토리가 없으면 생성
+        if (!parentDir.exists()) {
+            boolean dirCreated = parentDir.mkdirs();
+            if (dirCreated) {
+                System.out.println("[LectureRepository] 디렉토리 생성됨: " + parentDir.getAbsolutePath());
+            } else {
+                System.err.println("[LectureRepository] 디렉토리 생성 실패: " + parentDir.getAbsolutePath());
             }
+        }
+
+        try (Writer writer = new FileWriter(file)) {
+            LectureWrapper wrapper = new LectureWrapper();
+            wrapper.lectures = lectureList;
+            yaml.dump(wrapper, writer);
+            System.out.println("[LectureRepository] 파일 저장 완료: " + file.getAbsolutePath());
         } catch (IOException e) {
+            System.err.println("[LectureRepository] 파일 저장 중 오류 발생: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -79,15 +84,24 @@ public class LectureRepository {
     // 파일에서 불러오기
     private void loadAllFromFile() {
         File file = new File(FILE_PATH);
-        if (!file.exists()) return;
+
+        if (!file.exists()) {
+            System.out.println("[LectureRepository] 파일이 존재하지 않아 새로 생성 예정: " + file.getAbsolutePath());
+            return;
+        }
 
         try (InputStream input = new FileInputStream(file)) {
             LectureWrapper wrapper = yaml.loadAs(input, LectureWrapper.class);
             if (wrapper != null && wrapper.lectures != null) {
                 lectureList.clear();
                 lectureList.addAll(wrapper.lectures);
+                System.out.println("[LectureRepository] 파일 로딩 완료: " + file.getAbsolutePath());
+                System.out.println("[LectureRepository] 불러온 강의 수: " + lectureList.size());
+            } else {
+                System.out.println("[LectureRepository] 파일은 있으나 강의 데이터가 비어있습니다.");
             }
         } catch (IOException e) {
+            System.err.println("[LectureRepository] 파일 로딩 중 오류 발생: " + e.getMessage());
             e.printStackTrace();
         }
     }
