@@ -1,13 +1,13 @@
 package deu.repository;
 
 import deu.model.entity.LectureList;
-import deu.model.yaml.LectureYaml;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,43 +15,45 @@ import java.nio.charset.StandardCharsets;
  */
 
 public class LectureRepository {
-    private static LectureRepository instance;
+    // Singleton instance
+    private static final LectureRepository instance = new LectureRepository();
 
-    private LectureRepository() {}
+    // 강의 리스트
+    private final List<Lecture> lectureList = new ArrayList<>();
 
+    // YAML 파일 경로
+    private final String FILE_PATH = "data/lectures.yaml";
+
+    // SnakeYAML 객체
+    private final Yaml yaml;
+
+    // 강의 데이터를 감싸는 내부 클래스
+    public static class LectureWrapper {
+        public List<Lecture> lectures = new ArrayList<>();
+    }
+
+    // 생성자 (private)
+    private LectureRepository() {
+        // YAML 저장 시 옵션 (예쁘게 출력)
+        DumperOptions options = new DumperOptions();
+        options.setPrettyFlow(true);
+        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+        yaml = new Yaml(options);
+
+        // 파일에서 불러오기
+        loadAllFromFile();
+    }
+
+    // 외부에서 접근하는 싱글톤 인스턴스
     public static LectureRepository getInstance() {
-        if (instance == null) {
-            instance = new LectureRepository();
-        }
         return instance;
     }
 
-    public LectureList loadLectures() {
-        File file = new File(LectureYaml.FILE_PATH);
-        if (!file.exists()) {
-            System.out.println("파일이 존재하지 않습니다.");
-            return null;
-        }
-
-        try (InputStream input = new FileInputStream(file)) {
-            Yaml yaml = new Yaml(new Constructor(LectureList.class));
-            return yaml.load(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    // 강의 저장 (수정 포함)
+    public void save(Lecture lecture) {
+        deleteById(lecture.id);  // 중복 제거 후
+        lectureList.add(lecture);
+        saveAllToFile();         // 파일로 저장
     }
 
-    public void saveLectures(LectureList lectureList) {
-        try (Writer writer = new OutputStreamWriter(new FileOutputStream(LectureYaml.FILE_PATH), StandardCharsets.UTF_8)) {
-            DumperOptions options = new DumperOptions();
-            options.setPrettyFlow(true);
-            options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-
-            Yaml yaml = new Yaml(options);
-            yaml.dump(lectureList, writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
