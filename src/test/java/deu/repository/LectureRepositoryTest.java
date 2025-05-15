@@ -22,7 +22,6 @@ class LectureRepositoryTest {
 
     @BeforeEach
     void clearBefore() {
-        // 테스트 전 깨끗한 상태 유지
         repo.deleteById(TEST_ID_1);
         repo.deleteById(TEST_ID_2);
         repo.deleteById(TEST_ID_3);
@@ -32,8 +31,8 @@ class LectureRepositoryTest {
     @Order(1)
     void test1_saveLecture_createsFile() {
         Lecture lecture = createDummyLecture(TEST_ID_1);
-        repo.save(lecture);
-
+        String result = repo.save(lecture);
+        assertEquals("200", result, "강의 저장 성공 코드 반환 확인");
         assertTrue(file.exists(), "파일이 생성되어 있어야 합니다.");
     }
 
@@ -49,9 +48,10 @@ class LectureRepositoryTest {
 
     @Test
     @Order(3)
-    void test3_existsById_returnsTrue() {
+    void test3_existsById_returns200() {
         repo.save(createDummyLecture(TEST_ID_1));
-        assertTrue(repo.existsById(TEST_ID_1));
+        String result = repo.existsById(TEST_ID_1);
+        assertEquals("200", result);
     }
 
     @Test
@@ -66,8 +66,9 @@ class LectureRepositoryTest {
     @Order(5)
     void test5_deleteById_removesLecture() {
         repo.save(createDummyLecture(TEST_ID_1));
-        repo.deleteById(TEST_ID_1);
-        assertFalse(repo.findById(TEST_ID_1).isPresent());
+        String result = repo.deleteById(TEST_ID_1);
+        assertEquals("200", result, "삭제 성공 코드 반환 확인");
+        assertFalse(repo.findById(TEST_ID_1).isPresent(), "삭제 후 해당 ID는 존재하지 않아야 함");
     }
 
     @Test
@@ -77,19 +78,17 @@ class LectureRepositoryTest {
         Lecture lec2 = createDummyLecture(TEST_ID_2);
         Lecture lec3 = createDummyLecture(TEST_ID_3);
 
-        repo.save(lec1);
-        repo.save(lec2);
-        repo.save(lec3);
+        assertEquals("200", repo.save(lec1));
+        assertEquals("200", repo.save(lec2));
+        assertEquals("200", repo.save(lec3));
 
         List<Lecture> all = repo.findAll();
 
-        // 각 ID가 모두 포함되어 있는지 확인
         assertTrue(all.stream().anyMatch(l -> l.getId().equals(TEST_ID_1)));
         assertTrue(all.stream().anyMatch(l -> l.getId().equals(TEST_ID_2)));
         assertTrue(all.stream().anyMatch(l -> l.getId().equals(TEST_ID_3)));
     }
 
-    // 더미 강의 객체 생성
     private Lecture createDummyLecture(String id) {
         Lecture lec = new Lecture();
         lec.setId(id);
@@ -105,8 +104,6 @@ class LectureRepositoryTest {
 
     @AfterAll
     void cleanup() {
-        File file = new File(System.getProperty("user.dir") + "/data/lectures.yaml");
-
         if (file.exists()) {
             boolean deleted = file.delete();
             System.out.println(deleted ? "[정리] 파일 삭제 완료" : "[정리] 파일 삭제 실패");

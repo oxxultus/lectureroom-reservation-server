@@ -107,10 +107,28 @@ public class LectureRepository {
     }
 
     // 강의 저장 (수정 포함)
-    public void save(Lecture lecture) {
-        deleteById(lecture.getId());  // getter 사용
+    public String save(Lecture lecture) {
+        if (lecture == null || lecture.getId() == null || lecture.getId().isBlank()) {
+            return "400"; // 잘못된 요청
+        }
+
+        deleteById(lecture.getId());  // 기존 것 제거
         lectureList.add(lecture);
         saveAllToFile();
+        return "200"; // 성공
+    }
+
+    // 강의 삭제
+    public String deleteById(String id) {
+        boolean removed = lectureList.removeIf(l -> l.getId().equals(id));
+        saveAllToFile();
+        return removed ? "200" : "404"; // 삭제 성공/실패
+    }
+
+    // 강의 존재 여부
+    public String existsById(String id) {
+        return lectureList.stream()
+                .anyMatch(l -> l.getId().equals(id)) ? "200" : "404";
     }
 
     // 강의 ID로 조회
@@ -123,18 +141,6 @@ public class LectureRepository {
     // 전체 강의 리스트 반환
     public List<Lecture> findAll() {
         return new ArrayList<>(lectureList); // 원본 보호
-    }
-
-    // 강의 삭제
-    public void deleteById(String id) {
-        lectureList.removeIf(l -> l.getId().equals(id));
-        saveAllToFile();
-    }
-
-    // 해당 ID 존재 여부
-    public boolean existsById(String id) {
-        return lectureList.stream()
-                .anyMatch(l -> l.getId().equals(id));
     }
 
     // 강의명 + 교수명으로 ID 조회
