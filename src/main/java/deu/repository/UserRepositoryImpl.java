@@ -1,12 +1,17 @@
 package deu.repository;
 
-public class UserRepositoryImpl {
+import deu.model.entity.User;
 
+import java.util.List;
+import java.io.*;
+import java.util.ArrayList;
+
+public class UserRepositoryImpl {
     // singleton 패턴으로 구현한다
 
 
-    // 생성자
 
+    // 생성자
 
 
     // 파일에서 읽어오는 메서드
