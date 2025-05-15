@@ -72,5 +72,10 @@ public class LectureRepository {
         saveAllToFile();
     }
 
+    // 해당 ID 존재 여부
+    public boolean existsById(String id) {
+        return lectureList.stream().anyMatch(l -> l.id.equals(id));
+    }
+
 
 }
