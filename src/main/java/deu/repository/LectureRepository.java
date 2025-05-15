@@ -61,5 +61,10 @@ public class LectureRepository {
         return lectureList.stream().filter(l -> l.id.equals(id)).findFirst();
     }
 
+    // 전체 강의 리스트 반환
+    public List<Lecture> findAll() {
+        return new ArrayList<>(lectureList); // 원본 보호
+    }
+
 
 }
