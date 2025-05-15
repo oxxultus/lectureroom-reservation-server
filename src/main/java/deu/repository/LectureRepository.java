@@ -56,4 +56,10 @@ public class LectureRepository {
         saveAllToFile();         // 파일로 저장
     }
 
+    // 강의 ID로 조회
+    public Optional<Lecture> findById(String id) {
+        return lectureList.stream().filter(l -> l.id.equals(id)).findFirst();
+    }
+
+
 }
