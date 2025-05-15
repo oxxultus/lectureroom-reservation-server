@@ -86,5 +86,32 @@ public class LectureRepository {
                 .findFirst();
     }
 
+    // ✅ 파일 저장
+    private void saveAllToFile() {
+        try (Writer writer = new FileWriter(FILE_PATH)) {
+            LectureWrapper wrapper = new LectureWrapper();
+            wrapper.lectures = lectureList;
+            yaml.dump(wrapper, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // ✅ 파일에서 불러오기
+    private void loadAllFromFile() {
+        File file = new File(FILE_PATH);
+        if (!file.exists()) return;
+
+        try (InputStream input = new FileInputStream(file)) {
+            LectureWrapper wrapper = yaml.loadAs(input, LectureWrapper.class);
+            if (wrapper != null && wrapper.lectures != null) {
+                lectureList.clear();
+                lectureList.addAll(wrapper.lectures);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
