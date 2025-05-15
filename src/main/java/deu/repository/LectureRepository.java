@@ -8,6 +8,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  *
@@ -75,6 +76,14 @@ public class LectureRepository {
     // 해당 ID 존재 여부
     public boolean existsById(String id) {
         return lectureList.stream().anyMatch(l -> l.id.equals(id));
+    }
+
+    // 강의명 + 교수명으로 ID 조회
+    public Optional<String> findIdByLectureNameAndProfessor(String lectureName, String professorName) {
+        return lectureList.stream()
+                .filter(l -> l.강의명.equals(lectureName) && l.담당교수.equals(professorName))
+                .map(l -> l.id)
+                .findFirst();
     }
 
 
