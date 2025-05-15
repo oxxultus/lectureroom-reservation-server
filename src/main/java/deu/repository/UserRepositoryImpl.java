@@ -18,7 +18,13 @@ public class UserRepositoryImpl {
         }
         return instance;
     }
-
+    //singleton 패턴으로 구현한다
+    public UserRepositoryImpl getInstance() {
+        if (instance == null) {
+            instance = new UserRepositoryImpl();
+        }
+        return instance;
+    }
 
     // 생성자
 
