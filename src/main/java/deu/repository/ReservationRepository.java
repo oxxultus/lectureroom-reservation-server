@@ -85,6 +85,24 @@ public class ReservationRepository {
         return false;
     }
 
+    // 서버 시작 시 파일로부터 예약 데이터 로드
+    private void loadFromFile() {
+        File file = new File(FILE_PATH);
+        if (!file.exists()) return; // 파일 없으면 생략
+
+        try (InputStream input = new FileInputStream(file)) {
+            // 파일 내 YAML 객체들을 하나씩 읽어옴
+            Iterable<Object> loadedObjects = yaml.loadAll(input);
+            for (Object obj : loadedObjects) {
+                if (obj instanceof Reservation) {
+                    reservationList.add((Reservation) obj);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // 파일 읽기 오류 출력
+        }
+    }
+
     // 현재 메모리의 예약 목록을 YAML 파일로 저장
     private void saveToFile() {
         try (Writer writer = new FileWriter(FILE_PATH)) {
