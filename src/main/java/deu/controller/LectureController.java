@@ -1,7 +1,5 @@
 package deu.controller;
 
-import deu.service.ReservationService;
-
 // 강의 컨트롤러
 public class LectureController {
     private static final LectureController instance = new LectureController();

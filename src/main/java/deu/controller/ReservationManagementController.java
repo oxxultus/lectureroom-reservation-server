@@ -1,7 +1,5 @@
 package deu.controller;
 
-import deu.service.ReservationService;
-
 // 예약 관리 컨트롤러
 public class ReservationManagementController {
     private static final ReservationManagementController instance = new ReservationManagementController();

@@ -6,8 +6,6 @@ import java.util.List;
 import java.io.*;
 import java.util.ArrayList;
 
-import static com.sun.tools.jdeprscan.DeprDB.loadFromFile;
-
 public class UserRepositoryImpl {
     //저장경로
     private static UserRepositoryImpl instance;
@@ -29,7 +27,7 @@ public class UserRepositoryImpl {
     // 생성자
     private UserRepositoryImpl() {
         this.users = new ArrayList<>();
-        loadFromFile();
+        //loadFromFile();
     }
     // 파일에서 읽어오는 메서드
     private void loadAllFromFile() {
