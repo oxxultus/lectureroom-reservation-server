@@ -3,7 +3,7 @@
 lectures:
   - id: 510946-001
     title: 컴퓨터비전응용
-    classroom: 911
+    lectureroom: 911
     building: 정보공학관
     floor: 9
     professor: 권순각
@@ -13,7 +13,7 @@ lectures:
 
   - id: 505297-001
     title: 멀티미디어시스템
-    classroom: 911
+    lectureroom: 911
     building: 정보공학관
     floor: 9
     professor: 권순각
@@ -23,7 +23,7 @@ lectures:
 
   - id: 400798-003
     title: 공학설계입문
-    classroom: 911
+    lectureroom: 911
     building: 정보공학관
     floor: 9
     professor: 김성우
@@ -33,7 +33,7 @@ lectures:
 
   - id: 510946-001
     title: 컴퓨터비전응용
-    classroom: 911
+    lectureroom: 911
     building: 정보공학관
     floor: 9
     professor: 권순각
@@ -43,7 +43,7 @@ lectures:
 
   - id: 505297-001
     title: 멀티미디어시스템
-    classroom: 911
+    lectureroom: 911
     building: 정보공학관
     floor: 9
     professor: 권순각
@@ -53,7 +53,7 @@ lectures:
 
   - id: 503916-003
     title: 컴퓨터프로그래밍
-    classroom: 911
+    lectureroom: 911
     building: 정보공학관
     floor: 9
     professor: 이숙자
@@ -63,9 +63,151 @@ lectures:
 
   - id: 508708-012
     title: 캡스톤디자인2
-    classroom: 911
+    lectureroom: 911
     building: 정보공학관
     floor: 9
     professor: 권오준
+    day: FRIDAY
     startTime: "13:00"
     endTime: "15:50"
+    
+#912호 강의실
+  - id: 500891-001
+    title: 데이터베이스
+    lectureroom: 912
+    building: 정보공학관
+    floor: 9
+    professor: 이승환
+    day: MONDAY
+    startTime: "09:00"
+    endTime: "09:50"
+    
+  - id: 400650-001
+    title: 데이터구조
+    lectureroom: 912
+    building: 정보공학관
+    floor: 9
+    professor: 이중화
+    day: MONDAY
+    startTime: "10:00"
+    endTime: "11:50"
+    
+  - id: 500891-002
+    title: 데이터베이스
+    lectureroom: 912
+    building: 정보공학관
+    floor: 9
+    professor: 이승환
+    day: MONDAY
+    startTime: "12:00"
+    endTime: "13:50"
+    
+  - id: 504762-001
+    title: UNIX시스템
+    lectureroom: 912
+    building: 정보공학관
+    floor: 9
+    professor: 장승주
+    day: MONDAY
+    startTime: "14:00"
+    endTime: "15:50"
+    
+  - id: 100108-027
+    title: 기본영어
+    lectureroom: 912
+    building: 정보공학관
+    floor: 9
+    professor: 제선미
+    day: TUSEDAY
+    startTime: "10:00"
+    endTime: "11:50"
+    
+  - id: 504597-002
+    title: 확률및통계
+    lectureroom: 912
+    building: 정보공학관
+    floor: 9
+    professor: 이유태
+    day: TUSEDAY
+    startTime: "13:00"
+    endTime: "13:50"
+    
+  - id: 100149-246
+    title: 지도교수멘토링
+    lectureroom: 912
+    building: 정보공학관
+    floor: 9
+    professor: 장시웅
+    day: TUSEDAY
+    startTime: "16:00"
+    endTime: "17:50"
+    
+  - id: 100110-030
+    title: 논리적사유와글쓰기
+    lectureroom: 912
+    building: 정보공학관
+    floor: 9
+    professor: 정윤희
+    day: WEDNESDAY
+    startTime: "13:00"
+    endTime: "14:50"
+    
+  - id: 100141-066
+    title: 프로젝트길잡이1
+    lectureroom: 912
+    building: 정보공학관
+    floor: 9
+    professor: 정윤희
+    day: THURSDAY
+    startTime: "12:00"
+    endTime: "12:50"
+    
+  - id: 504762-001
+    title: UNIX시스템
+    lectureroom: 912
+    building: 정보공학관
+    floor: 9
+    professor: 장승주
+    day: THURSDAY
+    startTime: "13:00"
+    endTime: "13:50"
+    
+  - id: 400506-004
+    title: 컴퓨터개론
+    lectureroom: 912
+    building: 정보공학관
+    floor: 9
+    professor: 빈기철
+    day: THURSDAY
+    startTime: "14:00"
+    endTime: "15:50"
+    
+  - id: 400506-004
+    title: 컴퓨터개론
+    lectureroom: 912
+    building: 정보공학관
+    floor: 9
+    professor: 빈기철
+    day: FRIDAY
+    startTime: "09:00"
+    endTime: "09:50"
+    
+  - id: 503884-001
+    title: 컴퓨터네트워크
+    lectureroom: 912
+    building: 정보공학관
+    floor: 9
+    professor: 빈기철
+    day: FRIDAY
+    startTime: "10:00"
+    endTime: "10:50"
+    
+  - id: 504597-002
+    title: 확률및통계
+    lectureroom: 912
+    building: 정보공학관
+    floor: 9
+    professor: 이유태
+    day: FRIDAY
+    startTime: "11:00"
+    endTime: "12:50"

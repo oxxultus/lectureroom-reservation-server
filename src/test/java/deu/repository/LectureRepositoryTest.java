@@ -93,7 +93,7 @@ class LectureRepositoryTest {
         Lecture lec = new Lecture();
         lec.setId(id);
         lec.setTitle("단위 테스트 강의");
-        lec.setClassroom("A101");
+        lec.setLectureroom("A101");
         lec.setBuilding("테스트관");
         lec.setFloor("1층");
         lec.setProfessor("김교수");
