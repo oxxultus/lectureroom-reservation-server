@@ -22,6 +22,7 @@ class LectureRepositoryTest {
 
     @BeforeEach
     void clearBefore() {
+        // 테스트 시작 전에 강의 삭제 (파일은 유지)
         repo.deleteById(TEST_ID_1);
         repo.deleteById(TEST_ID_2);
         repo.deleteById(TEST_ID_3);
@@ -93,7 +94,7 @@ class LectureRepositoryTest {
         Lecture lec = new Lecture();
         lec.setId(id);
         lec.setTitle("단위 테스트 강의");
-        lec.setClassroom("A101");
+        lec.setLectureroom("A101");
         lec.setBuilding("테스트관");
         lec.setFloor("1층");
         lec.setProfessor("김교수");

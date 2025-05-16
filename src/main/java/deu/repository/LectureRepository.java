@@ -85,11 +85,46 @@ public class LectureRepository {
     private void loadAllFromFile() {
         File file = new File(FILE_PATH);
 
+        // 파일이 없을 경우 resources에서 복사
         if (!file.exists()) {
-            System.out.println("[LectureRepository] 파일이 존재하지 않아 새로 생성 예정: " + file.getAbsolutePath());
-            return;
+            System.out.println("[LectureRepository] 파일이 없어 리소스에서 복사합니다: " + file.getAbsolutePath());
+
+            // 디렉토리 생성
+            File parentDir = file.getParentFile();
+            if (!parentDir.exists()) {
+                boolean dirCreated = parentDir.mkdirs();
+                if (dirCreated) {
+                    System.out.println("[LectureRepository] 디렉토리 생성됨: " + parentDir.getAbsolutePath());
+                } else {
+                    System.err.println("[LectureRepository] 디렉토리 생성 실패: " + parentDir.getAbsolutePath());
+                }
+            }
+
+            // 리소스 파일 복사 시도
+            try (InputStream resourceInput = getClass().getResourceAsStream("/data/lectures.yaml");
+                 OutputStream output = new FileOutputStream(file)) {
+
+                if (resourceInput == null) {
+                    System.err.println("[LectureRepository] resources/data/lectures.yaml 리소스가 없습니다.");
+                    return;
+                }
+
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = resourceInput.read(buffer)) != -1) {
+                    output.write(buffer, 0, bytesRead);
+                }
+
+                System.out.println("[LectureRepository] 리소스 파일 복사 완료");
+
+            } catch (IOException e) {
+                System.err.println("[LectureRepository] 리소스 파일 복사 중 오류: " + e.getMessage());
+                e.printStackTrace();
+                return;
+            }
         }
 
+        // 파일에서 불러오기
         try (InputStream input = new FileInputStream(file)) {
             LectureWrapper wrapper = yaml.loadAs(input, LectureWrapper.class);
             if (wrapper != null && wrapper.lectures != null) {
