@@ -32,8 +32,22 @@ public class UserRepositoryImpl {
         loadFromFile();
     }
     // 파일에서 읽어오는 메서드
+    private void loadAllFromFile() {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            users.clear();
+            return;
+        }
 
-
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            List<User> loadedUsers = (List<User>) ois.readObject();
+            users.clear();
+            users.addAll(loadedUsers);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            users.clear();
+        }
+    }
     // 파일에 저장하는 메서드
 
 
