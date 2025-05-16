@@ -61,6 +61,17 @@ public class ReservationRepository {
         return new ArrayList<>(reservationList); // 복사본 반환 (외부 수정 방지)
     }
 
+    // 특정 사용자(userId)의 예약만 필터링하여 반환
+    public List<Reservation> findByUser(String userId) {
+        List<Reservation> results = new ArrayList<>();
+        for (Reservation r : reservationList) {
+            if (r.getUserId().equals(userId)) {
+                results.add(r);
+            }
+        }
+        return results;
+    }
+
 
     // 현재 메모리의 예약 목록을 YAML 파일로 저장
     private void saveToFile() {
