@@ -72,6 +72,7 @@ lectures:
     endTime: "15:50"
     
 #912호 강의실
+lectures:
   - id: 500891-001
     title: 데이터베이스
     lectureroom: 912
@@ -211,3 +212,65 @@ lectures:
     day: FRIDAY
     startTime: "11:00"
     endTime: "12:50"
+    
+#913호 강의실
+lectures:
+  - id: 502695-001
+    title: 운영체제
+    lectureroom: 913
+    building: 정보공학관
+    floor: 9
+    professor: 김성우
+    day: MONDAY
+    startTime: "14:00"
+    endTime: "15:50"
+    
+  - id: 509233
+    title: 데이터베이스이론및실습
+    lectureroom: 913
+    building: 정보공학관
+    floor: 9
+    professor: 이중화
+    day: TUSEDAY
+    startTime: "11:00"
+    endTime: "12:50"
+    
+  - id: 100149-252
+    title: 지도교수멘토링
+    lectureroom: 913
+    building: 정보공학관
+    floor: 9
+    professor: 권오준
+    day: TUSEDAY
+    startTime: "16:00"
+    endTime: "16:50" 
+    
+  - id: 502695-001
+    title: 운영체제
+    lectureroom: 913
+    building: 정보공학관
+    floor: 9
+    professor: 김성우
+    day: WEDNESDAY
+    startTime: "14:00"
+    endTime: "14:50"
+
+  - id: 400650-001
+    title: 데이터구조
+    lectureroom: 913
+    building: 정보공학관
+    floor: 9
+    professor: 이중화
+    day: THURSDAY
+    startTime: "12:00"
+    endTime: "12:50"
+    
+  - id: 511015
+    title: 소프트웨어공학
+    lectureroom: 913
+    building: 정보공학관
+    floor: 9
+    professor: 이종민
+    day: FRIDAY
+    startTime: "09:00"
+    endTime: "10:50"  
