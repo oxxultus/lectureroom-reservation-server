@@ -1,9 +1,9 @@
 package deu.controller;
 
 import deu.model.dto.response.BasicResponse;
-import deu.model.dto.request.LoginRequest;
-import deu.model.dto.request.LogoutRequest;
-import deu.model.dto.request.SignupRequest;
+import deu.model.dto.request.data.LoginRequest;
+import deu.model.dto.request.data.LogoutRequest;
+import deu.model.dto.request.data.SignupRequest;
 import deu.model.dto.response.CurrentResponse;
 import deu.service.UserService;
 

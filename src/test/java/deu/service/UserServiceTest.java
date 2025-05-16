@@ -1,10 +1,9 @@
 package deu.service;
 
-import deu.model.dto.request.LoginRequest;
-import deu.model.dto.request.SignupRequest;
+import deu.model.dto.request.data.LoginRequest;
+import deu.model.dto.request.data.SignupRequest;
 import deu.model.dto.response.BasicResponse;
 import deu.repository.UserRepository;
-import deu.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
