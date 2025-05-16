@@ -17,10 +17,11 @@ import lombok.NoArgsConstructor;
 public class Lecture {
     private String id;
     private String title;
-    private String classroom;
+    private String lectureroom;
     private String building;
     private String floor;
     private String professor;
+    private String day;  // 요일
     private String startTime;
     private String endTime;
 }
