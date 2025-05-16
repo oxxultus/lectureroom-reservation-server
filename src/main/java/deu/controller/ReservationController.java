@@ -12,7 +12,7 @@ public class ReservationController {
         return instance;
     }
 
-    private final ReservationService reservationService = new ReservationService();
+    // private final ReservationService reservationService = new ReservationService();
 
     // 각 메서드 앞에 handle를 꼭 붙혀주세요 (알관성 유지)
     // TODO: 예약 요청 (성공/실패 코드와 메시지 반환)
