@@ -27,4 +27,12 @@ public class UserService {
             return new BasicResponse(valid, "회원가입 실패");
         }
     }
+
+    // TODO: 사용자 수정 (성공/실패 코드와 메시지 반환)
+
+    // TODO: 사용자 삭제 (성공/실패 코드와 메시지 반환)
+
+    // TODO: 사용자 조회 (성공/실패 코드와 사용자 객체 반환)
+
+    // TODO: 전체 사용자 조회 (성공/실패 코드와 사용자 객체 리스트(컬랙션) 반환)
 }
