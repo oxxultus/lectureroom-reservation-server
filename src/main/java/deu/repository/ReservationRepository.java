@@ -72,6 +72,18 @@ public class ReservationRepository {
         return results;
     }
 
+    // 중복 예약 확인 (같은 강의실에서 시간이 겹치는 예약이 있는지 확인)
+    public boolean isDuplicate(String classroom, LocalDateTime start, LocalDateTime end) {
+        for (Reservation r : reservationList) {
+            if (r.getClassroom().equals(classroom)) {
+                // 시간 겹침 조건: !(끝 < 시작 || 시작 > 끝)
+                if (!(r.getEndTime().isBefore(start) || r.getStartTime().isAfter(end))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     // 현재 메모리의 예약 목록을 YAML 파일로 저장
     private void saveToFile() {
