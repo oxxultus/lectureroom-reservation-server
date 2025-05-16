@@ -22,6 +22,7 @@ class LectureRepositoryTest {
 
     @BeforeEach
     void clearBefore() {
+        // 테스트 시작 전에 강의 삭제 (파일은 유지)
         repo.deleteById(TEST_ID_1);
         repo.deleteById(TEST_ID_2);
         repo.deleteById(TEST_ID_3);
