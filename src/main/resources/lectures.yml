@@ -1,0 +1,71 @@
+## YAML Template.
+#911호 강의실
+lectures:
+  - id: 510946-001
+    title: 컴퓨터비전응용
+    classroom: 911
+    building: 정보공학관
+    floor: 9
+    professor: 권순각
+    day: MONDAY
+    startTime: "14:00"
+    endTime: "15:50"
+
+  - id: 505297-001
+    title: 멀티미디어시스템
+    classroom: 911
+    building: 정보공학관
+    floor: 9
+    professor: 권순각
+    day: MONDAY
+    startTime: "16:00"
+    endTime: "16:50"
+
+  - id: 400798-003
+    title: 공학설계입문
+    classroom: 911
+    building: 정보공학관
+    floor: 9
+    professor: 김성우
+    day: TUSEDAY
+    startTime: "09:00"
+    endTime: "11:50"
+
+  - id: 510946-001
+    title: 컴퓨터비전응용
+    classroom: 911
+    building: 정보공학관
+    floor: 9
+    professor: 권순각
+    day: TUSEDAY
+    startTime: "14:00"
+    endTime: "14:50"
+
+  - id: 505297-001
+    title: 멀티미디어시스템
+    classroom: 911
+    building: 정보공학관
+    floor: 9
+    professor: 권순각
+    day: WEDNESDAY
+    startTime: "15:00"
+    endTime: "16:50"
+
+  - id: 503916-003
+    title: 컴퓨터프로그래밍
+    classroom: 911
+    building: 정보공학관
+    floor: 9
+    professor: 이숙자
+    day: THURSDAY
+    startTime: "09:00"
+    endTime: "11:50"
+
+  - id: 508708-012
+    title: 캡스톤디자인2
+    classroom: 911
+    building: 정보공학관
+    floor: 9
+    professor: 권오준
+    startTime: "13:00"
+    endTime: "15:50"

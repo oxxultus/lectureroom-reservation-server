@@ -21,6 +21,7 @@ public class Lecture {
     private String building;
     private String floor;
     private String professor;
+    private String day;  // 요일
     private String startTime;
     private String endTime;
 }
