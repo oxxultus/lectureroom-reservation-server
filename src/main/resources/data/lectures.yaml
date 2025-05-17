@@ -416,3 +416,95 @@ lectures:
     day: FRIDAY
     startTime: "13:00"
     endTime: "13:50"  
+    
+#915호 강의실
+lectures:
+  - id: 100149-254
+    title: 지도교수멘트링
+    lectureroom: 915
+    building: 정보공학관
+    floor: 9
+    professor: 김성우
+    day: TUSEDAY
+    startTime: "16:00"
+    endTime: "16:50"   
+    
+  - id: 510940-001
+    title: 자바프로그래밍
+    lectureroom: 915
+    building: 정보공학관
+    floor: 9
+    professor: 장희숙
+    day: WEDNESDAY
+    startTime: "09:00"
+    endTime: "09:50" 
+    
+  - id: 503916-006
+    title: 컴퓨터프로그래밍
+    lectureroom: 915
+    building: 정보공학관
+    floor: 9
+    professor: 장희숙
+    day: WEDNESDAY
+    startTime: "10:00"
+    endTime: "12:50"  
+    
+  - id: 510445-003
+    title: 동아리연계융복합캡스톤디자인1
+    lectureroom: 915
+    building: 정보공학관
+    floor: 9
+    professor: 장희숙
+    day: WEDNESDAY
+    startTime: "16:00"
+    endTime: "17:50"
+    
+  - id: 503916-007
+    title: 컴퓨터프로그래밍
+    lectureroom: 915
+    building: 정보공학관
+    floor: 9
+    professor: 장희숙
+    day: THURSDAY
+    startTime: "09:00"
+    endTime: "11:50" 
+    
+  - id: 505510-001
+    title: 객체지향프로그래밍1
+    lectureroom: 915
+    building: 정보공학관
+    floor: 9
+    professor: 장희숙
+    day: THURSDAY
+    startTime: "14:00"
+    endTime: "16:50"   
+    
+  - id: 510940-001
+    title: 자바프로그래밍
+    lectureroom: 915
+    building: 정보공학관
+    floor: 9
+    professor: 장희숙
+    day: FRIDAY
+    startTime: "09:00"
+    endTime: "10:50"  
+    
+  - id: 201106-005
+    title: Python프로그래밍
+    lectureroom: 915
+    building: 정보공학관
+    floor: 9
+    professor: 장희숙
+    day: FRIDAY
+    startTime: "11:00"
+    endTime: "13:50"  
+    
+  - id: 505510-002
+    title: 객체지향프로그래밍1
+    lectureroom: 915
+    building: 정보공학관
+    floor: 9
+    professor: 장희숙
+    day: FRIDAY
+    startTime: "15:00"
+    endTime: "17:50" 
