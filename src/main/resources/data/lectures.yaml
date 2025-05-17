@@ -610,3 +610,75 @@ lectures:
     day: FRIDAY
     startTime: "14:00"
     endTime: "15:50"  
+    
+#918호 강의실
+lectures:
+  - id: 506104-001
+    title: 임베디드소프트웨어
+    lectureroom: 918
+    building: 정보공학관
+    floor: 9
+    professor: 김성우
+    day: MONDAY
+    startTime: "16:00"
+    endTime: "16:50"  
+    
+  - id: 100149-256
+    title: 지도교수멘트링
+    lectureroom: 918
+    building: 정보공학관
+    floor: 9
+    professor: 이종민
+    day: TUSEDAY
+    startTime: "16:00"
+    endTime: "16:50"   
+    
+  - id: 509233-002
+    title: 데이터베이스이론및실습
+    lectureroom: 918
+    building: 정보공학관
+    floor: 9
+    professor: 이중화
+    day: WEDNESDAY
+    startTime: "09:00"
+    endTime: "10:50"   
+    
+  - id: 509233-003
+    title: 데이터베이스이론및실습
+    lectureroom: 918
+    building: 정보공학관
+    floor: 9
+    professor: 이중화
+    day: WEDNESDAY
+    startTime: "11:00"
+    endTime: "12:50"
+    
+  - id: 506104-001
+    title: 임베디드소프트웨어
+    lectureroom: 918
+    building: 정보공학관
+    floor: 9
+    professor: 김성우
+    day: WEDNESDAY
+    startTime: "15:00"
+    endTime: "16:50"   
+    
+  - id: 400798-004
+    title: 공학설계입문
+    lectureroom: 918
+    building: 정보공학관
+    floor: 9
+    professor: 김성우
+    day: THURSDAY
+    startTime: "09:00"
+    endTime: "11:50"   
+    
+  - id: 510520-002
+    title: 데이터사이언스
+    lectureroom: 918
+    building: 정보공학관
+    floor: 9
+    professor: 이유태
+    day: FRIDAY
+    startTime: "14:00"
+    endTime: "16:50"   
