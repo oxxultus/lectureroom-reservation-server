@@ -274,3 +274,145 @@ lectures:
     day: FRIDAY
     startTime: "09:00"
     endTime: "10:50"  
+   
+#914호 강의실
+lectures:
+  - id: 300129-003
+    title: 기초수학
+    lectureroom: 914
+    building: 정보공학관
+    floor: 9
+    professor: 김양곡
+    day: MONDAY
+    startTime: "09:00"
+    endTime: "09:50"
+    
+  - id: 505300-001
+    title: 정보보호론
+    lectureroom: 914
+    building: 정보공학관
+    floor: 9
+    professor: 권오준
+    day: MONDAY
+    startTime: "10:00"
+    endTime: "10:50"
+    
+  - id: 503884-001
+    title: 컴퓨터네트워크
+    lectureroom: 914
+    building: 정보공학관
+    floor: 9
+    professor: 빈기철
+    day: MONDAY
+    startTime: "13:00"
+    endTime: "14:50"
+    
+  - id: 200825-001
+    title: ICT기반의창조경제
+    lectureroom: 914
+    building: 정보공학관
+    floor: 9
+    professor: 권오준
+    day: MONDAY
+    startTime: "15:00"
+    endTime: "16:50"
+    
+  - id: 100149-253
+    title: 지도교수멘트링
+    lectureroom: 914
+    building: 정보공학관
+    floor: 9
+    professor: 권순각
+    day: TUSEDAY
+    startTime: "16:00"
+    endTime: "16:50" 
+    
+  - id: 100108-016
+    title: 기본영어
+    lectureroom: 914
+    building: 정보공학관
+    floor: 9
+    professor: 이미향
+    day: WEDNESDAY
+    startTime: "10:00"
+    endTime: "11:50"
+    
+  - id: 100110-027
+    title: 논리적사유와글쓰기
+    lectureroom: 914
+    building: 정보공학관
+    floor: 9
+    professor: 최중호
+    day: WEDNESDAY
+    startTime: "13:00"
+    endTime: "14:50"  
+    
+  - id: 300129-003
+    title: 기초수학
+    lectureroom: 914
+    building: 정보공학관
+    floor: 9
+    professor: 김양곡
+    day: WEDNESDAY
+    startTime: "15:00"
+    endTime: "16:50"  
+    
+  - id: 505300-001
+    title: 정보보호론
+    lectureroom: 914
+    building: 정보공학관
+    floor: 9
+    professor: 권오준
+    day: THURSDAY
+    startTime: "11:00"
+    endTime: "12:50"
+    
+  - id: 300129-001
+    title: 기초수학
+    lectureroom: 914
+    building: 정보공학관
+    floor: 9
+    professor: 김양곡
+    day: THURSDAY
+    startTime: "13:00"
+    endTime: "14:50"
+    
+  - id: 300129-002
+    title: 기초수학
+    lectureroom: 914
+    building: 정보공학관
+    floor: 9
+    professor: 김양곡
+    day: THURSDAY
+    startTime: "15:00"
+    endTime: "16:50"  
+    
+  - id: 300129-001
+    title: 기초수학
+    lectureroom: 914
+    building: 정보공학관
+    floor: 9
+    professor: 김양곡
+    day: FRIDAY
+    startTime: "09:00"
+    endTime: "09:50"
+    
+  - id: 300129-002
+    title: 기초수학
+    lectureroom: 914
+    building: 정보공학관
+    floor: 9
+    professor: 김양곡
+    day: FRIDAY
+    startTime: "10:00"
+    endTime: "10:50"  
+    
+  - id: 508708-011
+    title: 캡스톤디자인2
+    lectureroom: 914
+    building: 정보공학관
+    floor: 9
+    professor: 임영호
+    day: FRIDAY
+    startTime: "13:00"
+    endTime: "13:50"  
