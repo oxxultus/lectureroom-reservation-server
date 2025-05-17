@@ -508,3 +508,105 @@ lectures:
     day: FRIDAY
     startTime: "15:00"
     endTime: "17:50" 
+    
+#916호 강의실
+lectures:
+  - id: 509693-001
+    title: 머신러닝
+    lectureroom: 916
+    building: 정보공학관
+    floor: 9
+    professor: 권오준
+    day: MONDAY
+    startTime: "11:00"
+    endTime: "11:50"
+  
+  - id: 509693-001
+    title: 머신러닝
+    lectureroom: 916
+    building: 정보공학관
+    floor: 9
+    professor: 권오준
+    day: TUSEDAY
+    startTime: "10:00"
+    endTime: "11:50" 
+    
+  - id: 505711-001
+    title: 객체지향설계
+    lectureroom: 916
+    building: 정보공학관
+    floor: 9
+    professor: 이종민
+    day: TUSEDAY
+    startTime: "12:00"
+    endTime: "13:50"   
+    
+  - id: 100149-255
+    title: 지도교수멘트링
+    lectureroom: 916
+    building: 정보공학관
+    floor: 9
+    professor: 이중화
+    day: TUSEDAY
+    startTime: "16:00"
+    endTime: "16:50"   
+    
+  - id: 511015-001
+    title: 소프트웨어공학
+    lectureroom: 916
+    building: 정보공학관
+    floor: 9
+    professor: 이종민
+    day: WEDNESDAY
+    startTime: "09:00"
+    endTime: "10:50" 
+    
+  - id: 511015-002
+    title: 소프트웨어공학
+    lectureroom: 916
+    building: 정보공학관
+    floor: 9
+    professor: 이종민
+    day: WEDNESDAY
+    startTime: "11:00"
+    endTime: "12:50"
+    
+  - id: 505711-001
+    title: 객체지향설계
+    lectureroom: 916
+    building: 정보공학관
+    floor: 9
+    professor: 이종민
+    day: THURSDAY
+    startTime: "10:00"
+    endTime: "11:50"  
+    
+  - id: 510520-001
+    title: 데이터사이언스
+    lectureroom: 916
+    building: 정보공학관
+    floor: 9
+    professor: 이유태
+    day: THURSDAY
+    startTime: "15:00"
+    endTime: "17:50"  
+    
+  - id: 507016-001
+    title: 그래픽스프로그래밍
+    lectureroom: 916
+    building: 정보공학관
+    floor: 9
+    professor: 정명균
+    day: FRIDAY
+    startTime: "11:00"
+    endTime: "13:50"
+    
+  - id: 508708-011
+    title: 캡스톤디자인2
+    lectureroom: 916
+    building: 정보공학관
+    floor: 9
+    professor: 임영호
+    day: FRIDAY
+    startTime: "14:00"
+    endTime: "15:50"  
