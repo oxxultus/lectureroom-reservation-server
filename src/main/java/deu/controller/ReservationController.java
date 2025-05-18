@@ -1,8 +1,13 @@
 package deu.controller;
 
+import deu.model.entity.Reservation;
+import deu.model.dto.response.BasicResponse;
+import deu.service.ReservationService;
+
 // 예약 컨트롤러
 public class ReservationController {
     private static final ReservationController instance = new ReservationController();
+    private final ReservationService reservationService = new ReservationService();
 
     private ReservationController() {}
 
@@ -10,7 +15,9 @@ public class ReservationController {
         return instance;
     }
 
-    // private final ReservationService reservationService = new ReservationService();
+    public BasicResponse handleCreateReservation(Reservation reservation) {
+        return reservationService.createReservation(reservation);
+    }
 
     // 각 메서드 앞에 handle를 꼭 붙혀주세요 (알관성 유지)
     // TODO: 예약 요청 (성공/실패 코드와 메시지 반환)
