@@ -49,8 +49,13 @@ public class UserRepositoryImpl {
         }
     }
     // 파일에 저장하는 메서드
-
-
+    private void saveAllToFile() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            oos.writeObject(users);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     // 저장 메서드
 
 
