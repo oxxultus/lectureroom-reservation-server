@@ -1,5 +1,6 @@
 package deu.controller;
 
+import deu.controller.business.UserController;
 import deu.model.dto.request.command.*;
 import deu.model.dto.request.data.LoginRequest;
 import deu.model.dto.request.data.LogoutRequest;

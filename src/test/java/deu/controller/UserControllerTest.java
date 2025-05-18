@@ -2,6 +2,7 @@ package deu.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import deu.controller.business.UserController;
 import deu.model.dto.request.data.LoginRequest;
 import deu.model.dto.request.data.LogoutRequest;
 import deu.model.dto.request.data.SignupRequest;
