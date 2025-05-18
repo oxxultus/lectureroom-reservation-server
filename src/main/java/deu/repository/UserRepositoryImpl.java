@@ -70,6 +70,21 @@ public class UserRepositoryImpl {
     public boolean existsByNumber(String number) {
         return users.stream().anyMatch(u -> u.number.equals(number));
     }
+    //특정 사용자 조회
+    public User findByNumber(String number) {
+        return users.stream()
+                .filter(u -> u.number.equals(number))
+                .findFirst()
+                .orElse(null);
+    }
 
-    // 등 등
+    //전체 사용자 반환
+    public List<User> findAll() {
+        return new ArrayList<>(users);
+    }
+
+    //외부에서 파일 저장 요청하는 메서드
+    public void saveToFile() {
+        saveAllToFile();
+    }
 }
