@@ -1,6 +1,8 @@
 package deu.repository;
 
 import deu.model.entity.User;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.util.List;
 import java.io.*;
@@ -15,7 +17,7 @@ public class UserRepositoryImpl {
     // TODO: final 변수는 초기화를 진행해야 합니다.
     private final List<User> users;
 
-    private final String filePath = "user_data.ser";
+    private final String filePath = "user_data.yaml";
 
     // singleton 패턴으로 구현한다
     public static UserRepositoryImpl getInstance() {
@@ -29,41 +31,45 @@ public class UserRepositoryImpl {
     // 생성자
     private UserRepositoryImpl() {
         this.users = new ArrayList<>();
-        loadFromFile();
+        loadAllFromFile();
     }
     // 파일에서 읽어오는 메서드
     private void loadAllFromFile() {
         File file = new File(filePath);
-        if (!file.exists()) {
-            users.clear();
-            return;
-        }
+        if (!file.exists()) return;
 
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-            List<User> loadedUsers = (List<User>) ois.readObject();
-            users.clear();
-            users.addAll(loadedUsers);
-        } catch (IOException | ClassNotFoundException e) {
+        try (InputStream input = new FileInputStream(file)) {
+            Yaml yaml = new Yaml(new Constructor(ArrayList.class));
+            List<User> loaded = yaml.load(input);
+            if (loaded != null) {
+                users.clear();
+                users.addAll(loaded);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
-            users.clear();
         }
     }
     // 파일에 저장하는 메서드
     private void saveAllToFile() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
-            oos.writeObject(users);
+        try (Writer writer = new FileWriter(filePath)) {
+            Yaml yaml = new Yaml();
+            yaml.dump(users, writer);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     // 저장 메서드
-
-
+    public void save(User user) {
+        users.add(user);
+    }
     // 삭제 메서드
-
-
+    public boolean deleteByNumber(String number) {
+        return users.removeIf(u -> u.number.equals(number));
+    }
     // 비교 메서드
-
+    public boolean existsByNumber(String number) {
+        return users.stream().anyMatch(u -> u.number.equals(number));
+    }
 
     // 등 등
 }
