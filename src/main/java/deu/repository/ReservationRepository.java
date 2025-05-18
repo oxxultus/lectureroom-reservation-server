@@ -104,7 +104,7 @@ public class ReservationRepository {
     }
 
     // 현재 메모리의 예약 목록을 YAML 파일로 저장
-    private void saveToFile() {
+    public void saveToFile() {
         try (Writer writer = new FileWriter(FILE_PATH)) {
             yaml.dumpAll(reservationList.iterator(), writer); // 모든 예약을 YAML 형식으로 저장
         } catch (IOException e) {
