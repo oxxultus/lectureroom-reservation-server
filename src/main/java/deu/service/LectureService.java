@@ -1,6 +1,6 @@
 package deu.service;
 
-
+import deu.model.dto.request.data.lecture.LectureRequest;
 import deu.model.dto.response.BasicResponse;
 import deu.model.entity.Lecture;
 import deu.model.enums.DayOfWeek;
@@ -12,7 +12,11 @@ import java.util.List;
 public class LectureService {
 
     // 특정 강의실의 금일 + 7일 까지의 강의 데이터를 배열로 반환한다.
-    public BasicResponse returnLectureOfWeek(String building, String floor, String lectureroom) {
+    public BasicResponse returnLectureOfWeek(LectureRequest payload) {
+        String building = payload.building;
+        String floor = payload.floor;
+        String lectureroom = payload.lectureroom;
+
         // 1. 오늘 기준으로 7일간의 요일 배열을 가져옴 (오늘부터 일주일간 순차 조회용)
         DayOfWeek[] orderedDays = DayOfWeek.getOrderedFromToday();
 
@@ -21,6 +25,9 @@ public class LectureService {
 
         // 3. 전체 강의 목록을 로드 (파일 기반 리포지토리에서 YAML 파싱하여 불러옴)
         List<Lecture> lectures = LectureRepository.getInstance().findAll();
+        if (lectures.isEmpty()) {
+            return new BasicResponse("404", "파일에서 강의 정보를 불러오지 못했습니다.");
+        }
 
         // 4. 강의 목록 중 대상 강의실에 해당하는 강의만 필터링하고 시간표에 배치
         for (Lecture lec : lectures) {

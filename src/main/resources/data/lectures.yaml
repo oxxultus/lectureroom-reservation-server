@@ -27,7 +27,7 @@ lectures:
     building: 정보공학관
     floor: 9
     professor: 김성우
-    day: TUSEDAY
+    day: TUESDAY
     startTime: "09:00"
     endTime: "11:50"
 
@@ -37,7 +37,7 @@ lectures:
     building: 정보공학관
     floor: 9
     professor: 권순각
-    day: TUSEDAY
+    day: TUESDAY
     startTime: "14:00"
     endTime: "14:50"
 
@@ -118,7 +118,7 @@ lectures:
     building: 정보공학관
     floor: 9
     professor: 제선미
-    day: TUSEDAY
+    day: TUESDAY
     startTime: "10:00"
     endTime: "11:50"
     
@@ -128,7 +128,7 @@ lectures:
     building: 정보공학관
     floor: 9
     professor: 이유태
-    day: TUSEDAY
+    day: TUESDAY
     startTime: "13:00"
     endTime: "13:50"
     
@@ -138,7 +138,7 @@ lectures:
     building: 정보공학관
     floor: 9
     professor: 장시웅
-    day: TUSEDAY
+    day: TUESDAY
     startTime: "16:00"
     endTime: "17:50"
     
@@ -229,7 +229,7 @@ lectures:
     building: 정보공학관
     floor: 9
     professor: 이중화
-    day: TUSEDAY
+    day: TUESDAY
     startTime: "11:00"
     endTime: "12:50"
     
@@ -239,7 +239,7 @@ lectures:
     building: 정보공학관
     floor: 9
     professor: 권오준
-    day: TUSEDAY
+    day: TUESDAY
     startTime: "16:00"
     endTime: "16:50" 
     
@@ -320,7 +320,7 @@ lectures:
     building: 정보공학관
     floor: 9
     professor: 권순각
-    day: TUSEDAY
+    day: TUESDAY
     startTime: "16:00"
     endTime: "16:50" 
     
@@ -421,7 +421,7 @@ lectures:
     building: 정보공학관
     floor: 9
     professor: 김성우
-    day: TUSEDAY
+    day: TUESDAY
     startTime: "16:00"
     endTime: "16:50"   
     
@@ -522,7 +522,7 @@ lectures:
     building: 정보공학관
     floor: 9
     professor: 권오준
-    day: TUSEDAY
+    day: TUESDAY
     startTime: "10:00"
     endTime: "11:50" 
     
@@ -532,7 +532,7 @@ lectures:
     building: 정보공학관
     floor: 9
     professor: 이종민
-    day: TUSEDAY
+    day: TUESDAY
     startTime: "12:00"
     endTime: "13:50"   
     
@@ -542,7 +542,7 @@ lectures:
     building: 정보공학관
     floor: 9
     professor: 이중화
-    day: TUSEDAY
+    day: TUESDAY
     startTime: "16:00"
     endTime: "16:50"   
     
@@ -623,7 +623,7 @@ lectures:
     building: 정보공학관
     floor: 9
     professor: 이종민
-    day: TUSEDAY
+    day: TUESDAY
     startTime: "16:00"
     endTime: "16:50"   
     
