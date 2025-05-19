@@ -112,4 +112,18 @@ public class UserRepository {
         return null;
     }
 
+    public List<User> findAll() {
+        return new ArrayList<>(users);
+    }
+
+    public String deleteByNumber(String number) {
+        boolean removed = users.removeIf(u -> u.number.equals(number));
+        saveAllToFile();
+        return removed ? "200" : "404";
+    }
+
+    public String existsByNumber(String number) {
+        return users.stream().anyMatch(u -> u.number.equals(number)) ? "200" : "404";
+    }
+
 }
