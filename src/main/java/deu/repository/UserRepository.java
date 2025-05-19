@@ -103,4 +103,13 @@ public class UserRepository {
         return "200";
     }
 
+    public User findByNumber(String number) {
+        for (User user : users) {
+            if (user.number.equals(number)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
 }
