@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * 사용자 정보를 YAML 파일로 관리하는 저장소 클래스
- * 싱글톤 패턴을 사용하며, 파일이 없으면 자동 생성한다.
+ * 싱글톤 패턴을 사용하며, 파일이 없을 경우 resources에서 복사하여 생성한다.
  */
 public class UserRepository {
     // 싱글톤 인스턴스
@@ -61,7 +61,7 @@ public class UserRepository {
             }
         }
 
-        // 파일에 저장
+        // 사용자 리스트를 YAML 형식으로 파일에 저장
         try (Writer writer = new FileWriter(file)) {
             UserWrapper wrapper = new UserWrapper();
             wrapper.users = users;
@@ -73,18 +73,49 @@ public class UserRepository {
         }
     }
 
-    // 파일에서 사용자 정보 로딩
+    // 파일에서 사용자 정보 로딩 (없으면 resources에서 복사)
     private void loadAllFromFile() {
         File file = new File(FILE_PATH);
 
-        // 파일이 없으면 생성
+        // 파일이 없으면 resources에서 복사 시도
         if (!file.exists()) {
-            System.out.println("[UserRepository] 파일이 없어 새로 생성됩니다: " + file.getAbsolutePath());
-            saveAllToFile();
-            return;
+            System.out.println("[UserRepository] 파일이 없어 리소스에서 복사합니다: " + file.getAbsolutePath());
+
+            File parentDir = file.getParentFile();
+            if (!parentDir.exists()) {
+                boolean dirCreated = parentDir.mkdirs();
+                if (dirCreated) {
+                    System.out.println("[UserRepository] 디렉토리 생성됨: " + parentDir.getAbsolutePath());
+                } else {
+                    System.err.println("[UserRepository] 디렉토리 생성 실패: " + parentDir.getAbsolutePath());
+                }
+            }
+
+            // resources 디렉토리에서 기본 users.yaml 파일 복사
+            try (InputStream resourceInput = getClass().getResourceAsStream("/data/users.yaml");
+                 OutputStream output = new FileOutputStream(file)) {
+
+                if (resourceInput == null) {
+                    System.err.println("[UserRepository] resources/data/users.yaml 리소스가 없습니다.");
+                    return;
+                }
+
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = resourceInput.read(buffer)) != -1) {
+                    output.write(buffer, 0, bytesRead);
+                }
+
+                System.out.println("[UserRepository] 리소스 파일 복사 완료");
+
+            } catch (IOException e) {
+                System.err.println("[UserRepository] 리소스 파일 복사 중 오류: " + e.getMessage());
+                e.printStackTrace();
+                return;
+            }
         }
 
-        // 파일이 존재하면 로딩
+        // 복사한 파일 또는 기존 파일에서 사용자 정보 로딩
         try (InputStream input = new FileInputStream(file)) {
             UserWrapper wrapper = yaml.loadAs(input, UserWrapper.class);
             if (wrapper != null && wrapper.users != null) {
