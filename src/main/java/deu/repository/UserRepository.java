@@ -92,4 +92,15 @@ public class UserRepository {
         return "400";
     }
 
+    public String save(String number, String pw, String name, String major) {
+        for (User user : users) {
+            if (user.number.equals(number)) {
+                return "400";
+            }
+        }
+        users.add(new User(number, pw, name, major));
+        saveAllToFile();
+        return "200";
+    }
+
 }
