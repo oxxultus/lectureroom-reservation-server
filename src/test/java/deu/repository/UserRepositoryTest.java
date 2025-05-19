@@ -1,78 +1,157 @@
 package deu.repository;
 
+import deu.model.dto.response.BasicResponse;
+import deu.model.entity.User;
+import org.junit.jupiter.api.*;
+import java.io.File;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-import deu.model.entity.User;
-import deu.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserRepositoryTest {
 
-    private UserRepository userRepository;
+    private UserRepository repo;
+    private final String TEST_ID = "T2025";
+    private final String TEST_PASSWORD = "pw123";
+    private final String TEST_NAME = "김영진";
+    private final String TEST_MAJOR = "컴퓨터소프트웨어공학과";
 
-    @BeforeEach
-    void setUp() {
-        userRepository = UserRepository.getInstance();
+    private final String DATA_DIR_PATH = System.getProperty("user.dir") + File.separator + "data";
+    private final String TEST_FILE_PATH = DATA_DIR_PATH + File.separator + "users.yaml";
 
-        // 리플렉션을 사용해 users 리스트 초기화
-        try {
-            var field = UserRepository.class.getDeclaredField("users");
-            field.setAccessible(true);
-            ((java.util.List<?>) field.get(userRepository)).clear();
+    @BeforeAll
+    void init() {
+        File file = new File(TEST_FILE_PATH);
+        if (file.exists()) file.delete();
+        repo = UserRepository.getInstance();
+    }
 
-            // 테스트용 초기 계정 추가
-            ((java.util.List<User>) field.get(userRepository)).add(
-                    new User("admin", "admin", "admin", "컴퓨터 소프트웨어 공학과")
-            );
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    @AfterAll
+    void cleanup() {
+        File file = new File(TEST_FILE_PATH);
+        if (file.exists()) file.delete();
+
+        File dir = new File(DATA_DIR_PATH);
+        if (dir.exists() && dir.isDirectory() && dir.list().length == 0) {
+            boolean deleted = dir.delete();
+            if (deleted) {
+                System.out.println("[TestCleanup] data 디렉토리 삭제됨: " + dir.getAbsolutePath());
+            }
         }
     }
 
-    @Test
-    void validate_success() {
-        String result = userRepository.validate("admin", "admin");
-        assertEquals("200", result);
+    @BeforeEach
+    void clearUser() {
+        repo.deleteByNumber(TEST_ID);
     }
 
     @Test
-    void validate_wrong_password() {
-        String result = userRepository.validate("admin", "wrong");
-        assertEquals("401", result);
+    @Order(1)
+    void testSaveSuccess() {
+        BasicResponse response = repo.save(TEST_ID, TEST_PASSWORD, TEST_NAME, TEST_MAJOR);
+        assertEquals("200", response.code);
     }
 
     @Test
-    void validate_user_not_found() {
-        String result = userRepository.validate("unknown", "pw");
-        assertEquals("400", result);
+    @Order(2)
+    void testSaveDuplicate() {
+        repo.save(TEST_ID, TEST_PASSWORD, TEST_NAME, TEST_MAJOR);
+        BasicResponse response = repo.save(TEST_ID, "another", "이름", "전공");
+        assertEquals("400", response.code);
     }
 
     @Test
-    void save_success() {
-        String result = userRepository.save("S1234", "pw", "홍길동", "컴공");
-        assertEquals("200", result);
+    @Order(3)
+    void testValidateSuccess() {
+        repo.save(TEST_ID, TEST_PASSWORD, TEST_NAME, TEST_MAJOR);
+        BasicResponse response = repo.validate(TEST_ID, TEST_PASSWORD);
+        assertEquals("200", response.code);
     }
 
     @Test
-    void save_duplicate_user() {
-        userRepository.save("S1234", "pw", "홍길동", "컴공");
-        String result = userRepository.save("S1234", "pw2", "김철수", "소프트웨어");
-        assertEquals("400", result);
+    @Order(4)
+    void testValidateWrongPassword() {
+        repo.save(TEST_ID, TEST_PASSWORD, TEST_NAME, TEST_MAJOR);
+        BasicResponse response = repo.validate(TEST_ID, "wrong");
+        assertEquals("401", response.code);
     }
 
     @Test
-    void findByNumber_exists() {
-        userRepository.save("S2023001", "pw", "김민지", "AI학과");
-        User user = userRepository.findByNumber("S2023001");
-        assertNotNull(user);
-        assertEquals("김민지", user.name);
+    @Order(5)
+    void testValidateNonexistentUser() {
+        BasicResponse response = repo.validate("NONE", "pw");
+        assertEquals("400", response.code);
     }
 
     @Test
-    void findByNumber_not_found() {
-        User user = userRepository.findByNumber("X999");
-        assertNull(user);
+    @Order(6)
+    void testFindByNumberSuccess() {
+        repo.save(TEST_ID, TEST_PASSWORD, TEST_NAME, TEST_MAJOR);
+        BasicResponse response = repo.findByNumber(TEST_ID);
+        assertEquals("200", response.code);
+        assertTrue(response.data instanceof User);
+    }
+
+    @Test
+    @Order(7)
+    void testFindByNumberFail() {
+        BasicResponse response = repo.findByNumber("UNKNOWN");
+        assertEquals("404", response.code);
+    }
+
+    @Test
+    @Order(8)
+    void testUpdateSuccess() {
+        repo.save(TEST_ID, TEST_PASSWORD, TEST_NAME, TEST_MAJOR);
+        BasicResponse response = repo.update(TEST_ID, "newpw", "이순신", "AI학과");
+        assertEquals("200", response.code);
+    }
+
+    @Test
+    @Order(9)
+    void testUpdateFail() {
+        BasicResponse response = repo.update("NOPE", "pw", "이름", "전공");
+        assertEquals("404", response.code);
+    }
+
+    @Test
+    @Order(10)
+    void testDeleteSuccess() {
+        repo.save(TEST_ID, TEST_PASSWORD, TEST_NAME, TEST_MAJOR);
+        BasicResponse response = repo.deleteByNumber(TEST_ID);
+        assertEquals("200", response.code);
+    }
+
+    @Test
+    @Order(11)
+    void testDeleteFail() {
+        BasicResponse response = repo.deleteByNumber("NOT_EXIST");
+        assertEquals("404", response.code);
+    }
+
+    @Test
+    @Order(12)
+    void testFindAll() {
+        repo.save(TEST_ID, TEST_PASSWORD, TEST_NAME, TEST_MAJOR);
+        BasicResponse response = repo.findAll();
+        assertEquals("200", response.code);
+        assertTrue(response.data instanceof List);
+    }
+
+    @Test
+    @Order(13)
+    void testExistsTrue() {
+        repo.save(TEST_ID, TEST_PASSWORD, TEST_NAME, TEST_MAJOR);
+        BasicResponse response = repo.existsByNumber(TEST_ID);
+        assertEquals("200", response.code);
+    }
+
+    @Test
+    @Order(14)
+    void testExistsFalse() {
+        BasicResponse response = repo.existsByNumber("NON_USER");
+        assertEquals("404", response.code);
     }
 }
