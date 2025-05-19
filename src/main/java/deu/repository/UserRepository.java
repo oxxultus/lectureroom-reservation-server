@@ -5,6 +5,9 @@ import deu.model.entity.User;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
+import org.yaml.snakeyaml.nodes.Tag;
+import org.yaml.snakeyaml.representer.Representer;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +31,12 @@ public class UserRepository {
 
     // 사용자 데이터를 감싸는 래퍼 클래스 (YAML 구조 유지를 위함)
     public static class UserWrapper {
-        public List<User> users = new ArrayList<>();
+        public List<User> users;
+
+        // SnakeYAML이 사용하는 명시적 기본 생성자
+        public UserWrapper() {
+            this.users = new ArrayList<>();
+        }
     }
 
     // 생성자: YAML 설정 및 파일 로딩
@@ -36,7 +44,16 @@ public class UserRepository {
         DumperOptions options = new DumperOptions();
         options.setPrettyFlow(true);
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-        yaml = new Yaml(options);
+
+        // SnakeYAML 2.x 대응: 클래스 태그 제거용 Representer
+        Representer representer = new Representer(options);
+        representer.getPropertyUtils().setSkipMissingProperties(true); // (안정성 향상)
+
+        // 클래스별 태그 제거
+        representer.addClassTag(UserWrapper.class, Tag.MAP);
+        representer.addClassTag(User.class, Tag.MAP);
+
+        yaml = new Yaml(representer, options);
 
         loadAllFromFile();
     }
