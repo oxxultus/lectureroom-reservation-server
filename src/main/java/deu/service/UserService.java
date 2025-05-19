@@ -1,9 +1,7 @@
 package deu.service;
 
+import deu.model.dto.request.data.user.*;
 import deu.model.dto.response.BasicResponse;
-import deu.model.dto.request.data.LoginRequest;
-import deu.model.dto.request.data.SignupRequest;
-import deu.model.dto.request.data.UserDataModificationRequest;
 import deu.repository.UserRepository;
 
 public class UserService {
@@ -18,23 +16,18 @@ public class UserService {
     }
 
     // 사용자 삭제
-    public BasicResponse delete(String number) {
-        return UserRepository.getInstance().deleteByNumber(number);
+    public BasicResponse delete(DeleteRequest payload) {
+        return UserRepository.getInstance().deleteByNumber(payload.number);
     }
 
     // 사용자 단일 조회
-    public BasicResponse find(String number) {
-        return UserRepository.getInstance().findByNumber(number);
+    public BasicResponse find(FindRequest payload) {
+        return UserRepository.getInstance().findByNumber(payload.number);
     }
 
     // 전체 사용자 목록 조회
     public BasicResponse findAll() {
         return UserRepository.getInstance().findAll();
-    }
-
-    // 사용자 존재 여부 확인
-    public BasicResponse exists(String number) {
-        return UserRepository.getInstance().existsByNumber(number);
     }
 
     // 사용자 정보 수정
@@ -45,5 +38,10 @@ public class UserService {
                 payload.name,
                 payload.major
         );
+    }
+
+    // 사용자 존재 여부 확인 - 미사용
+    public BasicResponse exists(ExistsRequest payload) {
+        return UserRepository.getInstance().existsByNumber(payload.number);
     }
 }

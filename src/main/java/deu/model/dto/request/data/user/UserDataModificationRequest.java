@@ -1,4 +1,4 @@
-package deu.model.dto.request.data;
+package deu.model.dto.request.data.user;
 
 public class UserDataModificationRequest {
     public String number;

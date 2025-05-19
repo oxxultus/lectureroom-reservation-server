@@ -1,5 +1,6 @@
 package deu.controller.business;
 
+import deu.model.dto.request.data.user.*;
 import deu.service.UserService;
 
 public class UserManagementController {
@@ -14,13 +15,23 @@ public class UserManagementController {
 
     private final UserService userService = new UserService();
 
-    // 각 메서드 앞에 handle를 꼭 붙혀주세요 (알관성 유지)
-    // TODO: 사용자 수정 (성공/실패 코드와 메시지 반환)
+    // 사용자 정보 수정 처리
+    public Object handleUpdateUser(UserDataModificationRequest payload) {
+        return userService.update(payload);
+    }
 
-    // TODO: 사용자 삭제 (성공/실패 코드와 메시지 반환)
+    // 사용자 삭제 처리
+    public Object handleDeleteUser(DeleteRequest payload) {
+        return userService.delete(payload);
+    }
 
-    // TODO: 사용자 조회 (성공/실패 코드와 사용자 객체 반환)
+    // 사용자 단일 조회 처리
+    public Object handleFindUser(FindRequest payload) {
+        return userService.find(payload);
+    }
 
-    // TODO: 전체 사용자 조회 (성공/실패 코드와 사용자 객체 리스트(컬랙션) 반환)
-
+    // 전체 사용자 목록 조회 처리
+    public Object handleFindAllUsers() {
+        return userService.findAll();
+    }
 }
