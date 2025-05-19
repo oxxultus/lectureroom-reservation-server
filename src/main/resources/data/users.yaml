@@ -1,0 +1,5 @@
+users:
+  - number: m-admin
+    password: admin
+    name: 시스템 관리자
+    major: 전체 학과
