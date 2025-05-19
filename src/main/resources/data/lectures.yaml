@@ -70,9 +70,8 @@ lectures:
     day: FRIDAY
     startTime: "13:00"
     endTime: "15:50"
-    
+
 #912호 강의실
-lectures:
   - id: 500891-001
     title: 데이터베이스
     lectureroom: 912
@@ -214,7 +213,6 @@ lectures:
     endTime: "12:50"
     
 #913호 강의실
-lectures:
   - id: 502695-001
     title: 운영체제
     lectureroom: 913
@@ -276,7 +274,6 @@ lectures:
     endTime: "10:50"  
    
 #914호 강의실
-lectures:
   - id: 300129-003
     title: 기초수학
     lectureroom: 914
@@ -418,7 +415,6 @@ lectures:
     endTime: "13:50"  
     
 #915호 강의실
-lectures:
   - id: 100149-254
     title: 지도교수멘트링
     lectureroom: 915
@@ -510,7 +506,6 @@ lectures:
     endTime: "17:50" 
     
 #916호 강의실
-lectures:
   - id: 509693-001
     title: 머신러닝
     lectureroom: 916
@@ -612,7 +607,6 @@ lectures:
     endTime: "15:50"  
     
 #918호 강의실
-lectures:
   - id: 506104-001
     title: 임베디드소프트웨어
     lectureroom: 918
