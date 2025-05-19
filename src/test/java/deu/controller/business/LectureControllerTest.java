@@ -14,7 +14,7 @@ class LectureControllerTest {
         // given: 요청 파라미터
         String building = "정보공학관";
         String floor = "9";
-        String room = "911";
+        String room = "912";
         LectureRequest request = new LectureRequest(building, floor, room);
 
         // when: 컨트롤러 호출
