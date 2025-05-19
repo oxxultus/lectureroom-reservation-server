@@ -1,5 +1,6 @@
 package deu.repository;
 
+import deu.model.dto.response.BasicResponse;
 import deu.model.entity.User;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -101,55 +102,72 @@ public class UserRepository {
     }
 
     // 사용자 인증 (학번 + 비밀번호)
-    public String validate(String number, String pw) {
-        for (User user : users) {
-            if (user.number.equals(number)) {
-                if (user.password.equals(pw)) {
-                    return "200"; // 로그인 성공
-                } else {
-                    return "401"; // 비밀번호 불일치
+    public BasicResponse validate(String number, String pw) {
+        try {
+            for (User user : users) {
+                if (user.number.equals(number)) {
+                    if (user.password.equals(pw)) {
+                        return new BasicResponse("200", "로그인 성공");
+                    } else {
+                        return new BasicResponse("401", "비밀번호 입력 오류 입니다.");
+                    }
                 }
             }
+            return new BasicResponse("400", "존재하지 않는 아이디 입니다.");
+        } catch (Exception e) {
+            System.err.println("[UserRepository] 로그인 처리 중 오류 발생: " + e.getMessage());
+            e.printStackTrace();
+            return new BasicResponse("500", "로그인 처리 중 시스템 오류가 발생했습니다.");
         }
-        return "400"; // 존재하지 않는 사용자
     }
 
     // 사용자 저장 (회원가입)
-    public String save(String number, String pw, String name, String major) {
-        for (User user : users) {
-            if (user.number.equals(number)) {
-                return "400"; // 이미 존재하는 학번
+    public BasicResponse save(String number, String pw, String name, String major) {
+        try {
+            for (User user : users) {
+                if (user.number.equals(number)) {
+                    return new BasicResponse("400", "이미 가입된 사용자 정보 입니다.");
+                }
             }
+
+            users.add(new User(number, pw, name, major));
+            saveAllToFile();
+            return new BasicResponse("200", "회원가입 성공");
+        } catch (Exception e) {
+            System.err.println("[UserRepository] 회원가입 처리 중 오류 발생: " + e.getMessage());
+            e.printStackTrace();
+            return new BasicResponse("500", "회원가입 실패");
         }
-        users.add(new User(number, pw, name, major));
-        saveAllToFile();
-        return "200"; // 저장 성공
     }
 
     // 학번으로 사용자 조회
-    public User findByNumber(String number) {
+    public BasicResponse findByNumber(String number) {
         for (User user : users) {
             if (user.number.equals(number)) {
-                return user;
+                return new BasicResponse("200", user);
             }
         }
-        return null;
+        return new BasicResponse("404", "해당 학번의 사용자가 존재하지 않습니다.");
     }
 
     // 전체 사용자 목록 반환
-    public List<User> findAll() {
-        return new ArrayList<>(users); // 원본 보호용 복사본
+    public BasicResponse findAll() {
+        return new BasicResponse("200", new ArrayList<>(users));
     }
 
     // 학번으로 사용자 삭제
-    public String deleteByNumber(String number) {
+    public BasicResponse deleteByNumber(String number) {
         boolean removed = users.removeIf(u -> u.number.equals(number));
         saveAllToFile();
-        return removed ? "200" : "404";
+        return removed
+                ? new BasicResponse("200", "삭제 성공")
+                : new BasicResponse("404", "삭제할 사용자가 존재하지 않습니다.");
     }
 
     // 사용자 존재 여부 확인
-    public String existsByNumber(String number) {
-        return users.stream().anyMatch(u -> u.number.equals(number)) ? "200" : "404";
+    public BasicResponse existsByNumber(String number) {
+        return users.stream().anyMatch(u -> u.number.equals(number))
+                ? new BasicResponse("200", "존재함")
+                : new BasicResponse("404", "존재하지 않음");
     }
 }
