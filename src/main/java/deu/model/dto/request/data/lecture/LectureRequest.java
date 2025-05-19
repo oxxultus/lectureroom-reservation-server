@@ -1,6 +1,8 @@
 package deu.model.dto.request.data.lecture;
 
-public class LectureRequest {
+import java.io.Serializable;
+
+public class LectureRequest implements Serializable {
     public String building;
     public String floor;
     public String lectureroom;

@@ -2,12 +2,14 @@ package deu.controller;
 
 import deu.controller.business.*;
 import deu.model.dto.request.command.*;
+import deu.model.dto.request.data.lecture.LectureRequest;
 import deu.model.dto.request.data.user.*;
 import deu.model.dto.response.BasicResponse;
 
 public class SystemController {
     private final UserController userController = UserController.getInstance();
     private final UserManagementController userManagementController = UserManagementController.getInstance();
+    private final LectureController lectureController = LectureController.getInstance();
 
     public Object handle(Object request) {
         // 사용자 컨트롤러 이관 - 완료
@@ -52,10 +54,10 @@ public class SystemController {
                 default -> new BasicResponse("404", "알 수 없는 명령어");
             };
         }
-        // 강의 컨트롤러 이관
+        // 강의 컨트롤러 이관 - 완료
         else if (request instanceof LectureCommandRequest r) {
             return switch (r.command) {
-                case "주간 강의 조회" -> userController.handleLogin((LoginRequest) r.payload);
+                case "주간 강의 조회" -> lectureController.handleReturnLectureOfWeek((LectureRequest) r.payload);
                 default -> new BasicResponse("404", "알 수 없는 명령어");
             };
         }
