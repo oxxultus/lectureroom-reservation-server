@@ -2,7 +2,7 @@ package deu.model.entity;
 
 import java.io.Serializable;
 
-public class User{
+public class User implements Serializable{
     public String number;
     public String password;
     public String name;

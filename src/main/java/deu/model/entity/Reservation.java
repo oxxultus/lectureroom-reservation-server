@@ -1,8 +1,9 @@
 package deu.model.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Reservation {
+public class Reservation implements Serializable {
     private String userId;      // 예약한 사용자 ID
     private String classroom;   // 예약된 강의실
     private LocalDateTime startTime;  // 예약 시작 시간
