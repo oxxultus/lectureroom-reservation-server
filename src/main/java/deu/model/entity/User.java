@@ -1,6 +1,8 @@
 package deu.model.entity;
 
-public class User {
+import java.io.Serializable;
+
+public class User{
     public String number;
     public String password;
     public String name;

@@ -1,6 +1,8 @@
 package deu.model.dto.request.data.user;
 
-public class UserDataModificationRequest {
+import java.io.Serializable;
+
+public class UserDataModificationRequest implements Serializable {
     public String number;
     public String password;
     public String name;

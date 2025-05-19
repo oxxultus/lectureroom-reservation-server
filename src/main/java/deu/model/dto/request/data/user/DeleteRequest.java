@@ -1,6 +1,8 @@
 package deu.model.dto.request.data.user;
 
-public class DeleteRequest {
+import java.io.Serializable;
+
+public class DeleteRequest implements Serializable {
     public String number;
 
     public DeleteRequest(String number) {

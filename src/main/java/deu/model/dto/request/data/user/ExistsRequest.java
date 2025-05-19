@@ -1,6 +1,8 @@
 package deu.model.dto.request.data.user;
 
-public class ExistsRequest {
+import java.io.Serializable;
+
+public class ExistsRequest implements Serializable {
     public String number;
 
     public ExistsRequest(String number) {
