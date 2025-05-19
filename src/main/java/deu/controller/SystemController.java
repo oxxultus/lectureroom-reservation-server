@@ -10,7 +10,7 @@ public class SystemController {
     private final UserManagementController userManagementController = UserManagementController.getInstance();
 
     public Object handle(Object request) {
-        // 사용자 컨트롤러 이관
+        // 사용자 컨트롤러 이관 - 완료
         if (request instanceof UserCommandRequest r) {
             return switch (r.command) {
                 case "로그인" -> userController.handleLogin((LoginRequest) r.payload);
@@ -20,7 +20,7 @@ public class SystemController {
                 default -> new BasicResponse("404", "알 수 없는 명령어");
             };
         }
-        // 사용자 관리 컨트롤러 이관
+        // 사용자 관리 컨트롤러 이관 - 완료
         else if (request instanceof UserManagementCommandRequest r) {
             return switch (r.command) {
                 case "사용자 수정" -> userManagementController.handleUpdateUser((UserDataModificationRequest) r.payload);
@@ -55,7 +55,7 @@ public class SystemController {
         // 강의 컨트롤러 이관
         else if (request instanceof LectureCommandRequest r) {
             return switch (r.command) {
-                case "강의 조회" -> userController.handleLogin((LoginRequest) r.payload);
+                case "주간 강의 조회" -> userController.handleLogin((LoginRequest) r.payload);
                 default -> new BasicResponse("404", "알 수 없는 명령어");
             };
         }
