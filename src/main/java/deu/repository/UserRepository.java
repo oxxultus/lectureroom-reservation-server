@@ -170,4 +170,18 @@ public class UserRepository {
                 ? new BasicResponse("200", "존재함")
                 : new BasicResponse("404", "존재하지 않음");
     }
+
+    // 사용자 정보 수정
+    public BasicResponse update(String number, String pw, String name, String major) {
+        for (User user : users) {
+            if (user.number.equals(number)) {
+                user.password = pw;
+                user.name = name;
+                user.major = major;
+                saveAllToFile();
+                return new BasicResponse("200", "사용자 정보가 수정되었습니다.");
+            }
+        }
+        return new BasicResponse("404", "해당 학번의 사용자가 존재하지 않습니다.");
+    }
 }
