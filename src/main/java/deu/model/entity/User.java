@@ -1,10 +1,15 @@
 package deu.model.entity;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable{
     public String number;
     public String password;
     public String name;
     public String major;
+
+    public User() {
+    }
 
     public User(String number, String password, String name, String major) {
         this.number = number;

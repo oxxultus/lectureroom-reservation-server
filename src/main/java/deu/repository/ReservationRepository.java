@@ -1,6 +1,5 @@
 package deu.repository;
 
-import deu.model.entity.RoomReservation;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -15,7 +14,7 @@ public class ReservationRepository {
     private static final String FILE_PATH = "reservations.yaml";
     private static final ReservationRepository instance = new ReservationRepository();
 
-    private final List<RoomReservation> reservationList = new ArrayList<>();
+    private final List<Reservation> reservationList = new ArrayList<>();
     private final Yaml yaml;
 
     private ReservationRepository() {
@@ -28,7 +27,7 @@ public class ReservationRepository {
         representer.getPropertyUtils().setSkipMissingProperties(true);
 
         LoaderOptions loaderOptions = new LoaderOptions();
-        Constructor constructor = new Constructor(RoomReservation.class, loaderOptions);
+        Constructor constructor = new Constructor(Reservation.class, loaderOptions);
         this.yaml = new Yaml(constructor, representer, options);
 
         loadFromFile();
@@ -36,23 +35,23 @@ public class ReservationRepository {
 
     public static ReservationRepository getInstance() { return instance; }
 
-    public void save(RoomReservation reservation) {
+    public void save(Reservation reservation) {
         reservationList.add(reservation);
         saveToFile();
     }
 
-    public void delete(RoomReservation reservation) {
+    public void delete(Reservation reservation) {
         reservationList.remove(reservation);
         saveToFile();
     }
 
-    public List<RoomReservation> findAll() {
+    public List<Reservation> findAll() {
         return new ArrayList<>(reservationList);
     }
 
-    public List<RoomReservation> findByUser(String userId) {
-        List<RoomReservation> results = new ArrayList<>();
-        for (RoomReservation r : reservationList) {
+    public List<Reservation> findByUser(String userId) {
+        List<Reservation> results = new ArrayList<>();
+        for (Reservation r : reservationList) {
             if (r.getNumber().equals(userId)) { // 'number'를 userId로 사용
                 results.add(r);
             }
@@ -61,7 +60,7 @@ public class ReservationRepository {
     }
 
     public boolean isDuplicate(String date, String startTime, String lectureRoom) {
-        for (RoomReservation r : reservationList) {
+        for (Reservation r : reservationList) {
             if (r.getDate().equals(date)
                     && r.getStartTime().equals(startTime)
                     && r.getLectureRoom().equals(lectureRoom)) {
@@ -86,7 +85,7 @@ public class ReservationRepository {
         try (InputStream input = new FileInputStream(file)) {
             Iterable<Object> loadedObjects = yaml.loadAll(input);
             for (Object obj : loadedObjects) {
-                if (obj instanceof RoomReservation r) {
+                if (obj instanceof Reservation r) {
                     reservationList.add(r);
                 }
             }

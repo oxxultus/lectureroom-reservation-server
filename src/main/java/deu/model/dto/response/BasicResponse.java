@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 public class BasicResponse implements Serializable {
     public String code;
-    public String message;
+    public Object data;
 
-    public BasicResponse(String code, String message) {
+    public BasicResponse(String code, Object data) {
         this.code = code;
-        this.message = message;
+        this.data = data;
     }
     public String getCode() { return code; }
     public String getMessage() { return message; }

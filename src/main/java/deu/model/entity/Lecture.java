@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  *
  * @author oixikite
@@ -14,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Lecture {
+public class Lecture implements Serializable {
     private String id;
     private String title;
     private String lectureroom;
@@ -22,6 +24,7 @@ public class Lecture {
     private String floor;
     private String professor;
     private String day;  // 요일
+
     private String startTime;
     private String endTime;
 }

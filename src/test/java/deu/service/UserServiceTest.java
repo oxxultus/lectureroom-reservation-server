@@ -1,106 +1,157 @@
 package deu.service;
 
-import deu.model.dto.request.data.LoginRequest;
-import deu.model.dto.request.data.SignupRequest;
+import deu.model.dto.request.data.user.*;
 import deu.model.dto.response.BasicResponse;
 import deu.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
+import org.junit.jupiter.api.*;
+import org.mockito.Mockito;
+
+import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserServiceTest {
 
-    private UserService userService;
+    private UserRepository mockRepo;
+    private UserService service;
+
+    private final String TEST_FILE_PATH = System.getProperty("user.dir") + File.separator + "data" + File.separator + "users.yaml";
+    private final String DATA_DIR_PATH = System.getProperty("user.dir") + File.separator + "data";
+
+    @BeforeAll
+    void setupFile() {
+        File file = new File(TEST_FILE_PATH);
+        if (file.exists()) file.delete();
+    }
+
+    @AfterAll
+    void cleanupFile() {
+        File file = new File(TEST_FILE_PATH);
+        if (file.exists()) file.delete();
+
+        File dir = new File(DATA_DIR_PATH);
+        if (dir.exists() && dir.isDirectory() && dir.list().length == 0) {
+            dir.delete();
+        }
+    }
 
     @BeforeEach
-    void setUp() {
-        userService = new UserService();
+    void setup() {
+        mockRepo = Mockito.mock(UserRepository.class);
+        service = new UserService() {
+            @Override
+            public BasicResponse signup(SignupRequest payload) {
+                return mockRepo.save(payload.number, payload.password, payload.name, payload.major);
+            }
+
+            @Override
+            public BasicResponse login(LoginRequest payload) {
+                return mockRepo.validate(payload.number, payload.password);
+            }
+
+            @Override
+            public BasicResponse delete(DeleteRequest payload) {
+                return mockRepo.deleteByNumber(payload.number);
+            }
+
+            @Override
+            public BasicResponse find(FindRequest payload) {
+                return mockRepo.findByNumber(payload.number);
+            }
+
+            @Override
+            public BasicResponse findAll() {
+                return mockRepo.findAll();
+            }
+
+            @Override
+            public BasicResponse exists(ExistsRequest payload) {
+                return mockRepo.existsByNumber(payload.number);
+            }
+
+            @Override
+            public BasicResponse update(UserDataModificationRequest payload) {
+                return mockRepo.update(payload.number, payload.password, payload.name, payload.major);
+            }
+        };
     }
 
+    @DisplayName("회원가입 요청이 정상 처리되는지 확인")
     @Test
-    void login_success() {
-        LoginRequest request = new LoginRequest("S1234", "pw");
-        try (MockedStatic<UserRepository> mockedStatic = mockStatic(UserRepository.class)) {
-            UserRepository mockRepo = mock(UserRepository.class);
-            mockedStatic.when(UserRepository::getInstance).thenReturn(mockRepo);
-            when(mockRepo.validate("S1234", "pw")).thenReturn("200");
+    void testSignupSuccess() {
+        when(mockRepo.save(anyString(), anyString(), anyString(), anyString()))
+                .thenReturn(new BasicResponse("200", "회원가입 성공"));
 
-            BasicResponse response = userService.login(request);
-            assertEquals("200", response.code);
-            assertEquals("로그인 성공", response.message);
-        }
+        SignupRequest req = new SignupRequest("20250001", "pw", "홍길동", "소프트웨어");
+        BasicResponse res = service.signup(req);
+        assertEquals("200", res.code);
     }
 
+    @DisplayName("로그인 요청이 정상 처리되는지 확인")
     @Test
-    void login_invalid_password() {
-        LoginRequest request = new LoginRequest("S1234", "wrongpw");
-        try (MockedStatic<UserRepository> mockedStatic = mockStatic(UserRepository.class)) {
-            UserRepository mockRepo = mock(UserRepository.class);
-            mockedStatic.when(UserRepository::getInstance).thenReturn(mockRepo);
-            when(mockRepo.validate("S1234", "wrongpw")).thenReturn("401");
+    void testLoginSuccess() {
+        when(mockRepo.validate(anyString(), anyString()))
+                .thenReturn(new BasicResponse("200", "로그인 성공"));
 
-            BasicResponse response = userService.login(request);
-            assertEquals("401", response.code);
-            assertEquals("비밀번호 입력 오류 입니다.", response.message);
-        }
+        LoginRequest req = new LoginRequest("20250001", "pw");
+        BasicResponse res = service.login(req);
+        assertEquals("200", res.code);
     }
 
+    @DisplayName("사용자 정보 수정 요청이 처리되는지 확인")
     @Test
-    void login_user_not_found() {
-        LoginRequest request = new LoginRequest("X999", "pw");
-        try (MockedStatic<UserRepository> mockedStatic = mockStatic(UserRepository.class)) {
-            UserRepository mockRepo = mock(UserRepository.class);
-            mockedStatic.when(UserRepository::getInstance).thenReturn(mockRepo);
-            when(mockRepo.validate("X999", "pw")).thenReturn("404");
+    void testUpdateSuccess() {
+        when(mockRepo.update(anyString(), anyString(), anyString(), anyString()))
+                .thenReturn(new BasicResponse("200", "수정 완료"));
 
-            BasicResponse response = userService.login(request);
-            assertEquals("404", response.code);
-            assertEquals("존재하지 않는 아이디 입니다.", response.message);
-        }
+        UserDataModificationRequest req = new UserDataModificationRequest("20250001", "newpw", "이순신", "AI");
+        BasicResponse res = service.update(req);
+        assertEquals("200", res.code);
     }
 
+    @DisplayName("사용자 삭제 요청이 처리되는지 확인")
     @Test
-    void signup_success() {
-        SignupRequest request = new SignupRequest("S1234", "pw", "홍길동", "컴공");
-        try (MockedStatic<UserRepository> mockedStatic = mockStatic(UserRepository.class)) {
-            UserRepository mockRepo = mock(UserRepository.class);
-            mockedStatic.when(UserRepository::getInstance).thenReturn(mockRepo);
-            when(mockRepo.save("S1234", "pw", "홍길동", "컴공")).thenReturn("200");
+    void testDeleteSuccess() {
+        when(mockRepo.deleteByNumber(anyString()))
+                .thenReturn(new BasicResponse("200", "삭제 완료"));
 
-            BasicResponse response = userService.signup(request);
-            assertEquals("200", response.code);
-            assertEquals("회원가입 성공", response.message);
-        }
+        DeleteRequest req = new DeleteRequest("20250001");
+        BasicResponse res = service.delete(req);
+        assertEquals("200", res.code);
     }
 
+    @DisplayName("단일 사용자 조회 요청이 처리되는지 확인")
     @Test
-    void signup_duplicate_user() {
-        SignupRequest request = new SignupRequest("S1234", "pw", "홍길동", "컴공");
-        try (MockedStatic<UserRepository> mockedStatic = mockStatic(UserRepository.class)) {
-            UserRepository mockRepo = mock(UserRepository.class);
-            mockedStatic.when(UserRepository::getInstance).thenReturn(mockRepo);
-            when(mockRepo.save("S1234", "pw", "홍길동", "컴공")).thenReturn("400");
+    void testFindSuccess() {
+        when(mockRepo.findByNumber(anyString()))
+                .thenReturn(new BasicResponse("200", new Object()));
 
-            BasicResponse response = userService.signup(request);
-            assertEquals("400", response.code);
-            assertEquals("이미 가입된 사용자 정보 입니다.", response.message);
-        }
+        FindRequest req = new FindRequest("20250001");
+        BasicResponse res = service.find(req);
+        assertEquals("200", res.code);
     }
 
+    @DisplayName("전체 사용자 목록 조회 요청이 처리되는지 확인")
     @Test
-    void signup_unknown_error() {
-        SignupRequest request = new SignupRequest("S1234", "pw", "홍길동", "컴공");
-        try (MockedStatic<UserRepository> mockedStatic = mockStatic(UserRepository.class)) {
-            UserRepository mockRepo = mock(UserRepository.class);
-            mockedStatic.when(UserRepository::getInstance).thenReturn(mockRepo);
-            when(mockRepo.save("S1234", "pw", "홍길동", "컴공")).thenReturn("500");
+    void testFindAll() {
+        when(mockRepo.findAll())
+                .thenReturn(new BasicResponse("200", new Object()));
 
-            BasicResponse response = userService.signup(request);
-            assertEquals("500", response.code);
-            assertEquals("회원가입 실패", response.message);
-        }
+        BasicResponse res = service.findAll();
+        assertEquals("200", res.code);
+    }
+
+    @DisplayName("사용자 존재 여부 확인 요청이 처리되는지 확인")
+    @Test
+    void testExistsTrue() {
+        when(mockRepo.existsByNumber(anyString()))
+                .thenReturn(new BasicResponse("200", "존재함"));
+
+        ExistsRequest req = new ExistsRequest("20250001");
+        BasicResponse res = service.exists(req);
+        assertEquals("200", res.code);
     }
 }

@@ -1,4 +1,4 @@
-package deu.controller;
+package deu.controller.business;
 
 import deu.model.entity.RoomReservation;
 import deu.model.dto.response.BasicResponse;
