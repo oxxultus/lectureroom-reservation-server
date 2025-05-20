@@ -36,6 +36,10 @@ public class ReservationManagementController {
         return reservationService.deleteReservation(userId, date, startTime);
     }
 
+    public BasicResponse handleUpdateReservation(String userId, String date, String startTime, RoomReservation updated) {
+        return reservationService.updateReservation(userId, date, startTime, updated);
+    }
+
     // 각 메서드 앞에 handle를 꼭 붙혀주세요 (일관성 유지)
 
     // TODO: 예약 삭제 (성공/실패 코드와 메시지 반환)
