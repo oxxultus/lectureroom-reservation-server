@@ -1,8 +1,11 @@
 package deu.controller;
 
-import deu.model.entity.Reservation;
+import deu.model.entity.RoomReservation;
 import deu.model.dto.response.BasicResponse;
 import deu.service.ReservationService;
+
+import java.util.List;
+
 
 // 예약 컨트롤러
 public class ReservationController {
@@ -15,8 +18,20 @@ public class ReservationController {
         return instance;
     }
 
-    public BasicResponse handleCreateReservation(Reservation reservation) {
+    public BasicResponse handleCreateReservation(RoomReservation reservation) {
         return reservationService.createReservation(reservation);
+    }
+
+    public List<RoomReservation> handleGetUpcomingReservationsByUser(String userId) {
+        return reservationService.getUpcomingReservationsByUser(userId);
+    }
+
+    public List<RoomReservation> handleGetUpcomingAllReservations() {
+        return reservationService.getUpcomingAllReservations();
+    }
+
+    public BasicResponse handleDeleteReservation(String userId, String date, String startTime) {
+        return reservationService.deleteReservation(userId, date, startTime);
     }
 
     // 각 메서드 앞에 handle를 꼭 붙혀주세요 (알관성 유지)
