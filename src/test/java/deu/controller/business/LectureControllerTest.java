@@ -3,25 +3,26 @@ package deu.controller.business;
 import deu.model.dto.request.data.lecture.LectureRequest;
 import deu.model.dto.response.BasicResponse;
 import deu.model.entity.Lecture;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class LectureControllerTest {
 
+    @DisplayName("강의실 주간 일정 반환 테스트")
     @Test
     void testHandleReturnLectureOfWeek() {
-        // given: 요청 파라미터
+
         String building = "정보공학관";
         String floor = "9";
         String room = "912";
         LectureRequest request = new LectureRequest(building, floor, room);
 
-        // when: 컨트롤러 호출
+
         LectureController controller = LectureController.getInstance();
         Object result = controller.handleReturnLectureOfWeek(request);
 
-        // then: 결과 검증
         assertNotNull(result, "결과가 null이 아니어야 합니다.");
         assertTrue(result instanceof BasicResponse, "결과는 BasicResponse 타입이어야 합니다.");
 

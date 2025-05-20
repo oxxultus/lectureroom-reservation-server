@@ -17,7 +17,7 @@ public class UserRepositoryTest {
     private final String TEST_ID = "test001";
     private final String TEST_PASSWORD = "pw123";
     private final String TEST_NAME = "테스트 유저";
-    private final String TEST_MAJOR = "소프트웨어학과";
+    private final String TEST_MAJOR = "소프트웨어공학과";
 
     private final String DATA_DIR_PATH = System.getProperty("user.dir") + File.separator + "data";
     private final String TEST_FILE_PATH = DATA_DIR_PATH + File.separator + "users.yaml";
@@ -45,6 +45,7 @@ public class UserRepositoryTest {
         repo.deleteByNumber(TEST_ID);
     }
 
+    @DisplayName("사용자 저장 동작 검증")
     @Test
     @Order(1)
     void testSaveUser() {
@@ -52,6 +53,7 @@ public class UserRepositoryTest {
         assertEquals("200", res.code);
     }
 
+    @DisplayName("중복 사용자 저장 시 400 반환 확인")
     @Test
     @Order(2)
     void testDuplicateUserSave() {
@@ -60,6 +62,7 @@ public class UserRepositoryTest {
         assertEquals("400", res.code);
     }
 
+    @DisplayName("올바른 사용자 정보로 로그인 검증")
     @Test
     @Order(3)
     void testValidateSuccess() {
@@ -68,6 +71,7 @@ public class UserRepositoryTest {
         assertEquals("200", res.code);
     }
 
+    @DisplayName("비밀번호가 틀린 경우 로그인 실패 검증")
     @Test
     @Order(4)
     void testValidateWrongPassword() {
@@ -76,6 +80,7 @@ public class UserRepositoryTest {
         assertEquals("401", res.code);
     }
 
+    @DisplayName("존재하지 않는 사용자 로그인 실패 검증")
     @Test
     @Order(5)
     void testValidateNonexistentUser() {
@@ -83,6 +88,7 @@ public class UserRepositoryTest {
         assertEquals("400", res.code);
     }
 
+    @DisplayName("사용자 번호로 조회 성공 여부 확인")
     @Test
     @Order(6)
     void testFindByNumberSuccess() {
@@ -92,6 +98,7 @@ public class UserRepositoryTest {
         assertTrue(res.data instanceof User);
     }
 
+    @DisplayName("존재하지 않는 사용자 조회 시 404 반환 확인")
     @Test
     @Order(7)
     void testFindByNumberFail() {
@@ -99,6 +106,7 @@ public class UserRepositoryTest {
         assertEquals("404", res.code);
     }
 
+    @DisplayName("사용자 정보 업데이트 동작 검증")
     @Test
     @Order(8)
     void testUpdateUser() {
@@ -107,6 +115,7 @@ public class UserRepositoryTest {
         assertEquals("200", res.code);
     }
 
+    @DisplayName("존재하지 않는 사용자 업데이트 실패 검증")
     @Test
     @Order(9)
     void testUpdateNonexistentUser() {
@@ -114,6 +123,7 @@ public class UserRepositoryTest {
         assertEquals("404", res.code);
     }
 
+    @DisplayName("사용자 삭제 동작 검증")
     @Test
     @Order(10)
     void testDeleteUser() {
@@ -122,6 +132,7 @@ public class UserRepositoryTest {
         assertEquals("200", res.code);
     }
 
+    @DisplayName("존재하지 않는 사용자 삭제 시 404 반환 확인")
     @Test
     @Order(11)
     void testDeleteNonexistentUser() {
@@ -129,6 +140,7 @@ public class UserRepositoryTest {
         assertEquals("404", res.code);
     }
 
+    @DisplayName("전체 사용자 목록 조회 동작 확인")
     @Test
     @Order(12)
     void testFindAll() {
@@ -138,6 +150,7 @@ public class UserRepositoryTest {
         assertTrue(res.data instanceof List);
     }
 
+    @DisplayName("존재하는 사용자에 대해 existsByNumber 확인")
     @Test
     @Order(13)
     void testExistsByNumberTrue() {
@@ -146,6 +159,7 @@ public class UserRepositoryTest {
         assertEquals("200", res.code);
     }
 
+    @DisplayName("존재하지 않는 사용자에 대해 existsByNumber 실패 확인")
     @Test
     @Order(14)
     void testExistsByNumberFalse() {

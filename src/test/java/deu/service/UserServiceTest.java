@@ -79,6 +79,7 @@ public class UserServiceTest {
         };
     }
 
+    @DisplayName("회원가입 요청이 정상 처리되는지 확인")
     @Test
     void testSignupSuccess() {
         when(mockRepo.save(anyString(), anyString(), anyString(), anyString()))
@@ -89,6 +90,7 @@ public class UserServiceTest {
         assertEquals("200", res.code);
     }
 
+    @DisplayName("로그인 요청이 정상 처리되는지 확인")
     @Test
     void testLoginSuccess() {
         when(mockRepo.validate(anyString(), anyString()))
@@ -99,6 +101,7 @@ public class UserServiceTest {
         assertEquals("200", res.code);
     }
 
+    @DisplayName("사용자 정보 수정 요청이 처리되는지 확인")
     @Test
     void testUpdateSuccess() {
         when(mockRepo.update(anyString(), anyString(), anyString(), anyString()))
@@ -109,6 +112,7 @@ public class UserServiceTest {
         assertEquals("200", res.code);
     }
 
+    @DisplayName("사용자 삭제 요청이 처리되는지 확인")
     @Test
     void testDeleteSuccess() {
         when(mockRepo.deleteByNumber(anyString()))
@@ -119,6 +123,7 @@ public class UserServiceTest {
         assertEquals("200", res.code);
     }
 
+    @DisplayName("단일 사용자 조회 요청이 처리되는지 확인")
     @Test
     void testFindSuccess() {
         when(mockRepo.findByNumber(anyString()))
@@ -129,6 +134,7 @@ public class UserServiceTest {
         assertEquals("200", res.code);
     }
 
+    @DisplayName("전체 사용자 목록 조회 요청이 처리되는지 확인")
     @Test
     void testFindAll() {
         when(mockRepo.findAll())
@@ -138,6 +144,7 @@ public class UserServiceTest {
         assertEquals("200", res.code);
     }
 
+    @DisplayName("사용자 존재 여부 확인 요청이 처리되는지 확인")
     @Test
     void testExistsTrue() {
         when(mockRepo.existsByNumber(anyString()))

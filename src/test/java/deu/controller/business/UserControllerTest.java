@@ -9,6 +9,7 @@ import deu.model.dto.response.BasicResponse;
 import deu.model.dto.response.CurrentResponse;
 import deu.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
 
@@ -21,10 +22,8 @@ public class UserControllerTest {
     void setup() {
         controller = UserController.getInstance();
 
-        // UserService mocking
         mockUserService = mock(UserService.class);
 
-        // UserService를 교체할 수 있도록 리플렉션 사용
         try {
             var field = UserController.class.getDeclaredField("userService");
             field.setAccessible(true);
@@ -39,6 +38,7 @@ public class UserControllerTest {
         }
     }
 
+    @DisplayName("로그인 성공 시 사용자 번호를 목록에 추가한다")
     @Test
     void login_success_adds_user_number() {
         LoginRequest request = new LoginRequest("S1234", "pw");
@@ -49,6 +49,7 @@ public class UserControllerTest {
         assertEquals("200", ((BasicResponse) response).code);
     }
 
+    @DisplayName("중복 로그인 시도 시 400 응답을 반환한다")
     @Test
     void login_fail_duplicate_user() {
         LoginRequest request = new LoginRequest("S1234", "pw");
@@ -61,6 +62,7 @@ public class UserControllerTest {
         assertEquals("400", ((BasicResponse) response).code);
     }
 
+    @DisplayName("동시 로그인 사용자 수가 3명을 초과하면 403을 반환한다")
     @Test
     void login_fail_max_user_limit() {
         when(mockUserService.login(any())).thenReturn(new BasicResponse("200", "로그인 성공"));
@@ -75,6 +77,7 @@ public class UserControllerTest {
         assertEquals("403", ((BasicResponse) response).code);
     }
 
+    @DisplayName("로그아웃 성공 시 사용자 번호를 목록에서 제거한다")
     @Test
     void logout_success_removes_user_number() {
         LoginRequest login = new LoginRequest("S1234", "pw");
@@ -87,6 +90,7 @@ public class UserControllerTest {
         assertEquals("200", ((BasicResponse) response).code);
     }
 
+    @DisplayName("로그인되어 있지 않은 사용자가 로그아웃 시도 시 실패한다")
     @Test
     void logout_fail_if_not_logged_in() {
         Object response = controller.handleLogout(new LogoutRequest("X999", "pw"));
@@ -95,6 +99,7 @@ public class UserControllerTest {
         assertEquals("400", ((BasicResponse) response).code);
     }
 
+    @DisplayName("회원가입 요청을 UserService로 위임한다")
     @Test
     void signup_delegates_to_userService() {
         SignupRequest signup = new SignupRequest("S1234", "pw", "홍길동", "컴공");
@@ -105,6 +110,7 @@ public class UserControllerTest {
         assertEquals(mockResponse, response);
     }
 
+    @DisplayName("현재 로그인된 사용자 수를 정확히 반환한다")
     @Test
     void current_user_count_returns_correct_number() {
         when(mockUserService.login(any())).thenReturn(new BasicResponse("200", "로그인 성공"));

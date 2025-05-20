@@ -28,6 +28,7 @@ class LectureRepositoryTest {
         repo.deleteById(TEST_ID_3);
     }
 
+    @DisplayName("강의 저장 시 파일이 생성되는지 확인")
     @Test
     @Order(1)
     void test1_saveLecture_createsFile() {
@@ -37,6 +38,7 @@ class LectureRepositoryTest {
         assertTrue(file.exists(), "파일이 생성되어 있어야 합니다.");
     }
 
+    @DisplayName("ID로 강의 조회 시 정확한 데이터가 반환되는지 확인")
     @Test
     @Order(2)
     void test2_findLectureById_returnsCorrectData() {
@@ -47,6 +49,7 @@ class LectureRepositoryTest {
         assertEquals("김교수", result.get().getProfessor());
     }
 
+    @DisplayName("ID 존재 여부 확인 시 200 반환 여부 확인")
     @Test
     @Order(3)
     void test3_existsById_returns200() {
@@ -55,6 +58,7 @@ class LectureRepositoryTest {
         assertEquals("200", result);
     }
 
+    @DisplayName("findAll 결과에 저장된 강의가 포함되는지 확인")
     @Test
     @Order(4)
     void test4_findAll_containsLecture() {
@@ -63,6 +67,7 @@ class LectureRepositoryTest {
         assertTrue(all.stream().anyMatch(l -> l.getId().equals(TEST_ID_1)));
     }
 
+    @DisplayName("ID로 강의 삭제 시 목록에서 제거되는지 확인")
     @Test
     @Order(5)
     void test5_deleteById_removesLecture() {
@@ -72,6 +77,7 @@ class LectureRepositoryTest {
         assertFalse(repo.findById(TEST_ID_1).isPresent(), "삭제 후 해당 ID는 존재하지 않아야 함");
     }
 
+    @DisplayName("여러 개의 강의 저장 후 모두 저장되었는지 확인")
     @Test
     @Order(6)
     void test6_saveMultipleLectures_allSaved() {
