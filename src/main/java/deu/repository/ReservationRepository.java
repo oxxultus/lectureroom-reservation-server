@@ -1,58 +1,62 @@
 package deu.repository;
 
+import deu.model.entity.RoomReservation;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
-import org.yaml.snakeyaml.LoaderOptions;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReservationRepository {
-    private static final String FILE_PATH = "reservations.yaml";
+
+    private static final String FILE_PATH = System.getProperty("user.dir") + File.separator + "data" + File.separator + "reservations.yaml";
     private static final ReservationRepository instance = new ReservationRepository();
 
-    private final List<Reservation> reservationList = new ArrayList<>();
+    private final List<RoomReservation> roomReservationList = new ArrayList<>();
     private final Yaml yaml;
 
+    // Wrapper 클래스
+    public static class RoomReservationWrapper {
+        public List<RoomReservation> reservations = new ArrayList<>();
+    }
+
     private ReservationRepository() {
-        // YAML 설정
         DumperOptions options = new DumperOptions();
         options.setPrettyFlow(true);
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 
         Representer representer = new Representer(options);
         representer.getPropertyUtils().setSkipMissingProperties(true);
+        representer.addClassTag(RoomReservationWrapper.class, Tag.MAP);
+        representer.addClassTag(RoomReservation.class, Tag.MAP);
 
-        LoaderOptions loaderOptions = new LoaderOptions();
-        Constructor constructor = new Constructor(Reservation.class, loaderOptions);
-        this.yaml = new Yaml(constructor, representer, options);
-
+        this.yaml = new Yaml(representer, options);
         loadFromFile();
     }
 
     public static ReservationRepository getInstance() { return instance; }
 
-    public void save(Reservation reservation) {
-        reservationList.add(reservation);
+    public void save(RoomReservation reservation) {
+        roomReservationList.add(reservation);
         saveToFile();
     }
 
-    public void delete(Reservation reservation) {
-        reservationList.remove(reservation);
+    public void delete(RoomReservation reservation) {
+        roomReservationList.remove(reservation);
         saveToFile();
     }
 
-    public List<Reservation> findAll() {
-        return new ArrayList<>(reservationList);
+    public List<RoomReservation> findAll() {
+        return new ArrayList<>(roomReservationList);
     }
 
-    public List<Reservation> findByUser(String userId) {
-        List<Reservation> results = new ArrayList<>();
-        for (Reservation r : reservationList) {
-            if (r.getNumber().equals(userId)) { // 'number'를 userId로 사용
+    public List<RoomReservation> findByUser(String userId) {
+        List<RoomReservation> results = new ArrayList<>();
+        for (RoomReservation r : roomReservationList) {
+            if (r.getNumber().equals(userId)) {
                 results.add(r);
             }
         }
@@ -60,7 +64,7 @@ public class ReservationRepository {
     }
 
     public boolean isDuplicate(String date, String startTime, String lectureRoom) {
-        for (Reservation r : reservationList) {
+        for (RoomReservation r : roomReservationList) {
             if (r.getDate().equals(date)
                     && r.getStartTime().equals(startTime)
                     && r.getLectureRoom().equals(lectureRoom)) {
@@ -72,7 +76,9 @@ public class ReservationRepository {
 
     public void saveToFile() {
         try (Writer writer = new FileWriter(FILE_PATH)) {
-            yaml.dumpAll(reservationList.iterator(), writer);
+            RoomReservationWrapper wrapper = new RoomReservationWrapper();
+            wrapper.reservations = roomReservationList;
+            yaml.dump(wrapper, writer);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,11 +89,10 @@ public class ReservationRepository {
         if (!file.exists()) return;
 
         try (InputStream input = new FileInputStream(file)) {
-            Iterable<Object> loadedObjects = yaml.loadAll(input);
-            for (Object obj : loadedObjects) {
-                if (obj instanceof Reservation r) {
-                    reservationList.add(r);
-                }
+            RoomReservationWrapper wrapper = yaml.loadAs(input, RoomReservationWrapper.class);
+            if (wrapper != null && wrapper.reservations != null) {
+                roomReservationList.clear();
+                roomReservationList.addAll(wrapper.reservations);
             }
         } catch (IOException e) {
             e.printStackTrace();
