@@ -252,7 +252,7 @@ lectures:
     startTime: "11:00"
     endTime: "12:50"
 
-#913호 강의실
+  #913호 강의실
   - id: 502695-001
     title: 운영체제
     lectureroom: 913
@@ -745,4 +745,4 @@ lectures:
     professor: 이유태
     day: FRIDAY
     startTime: "14:00"
-    endTime: "16:50"   
+    endTime: "16:50"

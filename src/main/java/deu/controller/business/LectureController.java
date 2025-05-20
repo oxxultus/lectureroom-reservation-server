@@ -23,7 +23,7 @@ public class LectureController {
         BasicResponse result = lectureService.returnLectureOfWeek(payload);
 
         // 콘솔에 결과 데이터 출력
-        System.out.println("[LectureController] 반환된 데이터: " + Arrays.deepToString((Lecture[][]) result.data));
+        // System.out.println("[LectureController] 반환된 데이터: " + Arrays.deepToString((Lecture[][]) result.data));
 
         return result;
     }
