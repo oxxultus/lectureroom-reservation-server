@@ -9,6 +9,7 @@ import deu.model.dto.request.data.user.SignupRequest;
 import deu.model.dto.request.command.UserCommandRequest;
 import deu.model.dto.response.BasicResponse;
 import deu.model.dto.response.CurrentResponse;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
@@ -17,6 +18,7 @@ import static org.mockito.Mockito.*;
 public class SystemControllerTest {
 
     @Test
+    @DisplayName("로그인 명령 처리: handleLogin 호출 확인")
     void handle_login_command_should_call_handleLogin() {
         try (MockedStatic<UserController> mockedStatic = mockStatic(UserController.class)) {
             UserController mockUserController = mock(UserController.class);
@@ -35,6 +37,7 @@ public class SystemControllerTest {
     }
 
     @Test
+    @DisplayName("회원가입 명령 처리: handleSignup 호출 확인")
     void handle_signup_command_should_call_handleSignup() {
         try (MockedStatic<UserController> mockedStatic = mockStatic(UserController.class)) {
             UserController mockUserController = mock(UserController.class);
@@ -53,6 +56,7 @@ public class SystemControllerTest {
     }
 
     @Test
+    @DisplayName("로그아웃 명령 처리: handleLogout 호출 확인")
     void handle_logout_command_should_call_handleLogout() {
         try (MockedStatic<UserController> mockedStatic = mockStatic(UserController.class)) {
             UserController mockUserController = mock(UserController.class);
@@ -71,6 +75,7 @@ public class SystemControllerTest {
     }
 
     @Test
+    @DisplayName("동시접속자 수 요청 처리: handleCurrentUser 호출 확인")
     void handle_current_user_command_should_call_handleCurrentUser() {
         try (MockedStatic<UserController> mockedStatic = mockStatic(UserController.class)) {
             UserController mockUserController = mock(UserController.class);
@@ -88,6 +93,7 @@ public class SystemControllerTest {
     }
 
     @Test
+    @DisplayName("알 수 없는 명령 처리: 404 반환")
     void handle_unknown_command_should_return_404() {
         SystemController controller = new SystemController();
         Object response = controller.handle(new UserCommandRequest("삭제", null));
@@ -97,6 +103,7 @@ public class SystemControllerTest {
     }
 
     @Test
+    @DisplayName("잘못된 타입 처리: 405 반환")
     void handle_invalid_type_should_return_405() {
         SystemController controller = new SystemController();
         Object response = controller.handle("이건 명령이 아님");
