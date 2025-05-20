@@ -1,5 +1,6 @@
 package deu.controller.business;
 
+import deu.model.dto.request.data.user.FindUserNameRequest;
 import deu.model.dto.response.BasicResponse;
 import deu.model.dto.request.data.user.LoginRequest;
 import deu.model.dto.request.data.user.LogoutRequest;
@@ -60,5 +61,10 @@ public class UserController {
     // 동시접속자 수 컨트롤러
     public CurrentResponse handleCurrentUser(){
         return new CurrentResponse(userNumbers.size());
+    }
+
+    // 사용자 이름 반환 컨트롤러
+    public Object handleFindUserName(FindUserNameRequest payload) {
+        return userService.findUserName(payload);
     }
 }

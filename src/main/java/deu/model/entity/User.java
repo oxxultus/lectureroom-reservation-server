@@ -1,7 +1,10 @@
 package deu.model.entity;
 
+import lombok.Getter;
+
 import java.io.Serializable;
 
+@Getter
 public class User implements Serializable{
     public String number;
     public String password;

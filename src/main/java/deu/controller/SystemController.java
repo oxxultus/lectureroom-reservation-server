@@ -19,6 +19,7 @@ public class SystemController {
                 case "회원가입" -> userController.handleSignup((SignupRequest) r.payload);
                 case "로그아웃" -> userController.handleLogout((LogoutRequest) r.payload);
                 case "동시접속자" -> userController.handleCurrentUser();
+                case "사용자 이름 반환" -> userController.handleFindUserName((FindUserNameRequest) r.payload);
                 default -> new BasicResponse("404", "알 수 없는 명령어");
             };
         }
