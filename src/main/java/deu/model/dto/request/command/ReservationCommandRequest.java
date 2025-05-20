@@ -2,6 +2,7 @@ package deu.model.dto.request.command;
 
 import java.io.Serializable;
 
+
 /**
  * [ReservationCommandRequest 클래스]
  * <p>

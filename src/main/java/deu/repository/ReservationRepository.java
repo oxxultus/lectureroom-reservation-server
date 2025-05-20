@@ -102,9 +102,24 @@ public class ReservationRepository {
             e.printStackTrace(); // 파일 읽기 오류 출력
         }
     }
+    public boolean delete(String userId, LocalDateTime startTime) {
+        boolean removed = reservationList.removeIf(r ->
+                r.getUserId().equals(userId) && r.getStartTime().equals(startTime)
+        );
+        if (removed) saveToFile();
+        return removed;
+    }
 
+    public boolean update(String userId, LocalDateTime originalStartTime, Reservation updated) {
+        boolean deleted = delete(userId, originalStartTime);
+        if (deleted) {
+            save(updated);
+            return true;
+        }
+        return false;
+    }
     // 현재 메모리의 예약 목록을 YAML 파일로 저장
-    private void saveToFile() {
+    public void saveToFile() {
         try (Writer writer = new FileWriter(FILE_PATH)) {
             yaml.dumpAll(reservationList.iterator(), writer); // 모든 예약을 YAML 형식으로 저장
         } catch (IOException e) {
