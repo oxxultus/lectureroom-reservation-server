@@ -21,7 +21,7 @@ public class UserController {
         return instance;
     }
 
-    private final UserService userService = new UserService();
+    private final UserService userService = UserService.getInstance();
     private final List<String> userNumbers = new ArrayList<>(); // 로그인 사용자 고유번호 저장용
 
     // synchronized 는 이 메서드에 동시에 들어오지 못함: 첫 번째 스레드가 들어오면 락(lock)을 잡고, 다른 스레드들은 락이 풀릴 때까지 대기

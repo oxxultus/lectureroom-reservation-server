@@ -6,6 +6,16 @@ import deu.model.entity.User;
 import deu.repository.UserRepository;
 
 public class UserService {
+
+    // Singleton 인스턴스
+    private static final UserService instance = new UserService();
+
+    private UserService() {}
+
+    public static UserService getInstance() {
+        return instance;
+    }
+
     // 사용자 로그인
     public BasicResponse login(LoginRequest payload) {
         return UserRepository.getInstance().validate(payload.number, payload.password);
