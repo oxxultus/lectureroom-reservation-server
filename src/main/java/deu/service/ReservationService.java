@@ -96,39 +96,38 @@ public class ReservationService {
         return new BasicResponse("200", "예약이 삭제되었습니다.");
     }
 
-    // 예약 수정
-    public BasicResponse updateReservation(String userId, String date, String startTime, RoomReservation updated) {
-        List<RoomReservation> reservations = ReservationRepository.getInstance().findByUser(userId);
-
-        for (RoomReservation r : reservations) {
-            if (r.getDate().equals(date) && r.getStartTime().equals(startTime)) {
-                r.setLectureRoom(updated.getLectureRoom());
-                r.setEndTime(updated.getEndTime());
-                r.setStatus(updated.getStatus());
-                r.setBuildingName(updated.getBuildingName());
-                r.setFloor(updated.getFloor());
-                r.setDayOfTheWeek(updated.getDayOfTheWeek());
-                r.setNumber(updated.getNumber());
-
-                ReservationRepository.getInstance().saveToFile();
-                return new BasicResponse("200", "예약이 수정되었습니다.");
-            }
+    // 예약 수정 - RoomReservation 객체 전달 (id 포함)
+    public BasicResponse updateReservation(RoomReservation updated) {
+        RoomReservation original = ReservationRepository.getInstance().findById(updated.getId());
+        if (original == null) {
+            return new BasicResponse("404", "예약을 찾을 수 없습니다.");
         }
 
-        return new BasicResponse("404", "예약을 찾을 수 없습니다.");
+        original.setLectureRoom(updated.getLectureRoom());
+        original.setEndTime(updated.getEndTime());
+        original.setStatus(updated.getStatus());
+        original.setBuildingName(updated.getBuildingName());
+        original.setFloor(updated.getFloor());
+        original.setDayOfTheWeek(updated.getDayOfTheWeek());
+        original.setNumber(updated.getNumber());
+        original.setDate(updated.getDate());
+        original.setStartTime(updated.getStartTime());
+
+        ReservationRepository.getInstance().saveToFile();
+        return new BasicResponse("200", "예약이 수정되었습니다.");
     }
 
-    // 예약 상태 변경
-    public BasicResponse updateReservationStatus(String userId, String date, String startTime, String newStatus) {
-        List<RoomReservation> reservations = ReservationRepository.getInstance().findByUser(userId);
-
-        for (RoomReservation r : reservations) {
-            if (r.getDate().equals(date) && r.getStartTime().equals(startTime)) {
-                r.setStatus(newStatus);
-                ReservationRepository.getInstance().saveToFile();
-                return new BasicResponse("200", "예약 상태가 변경되었습니다.");
-            }
+    // 예약 상태 변경 - 관리자
+    public BasicResponse updateReservationStatus(String reservationId, String newStatus) {
+        RoomReservation target = ReservationRepository.getInstance().findById(reservationId);
+        if (target == null) {
+            return new BasicResponse("404", "예약을 찾을 수 없습니다.");
         }
+
+        target.setStatus(newStatus);
+        ReservationRepository.getInstance().saveToFile();
+        return new BasicResponse("200", "상태가 변경되었습니다.");
+    }
 
         return new BasicResponse("404", "예약을 찾을 수 없습니다.");
     }
