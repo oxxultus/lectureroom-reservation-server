@@ -11,6 +11,15 @@ import java.util.List;
 
 public class ReservationService {
 
+    // 싱글톤 인스턴스
+    private static final ReservationService instance = new ReservationService();
+
+    public ReservationService() {}
+
+    public static ReservationService getInstance() {
+        return instance;
+    }
+
     // 예약 생성
     public BasicResponse createReservation(RoomReservation reservation) {
         boolean isDup = ReservationRepository.getInstance().isDuplicate(
@@ -165,4 +174,14 @@ public class ReservationService {
 
         return schedule;
     }
+    public BasicResponse updateReservation(RoomReservation updated) {
+        return updateReservation(
+                updated.getNumber(),
+                updated.getDate(),
+                updated.getStartTime(),
+                updated
+        );
+    }
+
+
 }
