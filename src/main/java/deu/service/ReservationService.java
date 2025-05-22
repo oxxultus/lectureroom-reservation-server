@@ -36,12 +36,12 @@ public class ReservationService {
         return new BasicResponse("200", "예약이 완료되었습니다.");
     }
 
-    // 전체 예약 반환
+    // 전체 예약 조회
     public List<RoomReservation> getAllReservations() {
         return ReservationRepository.getInstance().findAll();
     }
 
-    // 사용자별 예약 반환
+    // 사용자별 예약 조회
     public List<RoomReservation> getReservationsByUser(String userId) {
         return ReservationRepository.getInstance().findByUser(userId);
     }
@@ -129,10 +129,7 @@ public class ReservationService {
         return new BasicResponse("200", "상태가 변경되었습니다.");
     }
 
-        return new BasicResponse("404", "예약을 찾을 수 없습니다.");
-    }
-
-    // 특정 강의실의 주간 예약 (7일 x 13교시)
+    // 주간 7x13 배열 반환
     public RoomReservation[][] getWeeklyReservations(String building, String floor, String room) {
         RoomReservation[][] schedule = new RoomReservation[7][13];
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -160,9 +157,7 @@ public class ReservationService {
                 if (dayIndex >= 0 && dayIndex < 7 && periodIndex >= 0 && periodIndex < 13) {
                     schedule[dayIndex][periodIndex] = r;
                 }
-            } catch (Exception e) {
-                // skip invalid record
-            }
+            } catch (Exception ignored) {}
         }
 
         return schedule;
