@@ -10,8 +10,7 @@ import java.util.List;
 public class ReservationController {
 
     private static final ReservationController instance = new ReservationController();
-    // 싱글턴 적용
-    private final ReservationService reservationService = ReservationService.getInstance();
+    private ReservationService reservationService = ReservationService.getInstance();
 
     private ReservationController() {}
 
