@@ -6,7 +6,7 @@ import deu.model.entity.RoomReservation;
 
 import java.util.List;
 
-// 예약 관리 컨트롤러
+// 예약 관리 컨트롤러 (관리자용)
 public class ReservationManagementController {
 
     private static final ReservationManagementController instance = new ReservationManagementController();
@@ -35,13 +35,14 @@ public class ReservationManagementController {
         return reservationService.updateReservationStatus(reservationId, newStatus);
     }
 
-    // TODO: 사용자 예약 조회 (성공/실패 코드와 금일 ~ 일주일간의 데이터 반환) 구현 완료
+    // 사용자 예약 조회 (금일 ~ 일주일)
     public List<RoomReservation> handleGetUpcomingReservationsByUser(String userId) {
         return reservationService.getUpcomingReservationsByUser(userId);
     }
 
-    // TODO: 모든 예약 조회 (성공/실패 코드와 금일 일주일간의 데이터 반환) 구현 완료
+    // 전체 예약 조회 (금일 ~ 일주일)
     public List<RoomReservation> handleGetUpcomingAllReservations() {
         return reservationService.getUpcomingAllReservations();
     }
+
 }
