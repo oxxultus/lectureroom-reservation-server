@@ -167,14 +167,20 @@ public class ReservationService {
 
         return schedule;
     }
-    public BasicResponse updateReservation(RoomReservation updated) {
-        return updateReservation(
-                updated.getNumber(),
-                updated.getDate(),
-                updated.getStartTime(),
-                updated
-        );
+
+    // 예약 ID 기반 삭제 (관리자용)
+    public boolean deleteReservationDirectly(String reservationId) {
+        boolean deleted = ReservationRepository.getInstance().deleteById(reservationId);
+        if (deleted) {
+            ReservationRepository.getInstance().saveToFile();
+        }
+        return deleted;
     }
 
+    public BasicResponse deleteReservationById(String id) {
+        boolean deleted = ReservationRepository.getInstance().deleteById(id);
+        return deleted ? new BasicResponse("200", "예약이 삭제되었습니다.") :
+                new BasicResponse("404", "예약을 찾을 수 없습니다.");
+    }
 
 }
