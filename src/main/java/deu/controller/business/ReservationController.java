@@ -48,7 +48,12 @@ public class ReservationController {
         return reservationService.getWeeklyReservations(building, floor, room);
     }
 
-    public Object handleUpdateReservation(String ignoredNumber, String ignoredDate, String ignoredStartTime, RoomReservation ignoredRr) {
+    // ReservationController.java 내부
+    public void setService(ReservationService service) {
+        this.reservationService = service;
+    }
+
+    public BasicResponse handleDeleteReservation(String number, String date, String time) {
         return null;
     }
 }
