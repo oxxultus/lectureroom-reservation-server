@@ -5,14 +5,18 @@ import deu.model.dto.request.command.*;
 import deu.model.dto.request.data.lecture.LectureRequest;
 import deu.model.dto.request.data.user.*;
 import deu.model.dto.response.BasicResponse;
+import deu.model.entity.RoomReservation;
+
 
 public class SystemController {
     private final UserController userController = UserController.getInstance();
     private final UserManagementController userManagementController = UserManagementController.getInstance();
     private final LectureController lectureController = LectureController.getInstance();
+    private final ReservationController reservationController = ReservationController.getInstance();
+    private final ReservationManagementController reservationManagementController = ReservationManagementController.getInstance();
 
     public Object handle(Object request) {
-        // 사용자 컨트롤러 이관 - 완료
+        // 사용자 컨트롤러 이관
         if (request instanceof UserCommandRequest r) {
             return switch (r.command) {
                 case "로그인" -> userController.handleLogin((LoginRequest) r.payload);
@@ -22,7 +26,8 @@ public class SystemController {
                 default -> new BasicResponse("404", "알 수 없는 명령어");
             };
         }
-        // 사용자 관리 컨트롤러 이관 - 완료
+
+        // 사용자 관리 컨트롤러 이관
         else if (request instanceof UserManagementCommandRequest r) {
             return switch (r.command) {
                 case "사용자 수정" -> userManagementController.handleUpdateUser((UserDataModificationRequest) r.payload);
@@ -32,35 +37,60 @@ public class SystemController {
                 default -> new BasicResponse("404", "알 수 없는 명령어");
             };
         }
+
         // 예약 컨트롤러 이관
         else if (request instanceof ReservationCommandRequest r) {
             return switch (r.command) {
-                case "예약 요청" -> userController.handleLogin((LoginRequest) r.payload);
-                case "예약 삭제" -> userController.handleSignup((SignupRequest) r.payload);
-                case "예약 수정" -> userController.handleLogout((LogoutRequest) r.payload);
-                case "사용자 예약 조회" -> userController.handleLogout((LogoutRequest) r.payload);
-                case "모든 예약 조회" -> userController.handleLogout((LogoutRequest) r.payload);
+                case "예약 요청" -> reservationController.handleCreateReservation((RoomReservation) r.payload);
+                case "예약 삭제" -> {
+                    RoomReservation rr = (RoomReservation) r.payload;
+                    yield reservationController.handleDeleteReservation(rr.getNumber(), rr.getDate(), rr.getStartTime());
+                }
+                case "예약 수정" -> {
+                    RoomReservation rr = (RoomReservation) r.payload;
+                    yield reservationController.handleUpdateReservation(rr.getNumber(), rr.getDate(), rr.getStartTime(), rr);
+                }
+                case "사용자 예약 조회" -> {
+                    String userId = (String) r.payload;
+                    yield reservationController.handleGetUpcomingReservationsByUser(userId);
+                }
+                case "모든 예약 조회" -> reservationController.handleGetUpcomingAllReservations();
                 default -> new BasicResponse("404", "알 수 없는 명령어");
             };
         }
+
         // 예약 관리 컨트롤러 이관
         else if (request instanceof ReservationManagementCommandRequest r) {
             return switch (r.command) {
-                case "예약 삭제" -> userController.handleLogin((LoginRequest) r.payload);
-                case "예약 수정" -> userController.handleSignup((SignupRequest) r.payload);
-                case "예약 상태 변경" -> userController.handleLogout((LogoutRequest) r.payload);
-                case "사용자 예약 조회" -> userController.handleLogout((LogoutRequest) r.payload);
-                case "모든 예약 조회" -> userController.handleLogout((LogoutRequest) r.payload);
+                case "예약 삭제" -> {
+                    RoomReservation rr = (RoomReservation) r.payload;
+                    yield reservationManagementController.handleDeleteReservation(rr.getNumber(), rr.getDate(), rr.getStartTime());
+                }
+                case "예약 수정" -> {
+                    RoomReservation rr = (RoomReservation) r.payload;
+                    yield reservationManagementController.handleUpdateReservation(rr.getNumber(), rr.getDate(), rr.getStartTime(), rr);
+                }
+                case "예약 상태 변경" -> {
+                    RoomReservation rr = (RoomReservation) r.payload;
+                    yield reservationManagementController.handleUpdateReservationStatus(rr.getNumber(), rr.getDate(), rr.getStartTime(), rr.getStatus());
+                }
+                case "사용자 예약 조회" -> {
+                    String userId = (String) r.payload;
+                    yield reservationManagementController.handleGetUpcomingReservationsByUser(userId);
+                }
+                case "모든 예약 조회" -> reservationManagementController.handleGetUpcomingAllReservations();
                 default -> new BasicResponse("404", "알 수 없는 명령어");
             };
         }
-        // 강의 컨트롤러 이관 - 완료
+
+        // 강의 컨트롤러 이관
         else if (request instanceof LectureCommandRequest r) {
             return switch (r.command) {
                 case "주간 강의 조회" -> lectureController.handleReturnLectureOfWeek((LectureRequest) r.payload);
                 default -> new BasicResponse("404", "알 수 없는 명령어");
             };
         }
+
         return new BasicResponse("405", "지원하지 않는 요청 타입");
     }
 }
