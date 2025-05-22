@@ -49,8 +49,19 @@ public class ReservationRepository {
         saveToFile();
     }
 
-    public List<RoomReservation> findAll() {
-        return new ArrayList<>(roomReservationList);
+    // 예약 ID로 삭제
+    public boolean deleteById(String id) {
+        boolean result = roomReservationList.removeIf(r -> r.getId().equals(id));
+        if (result) saveToFile(); // 삭제 후 파일 반영
+        return result;
+    }
+
+    // 예약 ID로 조회
+    public RoomReservation findById(String id) {
+        return roomReservationList.stream()
+                .filter(r -> r.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
     public List<RoomReservation> findByUser(String userId) {
@@ -63,6 +74,12 @@ public class ReservationRepository {
         return results;
     }
 
+    // 모든 예약 반환
+    public List<RoomReservation> findAll() {
+        return new ArrayList<>(roomReservationList);
+    }
+
+    // 중복 예약 체크
     public boolean isDuplicate(String date, String startTime, String lectureRoom) {
         for (RoomReservation r : roomReservationList) {
             if (r.getDate().equals(date)
