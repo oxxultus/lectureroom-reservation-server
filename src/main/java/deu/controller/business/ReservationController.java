@@ -6,7 +6,7 @@ import deu.service.ReservationService;
 
 import java.util.List;
 
-// 예약 컨트롤러
+// 예약 컨트롤러 (사용자용)
 public class ReservationController {
 
     private static final ReservationController instance = new ReservationController();
@@ -28,22 +28,22 @@ public class ReservationController {
         return reservationService.deleteReservationById(reservationId);
     }
 
-    // 예약 수정
-    public BasicResponse handleUpdateReservation(RoomReservation updateReservation) {
-        return reservationService.updateReservation(updateReservation);
+    // 예약 수정 - RoomReservation 객체 전체 전달 (ID 포함되어야 함)
+    public BasicResponse handleUpdateReservation(RoomReservation updatedReservation) {
+        return reservationService.updateReservation(updatedReservation);
     }
 
-    // 사용자 예약 조회 (금일 ~ 일주일간)
+    // 사용자 예약 조회 (금일 ~ 7일)
     public List<RoomReservation> handleGetUpcomingReservationsByUser(String userId) {
         return reservationService.getUpcomingReservationsByUser(userId);
     }
 
-    // 전체 예약 조회 (금일 ~ 일주일간)
+    // 전체 예약 조회 (금일 ~ 7일)
     public List<RoomReservation> handleGetUpcomingAllReservations() {
         return reservationService.getUpcomingAllReservations();
     }
 
-    // 주간 예약 시간표 반환
+    // 강의실 주간 시간표 조회
     public RoomReservation[][] handleGetWeeklyReservations(String building, String floor, String room) {
         return reservationService.getWeeklyReservations(building, floor, room);
     }
