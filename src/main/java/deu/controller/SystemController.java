@@ -7,7 +7,6 @@ import deu.model.dto.request.data.user.*;
 import deu.model.dto.response.BasicResponse;
 import deu.model.entity.RoomReservation;
 
-
 public class SystemController {
     private final UserController userController = UserController.getInstance();
     private final UserManagementController userManagementController = UserManagementController.getInstance();
@@ -38,17 +37,17 @@ public class SystemController {
             };
         }
 
-        // 예약 컨트롤러 이관
+        // 예약 컨트롤러 이관 (일반 사용자용)
         else if (request instanceof ReservationCommandRequest r) {
             return switch (r.command) {
                 case "예약 요청" -> reservationController.handleCreateReservation((RoomReservation) r.payload);
                 case "예약 삭제" -> {
                     RoomReservation rr = (RoomReservation) r.payload;
-                    yield reservationController.handleDeleteReservation(rr.getNumber(), rr.getDate(), rr.getStartTime());
+                    yield reservationController.handleDeleteReservation(rr.getId());
                 }
                 case "예약 수정" -> {
                     RoomReservation rr = (RoomReservation) r.payload;
-                    yield reservationController.handleUpdateReservation(rr.getNumber(), rr.getDate(), rr.getStartTime(), rr);
+                    yield reservationController.handleUpdateReservation(rr);
                 }
                 case "사용자 예약 조회" -> {
                     String userId = (String) r.payload;
@@ -59,20 +58,20 @@ public class SystemController {
             };
         }
 
-        // 예약 관리 컨트롤러 이관
+        // 예약 관리 컨트롤러 이관 (관리자용)
         else if (request instanceof ReservationManagementCommandRequest r) {
             return switch (r.command) {
                 case "예약 삭제" -> {
                     RoomReservation rr = (RoomReservation) r.payload;
-                    yield reservationManagementController.handleDeleteReservation(rr.getNumber(), rr.getDate(), rr.getStartTime());
+                    yield reservationManagementController.handleDeleteReservation(rr.getId());
                 }
                 case "예약 수정" -> {
                     RoomReservation rr = (RoomReservation) r.payload;
-                    yield reservationManagementController.handleUpdateReservation(rr.getNumber(), rr.getDate(), rr.getStartTime(), rr);
+                    yield reservationManagementController.handleUpdateReservation(rr);
                 }
                 case "예약 상태 변경" -> {
                     RoomReservation rr = (RoomReservation) r.payload;
-                    yield reservationManagementController.handleUpdateReservationStatus(rr.getNumber(), rr.getDate(), rr.getStartTime(), rr.getStatus());
+                    yield reservationManagementController.handleUpdateReservationStatus(rr.getId(), rr.getStatus());
                 }
                 case "사용자 예약 조회" -> {
                     String userId = (String) r.payload;
