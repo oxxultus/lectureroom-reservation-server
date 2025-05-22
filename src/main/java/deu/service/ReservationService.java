@@ -14,7 +14,7 @@ public class ReservationService {
     // 싱글톤 인스턴스
     private static final ReservationService instance = new ReservationService();
 
-    public ReservationService() {}
+    private ReservationService() {}
 
     public static ReservationService getInstance() {
         return instance;
