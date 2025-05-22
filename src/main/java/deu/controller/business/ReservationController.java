@@ -8,8 +8,10 @@ import java.util.List;
 
 // 예약 컨트롤러
 public class ReservationController {
+
     private static final ReservationController instance = new ReservationController();
-    private final ReservationService reservationService = new ReservationService();
+    // 싱글턴 적용
+    private final ReservationService reservationService = ReservationService.getInstance();
 
     private ReservationController() {}
 
@@ -17,20 +19,29 @@ public class ReservationController {
         return instance;
     }
 
+    // 예약 생성
     public BasicResponse handleCreateReservation(RoomReservation reservation) {
         return reservationService.createReservation(reservation);
     }
 
+    // 예약 삭제
+    public BasicResponse handleDeleteReservation(String userId, String date, String startTime) {
+        return reservationService.deleteReservation(userId, date, startTime);
+    }
+
+    // 예약 수정
+    public BasicResponse handleUpdateReservation(RoomReservation updateReservation) {
+        return reservationService.updateReservation(updateReservation);
+    }
+
+    // 사용자 예약 조회 (금일 ~ 일주일간)
     public List<RoomReservation> handleGetUpcomingReservationsByUser(String userId) {
         return reservationService.getUpcomingReservationsByUser(userId);
     }
 
+    // 전체 예약 조회 (금일 ~ 일주일간)
     public List<RoomReservation> handleGetUpcomingAllReservations() {
         return reservationService.getUpcomingAllReservations();
-    }
-
-    public BasicResponse handleDeleteReservation(String userId, String date, String startTime) {
-        return reservationService.deleteReservation(userId, date, startTime);
     }
 
     // 주간 예약 시간표 반환
@@ -38,14 +49,7 @@ public class ReservationController {
         return reservationService.getWeeklyReservations(building, floor, room);
     }
 
-    // 각 메서드 앞에 handle를 꼭 붙혀주세요 (알관성 유지)
-    // TODO: 예약 요청 (성공/실패 코드와 메시지 반환)
-
-    // TODO: 예약 삭제 (성공/실패 코드와 메시지 반환)
-
-    // TODO: 예약 수정 (성공/실패 코드와 메시지 반환)
-
-    // TODO: 사용자 예약 조회 (금일 ~ 일주일간의 데이터 반환)
-
-    // TODO: 모든 예약 조회 (금일 일주일간의 데이터 반환)
+    public Object handleUpdateReservation(String ignoredNumber, String ignoredDate, String ignoredStartTime, RoomReservation ignoredRr) {
+        return null;
+    }
 }
