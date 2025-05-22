@@ -18,7 +18,7 @@ public class ReservationRepository {
     private final List<RoomReservation> roomReservationList = new ArrayList<>();
     private final Yaml yaml;
 
-    // Wrapper 클래스
+    // Wrapper 클래스 (YAML 상단에 키 유지)
     public static class RoomReservationWrapper {
         public List<RoomReservation> reservations = new ArrayList<>();
     }
@@ -39,11 +39,13 @@ public class ReservationRepository {
 
     public static ReservationRepository getInstance() { return instance; }
 
+    // 예약 저장
     public void save(RoomReservation reservation) {
         roomReservationList.add(reservation);
         saveToFile();
     }
 
+    // 예약 삭제 (객체 기준)
     public void delete(RoomReservation reservation) {
         roomReservationList.remove(reservation);
         saveToFile();
@@ -64,6 +66,7 @@ public class ReservationRepository {
                 .orElse(null);
     }
 
+    // 사용자 ID로 전체 예약 조회
     public List<RoomReservation> findByUser(String userId) {
         List<RoomReservation> results = new ArrayList<>();
         for (RoomReservation r : roomReservationList) {
@@ -91,6 +94,7 @@ public class ReservationRepository {
         return false;
     }
 
+    // 전체 저장
     public void saveToFile() {
         try (Writer writer = new FileWriter(FILE_PATH)) {
             RoomReservationWrapper wrapper = new RoomReservationWrapper();
@@ -101,6 +105,7 @@ public class ReservationRepository {
         }
     }
 
+    // 초기 로딩
     private void loadFromFile() {
         File file = new File(FILE_PATH);
         if (!file.exists()) return;
