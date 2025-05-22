@@ -23,9 +23,9 @@ public class ReservationController {
         return reservationService.createReservation(reservation);
     }
 
-    // 예약 삭제
-    public BasicResponse handleDeleteReservation(String userId, String date, String startTime) {
-        return reservationService.deleteReservation(userId, date, startTime);
+    // 예약 삭제 - 예약 ID와 사용자 ID만 필요
+    public BasicResponse handleDeleteReservation(String reservationId) {
+        return reservationService.deleteReservationById(reservationId);
     }
 
     // 예약 수정
