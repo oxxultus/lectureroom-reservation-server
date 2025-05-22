@@ -17,12 +17,12 @@ public class ReservationManagementController {
 
     public static ReservationManagementController getInstance() { return instance; }
 
-    // 서비스 인스턴스
-    private final ReservationService reservationService = new ReservationService();
-
-    // TODO: 예약 삭제 (성공/실패 코드와 메시지 반환) 구현 완료
-    public BasicResponse handleDeleteReservation(String userId, String date, String startTime) {
-        return reservationService.deleteReservation(userId, date, startTime);
+    // 예약 삭제 (관리자용) - reservationId만 필요
+    public BasicResponse handleDeleteReservation(String reservationId) {
+        boolean deleted = reservationService.deleteReservationDirectly(reservationId);
+        return deleted
+                ? new BasicResponse("200", "예약이 삭제되었습니다.")
+                : new BasicResponse("404", "예약을 찾을 수 없습니다.");
     }
 
     // TODO: 예약 수정 (성공/실패 코드와 메시지 반환) 구현 완료
