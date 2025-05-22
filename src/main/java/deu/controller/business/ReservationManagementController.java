@@ -11,6 +11,8 @@ public class ReservationManagementController {
 
     private static final ReservationManagementController instance = new ReservationManagementController();
 
+    private final ReservationService reservationService = ReservationService.getInstance();
+
     private ReservationManagementController() {}
 
     public static ReservationManagementController getInstance() { return instance; }
