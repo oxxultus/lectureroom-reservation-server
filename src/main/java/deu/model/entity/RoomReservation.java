@@ -5,13 +5,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class RoomReservation implements Serializable {
 
-    private String id;               // 고유 예약 ID
+    private String id = UUID.randomUUID().toString(); // 예약 생성 시 UUID 자동 할당
     private String buildingName;    // 건물명
     private String floor;           // 층 정보
     private String lectureRoom;     // 강의실 이름
