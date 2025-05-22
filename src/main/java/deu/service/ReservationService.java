@@ -82,23 +82,17 @@ public class ReservationService {
                 .toList();
     }
 
-    // 예약 삭제
-    public BasicResponse deleteReservation(String userId, String date, String startTime) {
-        List<RoomReservation> reservations = ReservationRepository.getInstance().findByUser(userId);
-
-        RoomReservation target = null;
-        for (RoomReservation r : reservations) {
-            if (r.getDate().equals(date) && r.getStartTime().equals(startTime)) {
-                target = r;
-                break;
-            }
-        }
-
+    // 예약 삭제 - reservationId 기준
+    public BasicResponse deleteReservation(String reservationId, String userId, String time) {
+        RoomReservation target = ReservationRepository.getInstance().findById(reservationId);
         if (target == null) {
             return new BasicResponse("404", "예약을 찾을 수 없습니다.");
         }
+        if (!target.getNumber().equals(userId)) {
+            return new BasicResponse("403", "본인의 예약만 삭제할 수 있습니다.");
+        }
 
-        ReservationRepository.getInstance().delete(target);
+        ReservationRepository.getInstance().deleteById(reservationId);
         return new BasicResponse("200", "예약이 삭제되었습니다.");
     }
 
