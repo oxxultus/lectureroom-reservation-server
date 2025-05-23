@@ -28,6 +28,7 @@ public class SystemController {
                 default -> new BasicResponse("404", "알 수 없는 명령어");
             };
         }
+
         // 사용자 관리 컨트롤러 이관 - 완료
         else if (request instanceof UserManagementCommandRequest r) {
             return switch (r.command) {
@@ -38,6 +39,7 @@ public class SystemController {
                 default -> new BasicResponse("404", "알 수 없는 명령어");
             };
         }
+
         // 예약 컨트롤러 이관 - 완료
         else if (request instanceof ReservationCommandRequest r) {
             return switch (r.command) {
@@ -49,6 +51,7 @@ public class SystemController {
                 default -> new BasicResponse("404", "알 수 없는 명령어");
             };
         }
+
         // 예약 관리 컨트롤러 이관 - 완료
         else if (request instanceof ReservationManagementCommandRequest r) {
             return switch (r.command) {
@@ -59,6 +62,7 @@ public class SystemController {
                 default -> new BasicResponse("404", "알 수 없는 명령어");
             };
         }
+
         // 강의 컨트롤러 이관 - 완료
         else if (request instanceof LectureCommandRequest r) {
             return switch (r.command) {
@@ -66,6 +70,7 @@ public class SystemController {
                 default -> new BasicResponse("404", "알 수 없는 명령어");
             };
         }
+
         return new BasicResponse("405", "지원하지 않는 요청 타입");
     }
 }
