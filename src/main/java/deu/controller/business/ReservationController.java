@@ -1,5 +1,11 @@
 package deu.controller.business;
 
+import deu.model.dto.request.data.reservation.DeleteRoomReservationRequest;
+import deu.model.dto.request.data.reservation.RoomReservationRequest;
+import deu.model.dto.response.BasicResponse;
+import deu.model.entity.RoomReservation;
+
+
 // 예약 컨트롤러
 public class ReservationController {
     private static final ReservationController instance = new ReservationController();
@@ -12,14 +18,30 @@ public class ReservationController {
 
     // private final ReservationService reservationService = new ReservationService();
 
-    // 각 메서드 앞에 handle를 꼭 붙혀주세요 (알관성 유지)
-    // TODO: 예약 요청 (성공/실패 코드와 메시지 반환)
+    // 예약 신청
+    public BasicResponse handleAddRoomReservation(RoomReservation roomReservation) {
+        return null;
+    }
 
-    // TODO: 예약 삭제 (성공/실패 코드와 메시지 반환)
+    // 예약 수정
+    public BasicResponse handleModifyRoomReservation(RoomReservation roomReservation) {
+        return null;
+    }
 
-    // TODO: 예약 수정 (성공/실패 코드와 메시지 반환)
+    // 개인별 예약 삭제 TODO: String number, String id를 감싸는 DTO 추가 해야됨, number 와 id에 해당하는 예약의 number가 동일하면삭제
+    public BasicResponse handlDeleteRoomReservation(DeleteRoomReservationRequest payload) {
+        return null;
+    }
 
-    // TODO: 사용자 예약 조회 (금일 ~ 일주일간의 데이터 반환)
+    // 개인별 주간 예약 불러오기 (당일 ~ +6일) TODO: RoomReservation[7][13]
+    public BasicResponse handleWeekRoomReservationByUserNumber(String payload) {
+        return null;
+    }
 
-    // TODO: 모든 예약 조회 (금일 일주일간의 데이터 반환)
+    // 어래 기능은 관리자에서도 동일하다.=======================================================================================
+
+    // 건물 강의실별 주간 예약 불러오기 (당일 +6일 까지) TODO: RoomReservation[7][13]
+    public BasicResponse handleWeekRoomReservationByLectureroom(RoomReservationRequest paylaod) {
+        return null;
+    }
 }
