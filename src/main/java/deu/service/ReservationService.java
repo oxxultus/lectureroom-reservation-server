@@ -20,7 +20,7 @@ public class ReservationService {
 
     private ReservationService() {}
 
-    // 예약 생성
+    // 예약 생성 - TODO: 아래 정리된 메서드로 수정
     public BasicResponse createReservation(RoomReservation reservation) {
         boolean isDup = ReservationRepository.getInstance().isDuplicate(
                 reservation.getDate(),
@@ -167,6 +167,7 @@ public class ReservationService {
         return deleted;
     }
 
+    // 예약 ID 기반 삭제 (관리자용) - TODO: 아래 정리된 메서드로 수정
     public BasicResponse deleteReservationById(String id) {
         boolean deleted = ReservationRepository.getInstance().deleteById(id);
         return deleted ? new BasicResponse("200", "예약이 삭제되었습니다.") :
@@ -174,7 +175,9 @@ public class ReservationService {
     }
 
 
-    // TODO: 위 서비를 수정해서 아래 서비스에 맞게 수정해주세요.
+    // TODO: 위 서비를 수정해서 아래 서비스 메서드에 맞게 수정해주세요.
+    //  1. 해당 서비스에서 반환값을 BasicResponse로 맞춰서 컨트롤러로 반환해주세요.
+
     // 사용자 관점 ========================================================================================================
 
     // 예약 신청
@@ -182,21 +185,21 @@ public class ReservationService {
         return null;
     }
 
-    // 개인별 예약 삭제 TODO: String number, String id를 감싸는 DTO 추가 해야됨, number 와 id에 해당하는 예약의 number가 동일하면삭제
-    public BasicResponse deleteRoomReservation(DeleteRoomReservationRequest payload) {
+    // 개인별 예약 삭제 TODO: number 와 id에 해당하는 RoomReservation 의 number가 동일하면 삭제 / 다르면 비정상적인 접근 처리
+    public BasicResponse deleteRoomReservationFromUser(DeleteRoomReservationRequest payload) {
         return null;
     }
 
     // 개인별 주간 예약 조회 반환: 7x13 배열 (당일 ~ +6일) TODO: RoomReservation[7][13]
-    public BasicResponse WeekRoomReservationByUserNumber(String payload) {
+    public BasicResponse weekRoomReservationByUserNumber(String payload) {
         return null;
     }
 
     // 사용자별 예약 리스트 조회
-    public List<RoomReservation> getReservationsByUser(String payload) {
-        return ReservationRepository.getInstance().findByUser(payload);
+    public BasicResponse getReservationsByUser(String payload) {
+        // TODO: List<RoomReservation>를 , BasicResponse data안에 넣어서 반환하세요.
+        return null;
     }
-
 
     // 통합 관점 ==========================================================================================================
 
@@ -206,14 +209,14 @@ public class ReservationService {
     }
 
     // 건물 강의실별 주간 예약 조회 반환: 7x13 배열 (당일 +6일 까지) TODO: RoomReservation[7][13]
-    public BasicResponse handleWeekRoomReservationByLectureroom(RoomReservationRequest paylaod) {
+    public BasicResponse weekRoomReservationByLectureroom(RoomReservationRequest paylaod) {
         return null;
     }
 
     // 관리자 관점 ========================================================================================================
 
     // 관리자 예약 삭제
-    public BasicResponse deleteRoomReservation(String payload) {
+    public BasicResponse deleteRoomReservationFromManagement(String payload) {
         return null;
     }
 
@@ -226,4 +229,6 @@ public class ReservationService {
     public BasicResponse findAllRoomReservation() {
         return null;
     }
+
+    // =================================================================================================================
 }
