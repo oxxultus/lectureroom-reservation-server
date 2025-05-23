@@ -11,16 +11,17 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 public class RoomReservation implements Serializable {
-
     private String id = UUID.randomUUID().toString(); // 예약 생성 시 UUID 자동 할당
-    private String buildingName;    // 건물명
-    private String floor;           // 층 정보
-    private String lectureRoom;     // 강의실 이름
-    private String number;          // 학번 또는 예약 번호
-    private String status;          // 예약 상태 (예: PENDING, APPROVED 등)
-    private String date;            // 예약 날짜 (yyyy-MM-dd)
-    private String dayOfTheWeek;    // 요일 (예: MONDAY, TUESDAY)
+    private String buildingName;
+    private String floor;
+    private String lectureRoom;
+    private String number;
+    private String status;
+    private String title; // 제목
+    private String description; // 설명
+    private String date; // 날짜
+    private String dayOfTheWeek; // 요일
 
-    private String startTime;       // 시작 시간 or 교시 (예: "09:00" or "1교시")
-    private String endTime;         // 종료 시간 or 교시 (예: "10:00" or "2교시")
+    private String startTime;
+    private String endTime;
 }

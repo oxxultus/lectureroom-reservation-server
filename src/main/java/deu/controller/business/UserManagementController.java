@@ -13,7 +13,7 @@ public class UserManagementController {
         return instance;
     }
 
-    private final UserService userService = new UserService();
+    private final UserService userService = UserService.getInstance();
 
     // 사용자 정보 수정 처리
     public Object handleUpdateUser(UserDataModificationRequest payload) {

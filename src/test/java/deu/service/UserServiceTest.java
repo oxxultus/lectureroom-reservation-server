@@ -2,156 +2,140 @@ package deu.service;
 
 import deu.model.dto.request.data.user.*;
 import deu.model.dto.response.BasicResponse;
+import deu.model.entity.User;
 import deu.repository.UserRepository;
 import org.junit.jupiter.api.*;
-import org.mockito.Mockito;
-
-import java.io.File;
+import org.mockito.MockedStatic;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DisplayName("UserService 단위 테스트")
 public class UserServiceTest {
 
-    private UserRepository mockRepo;
     private UserService service;
-
-    private final String TEST_FILE_PATH = System.getProperty("user.dir") + File.separator + "data" + File.separator + "users.yaml";
-    private final String DATA_DIR_PATH = System.getProperty("user.dir") + File.separator + "data";
-
-    @BeforeAll
-    void setupFile() {
-        File file = new File(TEST_FILE_PATH);
-        if (file.exists()) file.delete();
-    }
-
-    @AfterAll
-    void cleanupFile() {
-        File file = new File(TEST_FILE_PATH);
-        if (file.exists()) file.delete();
-
-        File dir = new File(DATA_DIR_PATH);
-        if (dir.exists() && dir.isDirectory() && dir.list().length == 0) {
-            dir.delete();
-        }
-    }
+    private UserRepository mockRepo;
+    private MockedStatic<UserRepository> mockedStatic;
 
     @BeforeEach
-    void setup() {
-        mockRepo = Mockito.mock(UserRepository.class);
-        service = new UserService() {
-            @Override
-            public BasicResponse signup(SignupRequest payload) {
-                return mockRepo.save(payload.number, payload.password, payload.name, payload.major);
-            }
+    void setUp() {
+        mockRepo = mock(UserRepository.class);
+        mockedStatic = mockStatic(UserRepository.class);
+        mockedStatic.when(UserRepository::getInstance).thenReturn(mockRepo);
 
-            @Override
-            public BasicResponse login(LoginRequest payload) {
-                return mockRepo.validate(payload.number, payload.password);
-            }
-
-            @Override
-            public BasicResponse delete(DeleteRequest payload) {
-                return mockRepo.deleteByNumber(payload.number);
-            }
-
-            @Override
-            public BasicResponse find(FindRequest payload) {
-                return mockRepo.findByNumber(payload.number);
-            }
-
-            @Override
-            public BasicResponse findAll() {
-                return mockRepo.findAll();
-            }
-
-            @Override
-            public BasicResponse exists(ExistsRequest payload) {
-                return mockRepo.existsByNumber(payload.number);
-            }
-
-            @Override
-            public BasicResponse update(UserDataModificationRequest payload) {
-                return mockRepo.update(payload.number, payload.password, payload.name, payload.major);
-            }
-        };
+        service = UserService.getInstance();
     }
 
-    @DisplayName("회원가입 요청이 정상 처리되는지 확인")
-    @Test
-    void testSignupSuccess() {
-        when(mockRepo.save(anyString(), anyString(), anyString(), anyString()))
-                .thenReturn(new BasicResponse("200", "회원가입 성공"));
-
-        SignupRequest req = new SignupRequest("20250001", "pw", "홍길동", "소프트웨어");
-        BasicResponse res = service.signup(req);
-        assertEquals("200", res.code);
+    @AfterEach
+    void tearDown() {
+        mockedStatic.close();
     }
 
-    @DisplayName("로그인 요청이 정상 처리되는지 확인")
     @Test
-    void testLoginSuccess() {
-        when(mockRepo.validate(anyString(), anyString()))
-                .thenReturn(new BasicResponse("200", "로그인 성공"));
+    @DisplayName("로그인 성공 시 코드 200 및 메시지 반환")
+    void testLogin() {
+        LoginRequest request = new LoginRequest("S123", "pw");
+        when(mockRepo.validate("S123", "pw")).thenReturn(new BasicResponse("200", "로그인 성공"));
 
-        LoginRequest req = new LoginRequest("20250001", "pw");
-        BasicResponse res = service.login(req);
-        assertEquals("200", res.code);
+        BasicResponse response = service.login(request);
+
+        assertEquals("200", response.code);
+        assertEquals("로그인 성공", response.data.toString());
     }
 
-    @DisplayName("사용자 정보 수정 요청이 처리되는지 확인")
     @Test
-    void testUpdateSuccess() {
-        when(mockRepo.update(anyString(), anyString(), anyString(), anyString()))
-                .thenReturn(new BasicResponse("200", "수정 완료"));
+    @DisplayName("회원가입 요청 처리 시 코드 201 및 메시지 반환")
+    void testSignup() {
+        SignupRequest request = new SignupRequest("S123", "pw", "홍길동", "컴퓨터공학");
+        when(mockRepo.save("S123", "pw", "홍길동", "컴퓨터공학"))
+                .thenReturn(new BasicResponse("201", "가입 완료"));
 
-        UserDataModificationRequest req = new UserDataModificationRequest("20250001", "newpw", "이순신", "AI");
-        BasicResponse res = service.update(req);
-        assertEquals("200", res.code);
+        BasicResponse response = service.signup(request);
+
+        assertEquals("201", response.code);
+        assertEquals("가입 완료", response.data.toString());
     }
 
-    @DisplayName("사용자 삭제 요청이 처리되는지 확인")
     @Test
-    void testDeleteSuccess() {
-        when(mockRepo.deleteByNumber(anyString()))
-                .thenReturn(new BasicResponse("200", "삭제 완료"));
+    @DisplayName("회원 삭제 요청 처리 시 코드 200 및 메시지 반환")
+    void testDelete() {
+        DeleteRequest request = new DeleteRequest("S123");
+        when(mockRepo.deleteByNumber("S123")).thenReturn(new BasicResponse("200", "삭제됨"));
 
-        DeleteRequest req = new DeleteRequest("20250001");
-        BasicResponse res = service.delete(req);
-        assertEquals("200", res.code);
+        BasicResponse response = service.delete(request);
+
+        assertEquals("200", response.code);
+        assertEquals("삭제됨", response.data.toString());
     }
 
-    @DisplayName("단일 사용자 조회 요청이 처리되는지 확인")
     @Test
-    void testFindSuccess() {
-        when(mockRepo.findByNumber(anyString()))
-                .thenReturn(new BasicResponse("200", new Object()));
+    @DisplayName("회원 단일 조회 성공 시 코드 200과 사용자 객체 반환")
+    void testFind() {
+        User dummy = new User("S123", "pw", "홍길동", "컴공");
+        when(mockRepo.findByNumber("S123")).thenReturn(new BasicResponse("200", dummy));
 
-        FindRequest req = new FindRequest("20250001");
-        BasicResponse res = service.find(req);
-        assertEquals("200", res.code);
+        BasicResponse response = service.find(new FindRequest("S123"));
+
+        assertEquals("200", response.code);
+        assertEquals(dummy, response.data);
     }
 
-    @DisplayName("전체 사용자 목록 조회 요청이 처리되는지 확인")
     @Test
+    @DisplayName("전체 회원 조회 시 코드 200과 데이터 반환")
     void testFindAll() {
-        when(mockRepo.findAll())
-                .thenReturn(new BasicResponse("200", new Object()));
+        when(mockRepo.findAll()).thenReturn(new BasicResponse("200", "전체 유저"));
 
-        BasicResponse res = service.findAll();
-        assertEquals("200", res.code);
+        BasicResponse response = service.findAll();
+
+        assertEquals("200", response.code);
+        assertEquals("전체 유저", response.data);
     }
 
-    @DisplayName("사용자 존재 여부 확인 요청이 처리되는지 확인")
     @Test
-    void testExistsTrue() {
-        when(mockRepo.existsByNumber(anyString()))
-                .thenReturn(new BasicResponse("200", "존재함"));
+    @DisplayName("회원 정보 수정 요청 시 코드 200 및 메시지 반환")
+    void testUpdate() {
+        UserDataModificationRequest request = new UserDataModificationRequest("S123", "newpw", "홍길순", "전자공학");
+        when(mockRepo.update("S123", "newpw", "홍길순", "전자공학"))
+                .thenReturn(new BasicResponse("200", "수정됨"));
 
-        ExistsRequest req = new ExistsRequest("20250001");
-        BasicResponse res = service.exists(req);
-        assertEquals("200", res.code);
+        BasicResponse response = service.update(request);
+
+        assertEquals("200", response.code);
+        assertEquals("수정됨", response.data.toString());
+    }
+
+    @Test
+    @DisplayName("회원 존재 여부 확인 시 true 반환")
+    void testExists() {
+        ExistsRequest request = new ExistsRequest("S123");
+        when(mockRepo.existsByNumber("S123")).thenReturn(new BasicResponse("200", true));
+
+        BasicResponse response = service.exists(request);
+
+        assertEquals("200", response.code);
+        assertTrue((Boolean) response.data);
+    }
+
+    @Test
+    @DisplayName("학번으로 사용자 이름 조회 성공 시 이름 반환")
+    void testFindUserNameSuccess() {
+        User dummy = new User("S123", "pw", "김철수", "기계공학");
+        when(mockRepo.findByNumber("S123")).thenReturn(new BasicResponse("200", dummy));
+
+        BasicResponse response = service.findUserName(new FindUserNameRequest("S123", "pw"));
+
+        assertEquals("200", response.code);
+        assertEquals("김철수", response.data.toString());
+    }
+
+    @Test
+    @DisplayName("학번으로 사용자 이름 조회 실패 시 오류 메시지 반환")
+    void testFindUserNameFail() {
+        when(mockRepo.findByNumber("S123")).thenReturn(new BasicResponse("404", null));
+
+        BasicResponse response = service.findUserName(new FindUserNameRequest("S123", "pw"));
+
+        assertEquals("404", response.code);
+        assertEquals("해당하는 학번의 이름이 존재하지 않습니다.", response.data.toString());
     }
 }

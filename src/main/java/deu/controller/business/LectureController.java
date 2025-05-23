@@ -17,7 +17,7 @@ public class LectureController {
         return instance;
     }
 
-    private final LectureService lectureService = new LectureService();
+    private final LectureService lectureService = LectureService.getInstance();
 
     public Object handleReturnLectureOfWeek(LectureRequest payload) {
         BasicResponse result = lectureService.returnLectureOfWeek(payload);

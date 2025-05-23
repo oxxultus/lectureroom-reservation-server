@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LectureServiceTest {
 
-    LectureService lectureService = new LectureService();
+    LectureService lectureService = LectureService.getInstance();
 
     @DisplayName("강의실 주간 일정이 정확한 형식으로 반환되는지 검증")
     @Test

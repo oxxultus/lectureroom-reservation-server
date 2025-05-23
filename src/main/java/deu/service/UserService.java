@@ -2,9 +2,20 @@ package deu.service;
 
 import deu.model.dto.request.data.user.*;
 import deu.model.dto.response.BasicResponse;
+import deu.model.entity.User;
 import deu.repository.UserRepository;
 
 public class UserService {
+
+    // Singleton 인스턴스
+    private static final UserService instance = new UserService();
+
+    private UserService() {}
+
+    public static UserService getInstance() {
+        return instance;
+    }
+
     // 사용자 로그인
     public BasicResponse login(LoginRequest payload) {
         return UserRepository.getInstance().validate(payload.number, payload.password);
@@ -43,5 +54,16 @@ public class UserService {
     // 사용자 존재 여부 확인 - 미사용
     public BasicResponse exists(ExistsRequest payload) {
         return UserRepository.getInstance().existsByNumber(payload.number);
+    }
+
+    // 사용자 이름 찾기
+    public BasicResponse findUserName(FindUserNameRequest payload) {
+        BasicResponse response = UserRepository.getInstance().findByNumber(payload.number);
+        if(response.code.equals("200")){
+            return new BasicResponse(response.code, ((User)response.data).getName());
+        }
+        else{
+            return new BasicResponse(response.code, "해당하는 학번의 이름이 존재하지 않습니다.");
+        }
     }
 }

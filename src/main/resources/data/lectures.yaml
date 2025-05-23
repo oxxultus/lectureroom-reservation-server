@@ -444,13 +444,13 @@ lectures:
     startTime: "10:00"
     endTime: "10:50"
 
-  - id: 300129-002
+  - id: 300129-003
     title: 딥러닝특론
     lectureroom: 914
     building: 정보관
     floor: 9
     professor: 권순각
-    day: FRIDAY
+    day: THURSDAY
     startTime: "19:00"
     endTime: "21:50"
 
@@ -727,7 +727,7 @@ lectures:
     startTime: "09:00"
     endTime: "11:50"
 
-  - id: 400798-004
+  - id: 400798-005
     title: 인공지능특론
     lectureroom: 918
     building: 정보관

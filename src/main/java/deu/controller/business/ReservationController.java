@@ -1,16 +1,8 @@
 package deu.controller.business;
 
-import deu.model.entity.RoomReservation;
-import deu.model.dto.response.BasicResponse;
-import deu.service.ReservationService;
-
-import java.util.List;
-
-// 예약 컨트롤러 (사용자용)
+// 예약 컨트롤러
 public class ReservationController {
-
     private static final ReservationController instance = new ReservationController();
-    private ReservationService reservationService = ReservationService.getInstance();
 
     private ReservationController() {}
 
@@ -18,42 +10,32 @@ public class ReservationController {
         return instance;
     }
 
-    // 예약 생성
-    public BasicResponse handleCreateReservation(RoomReservation reservation) {
-        return reservationService.createReservation(reservation);
+    // private final ReservationService reservationService = new ReservationService();
+
+    // 예약 신청
+    public BasicResponse handleAddRoomReservation(RoomReservation roomReservation) {
+        return null;
     }
 
-    // 예약 삭제 - 예약 ID와 사용자 ID만 필요
-    public BasicResponse handleDeleteReservation(String reservationId) {
-        return reservationService.deleteReservationById(reservationId);
+    // 예약 수정
+    public BasicResponse handleModifyRoomReservation(RoomReservation roomReservation) {
+        return null;
     }
 
-    // 예약 수정 - RoomReservation 객체 전체 전달 (ID 포함되어야 함)
-    public BasicResponse handleUpdateReservation(RoomReservation updatedReservation) {
-        return reservationService.updateReservation(updatedReservation);
+    // 개인별 예약 삭제 TODO: String number, String id를 감싸는 DTO 추가 해야됨, number 와 id에 해당하는 예약의 number가 동일하면삭제
+    public BasicResponse handlDeleteRoomReservation(DeleteRoomReservationRequest payload) {
+        return null;
     }
 
-    // 사용자 예약 조회 (금일 ~ 7일)
-    public List<RoomReservation> handleGetUpcomingReservationsByUser(String userId) {
-        return reservationService.getUpcomingReservationsByUser(userId);
+    // 개인별 주간 예약 불러오기 (당일 ~ +6일) TODO: RoomReservation[7][13]
+    public BasicResponse handleWeekRoomReservationByUserNumber(String payload) {
+        return null;
     }
 
-    // 전체 예약 조회 (금일 ~ 7일)
-    public List<RoomReservation> handleGetUpcomingAllReservations() {
-        return reservationService.getUpcomingAllReservations();
-    }
+    // 어래 기능은 관리자에서도 동일하다.=======================================================================================
 
-    // 강의실 주간 시간표 조회
-    public RoomReservation[][] handleGetWeeklyReservations(String building, String floor, String room) {
-        return reservationService.getWeeklyReservations(building, floor, room);
-    }
-
-    // ReservationController.java 내부
-    public void setService(ReservationService service) {
-        this.reservationService = service;
-    }
-
-    public BasicResponse handleDeleteReservation(String number, String date, String time) {
+    // 건물 강의실별 주간 예약 불러오기 (당일 +6일 까지) TODO: RoomReservation[7][13]
+    public BasicResponse handleWeekRoomReservationByLectureroom(RoomReservationRequest paylaod) {
         return null;
     }
 }

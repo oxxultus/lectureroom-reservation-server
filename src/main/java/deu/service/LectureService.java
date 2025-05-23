@@ -11,6 +11,15 @@ import java.util.List;
 
 public class LectureService {
 
+    // Singleton 인스턴스
+    private static final LectureService instance = new LectureService();
+
+    private LectureService() {}
+
+    public static LectureService getInstance() {
+        return instance;
+    }
+
     // 특정 강의실의 금일 + 7일 까지의 강의 데이터를 배열로 반환한다.
     public BasicResponse returnLectureOfWeek(LectureRequest payload) {
         System.out.printf("[필터 확인] 요청 건물: %s, 층: %s, 강의실: %s\n", payload.building, payload.floor, payload.lectureroom);
