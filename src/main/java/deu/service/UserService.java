@@ -4,17 +4,15 @@ import deu.model.dto.request.data.user.*;
 import deu.model.dto.response.BasicResponse;
 import deu.model.entity.User;
 import deu.repository.UserRepository;
+import lombok.Getter;
 
 public class UserService {
 
     // Singleton 인스턴스
+    @Getter
     private static final UserService instance = new UserService();
 
     private UserService() {}
-
-    public static UserService getInstance() {
-        return instance;
-    }
 
     // 사용자 로그인
     public BasicResponse login(LoginRequest payload) {

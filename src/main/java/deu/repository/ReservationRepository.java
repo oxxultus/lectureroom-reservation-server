@@ -14,6 +14,7 @@ import java.util.List;
 public class ReservationRepository {
 
     private static final String FILE_PATH = System.getProperty("user.dir") + File.separator + "data" + File.separator + "reservations.yaml";
+
     @Getter
     private static final ReservationRepository instance = new ReservationRepository();
 
@@ -36,7 +37,18 @@ public class ReservationRepository {
         representer.addClassTag(RoomReservation.class, Tag.MAP);
 
         this.yaml = new Yaml(representer, options);
+
+        createDataDirectoryIfNeeded();
         loadFromFile();
+    }
+
+    // 디렉토리 생성
+    private void createDataDirectoryIfNeeded() {
+        File file = new File(FILE_PATH);
+        File parentDir = file.getParentFile();
+        if (!parentDir.exists()) {
+            parentDir.mkdirs();
+        }
     }
 
     // 예약 저장
@@ -54,7 +66,7 @@ public class ReservationRepository {
     // 예약 ID로 삭제
     public boolean deleteById(String id) {
         boolean result = roomReservationList.removeIf(r -> r.getId().equals(id));
-        if (result) saveToFile(); // 삭제 후 파일 반영
+        if (result) saveToFile();
         return result;
     }
 
@@ -96,6 +108,8 @@ public class ReservationRepository {
 
     // 전체 저장
     public void saveToFile() {
+        createDataDirectoryIfNeeded();
+
         try (Writer writer = new FileWriter(FILE_PATH)) {
             RoomReservationWrapper wrapper = new RoomReservationWrapper();
             wrapper.reservations = roomReservationList;
@@ -119,5 +133,11 @@ public class ReservationRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // 테스트용: 전체 예약 삭제
+    public void clear() {
+        roomReservationList.clear();
+        saveToFile();
     }
 }
