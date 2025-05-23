@@ -46,8 +46,9 @@ public class SystemController {
                 case "예약 요청" -> reservationController.handleAddRoomReservation((RoomReservation) r.payload);
                 case "예약 수정" -> reservationController.handleModifyRoomReservation((RoomReservation) r.payload);
                 case "예약 삭제" -> reservationController.handlDeleteRoomReservation((DeleteRoomReservationRequest) r.payload);
-                case "사용자 예약 조회" -> reservationController.handleWeekRoomReservationByUserNumber((String) r.payload);
-                case "강의실 예약 조회" -> reservationController.handleWeekRoomReservationByLectureroom((RoomReservationRequest) r.payload);
+                case "사용자 예약 리스트 조회" -> reservationController.handleUserRoomReservationList((String) r.payload);
+                case "사용자 예약 배열 조회" -> reservationController.handleWeekRoomReservationByUserNumber((String) r.payload);
+                case "강의실 예약 배열 조회" -> reservationController.handleWeekRoomReservationByLectureroom((RoomReservationRequest) r.payload);
                 default -> new BasicResponse("404", "알 수 없는 명령어");
             };
         }

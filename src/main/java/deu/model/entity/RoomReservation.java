@@ -15,10 +15,13 @@ public class RoomReservation implements Serializable {
     private String buildingName;
     private String floor;
     private String lectureRoom;
+
     private String number;
     private String status;
+
     private String title; // 제목
     private String description; // 설명
+
     private String date; // 날짜
     private String dayOfTheWeek; // 요일
 

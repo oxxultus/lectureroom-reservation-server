@@ -2,6 +2,7 @@ package deu.repository;
 
 import deu.model.dto.response.BasicResponse;
 import deu.model.entity.User;
+import lombok.Getter;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -17,7 +18,9 @@ import java.util.List;
  * 싱글톤 패턴을 사용하며, 파일이 없을 경우 resources에서 복사하여 생성한다.
  */
 public class UserRepository {
+    // 외부에서 접근하는 싱글톤 메서드
     // 싱글톤 인스턴스
+    @Getter
     private static final UserRepository instance = new UserRepository();
 
     // 메모리 내 사용자 리스트
@@ -56,11 +59,6 @@ public class UserRepository {
         yaml = new Yaml(representer, options);
 
         loadAllFromFile();
-    }
-
-    // 외부에서 접근하는 싱글톤 메서드
-    public static UserRepository getInstance() {
-        return instance;
     }
 
     // 모든 사용자 정보를 파일에 저장

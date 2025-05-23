@@ -1,8 +1,11 @@
 package deu.service;
 
+import deu.model.dto.request.data.reservation.DeleteRoomReservationRequest;
+import deu.model.dto.request.data.reservation.RoomReservationRequest;
 import deu.model.entity.RoomReservation;
 import deu.repository.ReservationRepository;
 import deu.model.dto.response.BasicResponse;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,13 +15,10 @@ import java.util.List;
 public class ReservationService {
 
     // 싱글톤 인스턴스
+    @Getter
     private static final ReservationService instance = new ReservationService();
 
     private ReservationService() {}
-
-    public static ReservationService getInstance() {
-        return instance;
-    }
 
     // 예약 생성
     public BasicResponse createReservation(RoomReservation reservation) {
@@ -36,17 +36,12 @@ public class ReservationService {
         return new BasicResponse("200", "예약이 완료되었습니다.");
     }
 
-    // 전체 예약 조회
+    // 전체 예약 조회 - TODO: 아래 정리된 메서드로 수정
     public List<RoomReservation> getAllReservations() {
         return ReservationRepository.getInstance().findAll();
     }
 
-    // 사용자별 예약 조회
-    public List<RoomReservation> getReservationsByUser(String userId) {
-        return ReservationRepository.getInstance().findByUser(userId);
-    }
-
-    // 사용자 예약 중 1주일 이내
+    // 사용자 예약 중 1주일 이내 - TODO: 아래 정리된 메서드로 수정
     public List<RoomReservation> getUpcomingReservationsByUser(String userId) {
         LocalDate now = LocalDate.now();
         LocalDate oneWeekLater = now.plusDays(7);
@@ -64,7 +59,7 @@ public class ReservationService {
                 .toList();
     }
 
-    // 전체 예약 중 1주일 이내
+    // 전체 예약 중 1주일 이내 - TODO: 아래 정리된 메서드로 수정
     public List<RoomReservation> getUpcomingAllReservations() {
         LocalDate now = LocalDate.now();
         LocalDate oneWeekLater = now.plusDays(7);
@@ -82,7 +77,7 @@ public class ReservationService {
                 .toList();
     }
 
-    // 예약 삭제 - reservationId 기준
+    // 예약 삭제 - reservationId 기준 - TODO: 아래 정리된 메서드로 수정
     public BasicResponse deleteReservation(String reservationId, String userId, String time) {
         RoomReservation target = ReservationRepository.getInstance().findById(reservationId);
         if (target == null) {
@@ -96,7 +91,7 @@ public class ReservationService {
         return new BasicResponse("200", "예약이 삭제되었습니다.");
     }
 
-    // 예약 수정 - RoomReservation 객체 전달 (id 포함)
+    // 예약 수정 - RoomReservation 객체 전달 (id 포함) - TODO: 아래 정리된 메서드로 수정
     public BasicResponse updateReservation(RoomReservation updated) {
         RoomReservation original = ReservationRepository.getInstance().findById(updated.getId());
         if (original == null) {
@@ -117,7 +112,7 @@ public class ReservationService {
         return new BasicResponse("200", "예약이 수정되었습니다.");
     }
 
-    // 예약 상태 변경 - 관리자
+    // 예약 상태 변경 - 관리자 - TODO: 아래 정리된 메서드로 수정
     public BasicResponse updateReservationStatus(String reservationId, String newStatus) {
         RoomReservation target = ReservationRepository.getInstance().findById(reservationId);
         if (target == null) {
@@ -129,7 +124,7 @@ public class ReservationService {
         return new BasicResponse("200", "상태가 변경되었습니다.");
     }
 
-    // 주간 7x13 배열 반환
+    // 주간 7x13 배열 반환 - TODO: 아래 정리된 메서드로 수정
     public RoomReservation[][] getWeeklyReservations(String building, String floor, String room) {
         RoomReservation[][] schedule = new RoomReservation[7][13];
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -163,7 +158,7 @@ public class ReservationService {
         return schedule;
     }
 
-    // 예약 ID 기반 삭제 (관리자용)
+    // 예약 ID 기반 삭제 (관리자용) - TODO: 아래 정리된 메서드로 수정
     public boolean deleteReservationDirectly(String reservationId) {
         boolean deleted = ReservationRepository.getInstance().deleteById(reservationId);
         if (deleted) {
@@ -178,4 +173,57 @@ public class ReservationService {
                 new BasicResponse("404", "예약을 찾을 수 없습니다.");
     }
 
+
+    // TODO: 위 서비를 수정해서 아래 서비스에 맞게 수정해주세요.
+    // 사용자 관점 ========================================================================================================
+
+    // 예약 신청
+    public BasicResponse createRoomReservation(RoomReservation roomReservation) {
+        return null;
+    }
+
+    // 개인별 예약 삭제 TODO: String number, String id를 감싸는 DTO 추가 해야됨, number 와 id에 해당하는 예약의 number가 동일하면삭제
+    public BasicResponse deleteRoomReservation(DeleteRoomReservationRequest payload) {
+        return null;
+    }
+
+    // 개인별 주간 예약 조회 반환: 7x13 배열 (당일 ~ +6일) TODO: RoomReservation[7][13]
+    public BasicResponse WeekRoomReservationByUserNumber(String payload) {
+        return null;
+    }
+
+    // 사용자별 예약 리스트 조회
+    public List<RoomReservation> getReservationsByUser(String payload) {
+        return ReservationRepository.getInstance().findByUser(payload);
+    }
+
+
+    // 통합 관점 ==========================================================================================================
+
+    // 예약 수정
+    public BasicResponse modifyRoomReservation(RoomReservation payload) {
+        return null;
+    }
+
+    // 건물 강의실별 주간 예약 조회 반환: 7x13 배열 (당일 +6일 까지) TODO: RoomReservation[7][13]
+    public BasicResponse handleWeekRoomReservationByLectureroom(RoomReservationRequest paylaod) {
+        return null;
+    }
+
+    // 관리자 관점 ========================================================================================================
+
+    // 관리자 예약 삭제
+    public BasicResponse deleteRoomReservation(String payload) {
+        return null;
+    }
+
+    // 예약 상태 변경 "대기 -> 완료"
+    public BasicResponse changeRoomReservationStatus(String payload) {
+        return null;
+    }
+
+    // 예약 상태가 "대기" 인 모든 예약 내역 반환
+    public BasicResponse findAllRoomReservation() {
+        return null;
+    }
 }

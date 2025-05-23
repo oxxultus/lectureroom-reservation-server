@@ -1,6 +1,7 @@
 package deu.repository;
 
 import deu.model.entity.RoomReservation;
+import lombok.Getter;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.nodes.Tag;
@@ -13,6 +14,7 @@ import java.util.List;
 public class ReservationRepository {
 
     private static final String FILE_PATH = System.getProperty("user.dir") + File.separator + "data" + File.separator + "reservations.yaml";
+    @Getter
     private static final ReservationRepository instance = new ReservationRepository();
 
     private final List<RoomReservation> roomReservationList = new ArrayList<>();
@@ -36,8 +38,6 @@ public class ReservationRepository {
         this.yaml = new Yaml(representer, options);
         loadFromFile();
     }
-
-    public static ReservationRepository getInstance() { return instance; }
 
     // 예약 저장
     public void save(RoomReservation reservation) {

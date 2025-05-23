@@ -1,6 +1,7 @@
 package deu.repository;
 
 import deu.model.entity.Lecture;
+import lombok.Getter;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.nodes.Tag;
@@ -19,7 +20,9 @@ import java.util.Optional;
  * @since 2025.05.16
  */
 public class LectureRepository {
+    // 외부에서 접근하는 싱글톤 인스턴스
     // Singleton instance
+    @Getter
     private static final LectureRepository instance = new LectureRepository();
 
     // 강의 리스트
@@ -55,11 +58,6 @@ public class LectureRepository {
         yaml = new Yaml(representer, options);
 
         loadAllFromFile();
-    }
-
-    // 외부에서 접근하는 싱글톤 인스턴스
-    public static LectureRepository getInstance() {
-        return instance;
     }
 
     // 파일 저장
