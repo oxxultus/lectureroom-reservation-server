@@ -30,7 +30,6 @@ public class ReservationService {
 
     // 예약 신청
     public BasicResponse createRoomReservation(RoomReservationRequest payload) {
-
         RoomReservation roomReservation = new RoomReservation();
         roomReservation.setBuildingName(payload.buildingName);
         roomReservation.setFloor(payload.floor);
@@ -43,17 +42,45 @@ public class ReservationService {
         roomReservation.setStartTime(payload.startTime);
         roomReservation.setEndTime(payload.endTime);
 
-        boolean isDup = ReservationRepository.getInstance().isDuplicate(
+        ReservationRepository repo = ReservationRepository.getInstance();
+
+        // 날짜 필터: 오늘부터 7일간
+        LocalDate today = LocalDate.now();
+        LocalDate maxDate = today.plusDays(6);
+
+        // 예약 수 제한: 7일 이내 예약만 대상으로 필터링
+        List<RoomReservation> userReservations = repo.findByUser(payload.number);
+        long countWithin7Days = userReservations.stream()
+                .filter(r -> {
+                    LocalDate date = LocalDate.parse(r.getDate());
+                    return !date.isBefore(today) && !date.isAfter(maxDate);
+                })
+                .count();
+
+        if (countWithin7Days >= 5) {
+            return new BasicResponse("403", "오늘부터 7일 간 최대 5개의 예약만 가능합니다.");
+        }
+
+        // 동일 시간 중복 예약 제한
+        for (RoomReservation r : userReservations) {
+            if (r.getDate().equals(payload.date) &&
+                    r.getStartTime().equals(payload.startTime)) {
+                return new BasicResponse("409", "같은 시간대에 이미 예약이 존재합니다.");
+            }
+        }
+
+        // 강의실 시간 중복
+        boolean isDup = repo.isDuplicate(
                 roomReservation.getDate(),
                 roomReservation.getStartTime(),
                 roomReservation.getLectureRoom()
         );
-
         if (isDup) {
-            return new BasicResponse("409", "중복된 예약입니다.");
+            return new BasicResponse("409", "해당 시간에 다른 예약이 존재합니다.");
         }
 
-        ReservationRepository.getInstance().save(roomReservation);
+        // 저장
+        repo.save(roomReservation);
         return new BasicResponse("200", "예약이 완료되었습니다.");
     }
 
