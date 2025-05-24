@@ -94,7 +94,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>deu.Main</mainClass>
+                            <mainClass>deu.ServerMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
