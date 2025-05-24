@@ -182,53 +182,168 @@ public class ReservationService {
 
     // 예약 신청
     public BasicResponse createRoomReservation(RoomReservation roomReservation) {
-        return null;
+        boolean isDup = ReservationRepository.getInstance().isDuplicate(
+                roomReservation.getDate(),
+                roomReservation.getStartTime(),
+                roomReservation.getLectureRoom()
+        );
+
+        if (isDup) {
+            return new BasicResponse("409", "중복된 예약입니다.");
+        }
+
+        ReservationRepository.getInstance().save(roomReservation);
+        return new BasicResponse("200", "예약이 완료되었습니다.");
     }
+
 
     // 개인별 예약 삭제 TODO: number 와 id에 해당하는 RoomReservation 의 number가 동일하면 삭제 / 다르면 비정상적인 접근 처리
     public BasicResponse deleteRoomReservationFromUser(DeleteRoomReservationRequest payload) {
-        return null;
+        RoomReservation target = ReservationRepository.getInstance().findById(payload.getRoomReservationId());
+
+        if (target == null) {
+            return new BasicResponse("404", "예약을 찾을 수 없습니다.");
+        }
+
+        if (!target.getNumber().equals(payload.getNumber())) {
+            return new BasicResponse("403", "본인의 예약만 삭제할 수 있습니다.");
+        }
+
+        ReservationRepository.getInstance().deleteById(payload.getRoomReservationId());
+        return new BasicResponse("200", "예약이 삭제되었습니다.");
     }
+
+
 
     // 개인별 주간 예약 조회 반환: 7x13 배열 (당일 ~ +6일) TODO: RoomReservation[7][13]
     public BasicResponse weekRoomReservationByUserNumber(String payload) {
-        return null;
+        RoomReservation[][] schedule = new RoomReservation[7][13];
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate today = LocalDate.now();
+
+        List<RoomReservation> reservations = ReservationRepository.getInstance().findByUser(payload).stream()
+                .filter(r -> {
+                    try {
+                        LocalDate date = LocalDate.parse(r.getDate(), formatter);
+                        return !date.isBefore(today) && !date.isAfter(today.plusDays(6));
+                    } catch (Exception e) {
+                        return false;
+                    }
+                }).toList();
+
+        for (RoomReservation r : reservations) {
+            try {
+                int dayIndex = (int) ChronoUnit.DAYS.between(today, LocalDate.parse(r.getDate(), formatter));
+                int periodIndex = Integer.parseInt(r.getStartTime().split(":")[0]) - 9;
+                if (dayIndex >= 0 && dayIndex < 7 && periodIndex >= 0 && periodIndex < 13) {
+                    schedule[dayIndex][periodIndex] = r;
+                }
+            } catch (Exception ignored) {}
+        }
+
+        return new BasicResponse("200", "개인 주간 예약 조회 완료");
     }
+
 
     // 사용자별 예약 리스트 조회
     public BasicResponse getReservationsByUser(String payload) {
-        // TODO: List<RoomReservation>를 , BasicResponse data안에 넣어서 반환하세요.
-        return null;
+        List<RoomReservation> reservations = ReservationRepository.getInstance().findByUser(payload);
+        return new BasicResponse("200", "예약 목록 조회 완료");
     }
+
 
     // 통합 관점 ==========================================================================================================
 
     // 예약 수정
     public BasicResponse modifyRoomReservation(RoomReservation payload) {
-        return null;
+        RoomReservation original = ReservationRepository.getInstance().findById(payload.getId());
+        if (original == null) {
+            return new BasicResponse("404", "예약을 찾을 수 없습니다.");
+        }
+
+        original.setLectureRoom(payload.getLectureRoom());
+        original.setEndTime(payload.getEndTime());
+        original.setStatus(payload.getStatus());
+        original.setBuildingName(payload.getBuildingName());
+        original.setFloor(payload.getFloor());
+        original.setDayOfTheWeek(payload.getDayOfTheWeek());
+        original.setNumber(payload.getNumber());
+        original.setDate(payload.getDate());
+        original.setStartTime(payload.getStartTime());
+
+        ReservationRepository.getInstance().saveToFile();
+        return new BasicResponse("200", "예약이 수정되었습니다.");
     }
 
+
     // 건물 강의실별 주간 예약 조회 반환: 7x13 배열 (당일 +6일 까지) TODO: RoomReservation[7][13]
-    public BasicResponse weekRoomReservationByLectureroom(RoomReservationRequest paylaod) {
-        return null;
+    public BasicResponse weekRoomReservationByLectureroom(RoomReservationRequest payload) {
+        RoomReservation[][] schedule = new RoomReservation[7][13];
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate today = LocalDate.now();
+
+        List<RoomReservation> reservations = ReservationRepository.getInstance().findAll().stream()
+                .filter(r -> r.getBuildingName().equals(payload.getBuilding()) &&
+                        r.getFloor().equals(payload.getFloor()) &&
+                        r.getLectureRoom().equals(payload.getLectureroom()))
+                .filter(r -> {
+                    try {
+                        LocalDate date = LocalDate.parse(r.getDate(), formatter);
+                        return !date.isBefore(today) && !date.isAfter(today.plusDays(6));
+                    } catch (Exception e) {
+                        return false;
+                    }
+                }).toList();
+
+        for (RoomReservation r : reservations) {
+            try {
+                int dayIndex = (int) ChronoUnit.DAYS.between(today, LocalDate.parse(r.getDate(), formatter));
+                int periodIndex = Integer.parseInt(r.getStartTime().split(":")[0]) - 9;
+                if (dayIndex >= 0 && dayIndex < 7 && periodIndex >= 0 && periodIndex < 13) {
+                    schedule[dayIndex][periodIndex] = r;
+                }
+            } catch (Exception ignored) {}
+        }
+
+        return new BasicResponse("200", "강의실 주간 예약 조회 완료");
     }
+
 
     // 관리자 관점 ========================================================================================================
 
     // 관리자 예약 삭제
     public BasicResponse deleteRoomReservationFromManagement(String payload) {
-        return null;
+        boolean deleted = ReservationRepository.getInstance().deleteById(payload);
+        if (deleted) {
+            ReservationRepository.getInstance().saveToFile();
+            return new BasicResponse("200", "예약이 삭제되었습니다.");
+        }
+        return new BasicResponse("404", "예약을 찾을 수 없습니다.");
     }
+
 
     // 예약 상태 변경 "대기 -> 완료"
     public BasicResponse changeRoomReservationStatus(String payload) {
-        return null;
+        RoomReservation target = ReservationRepository.getInstance().findById(payload);
+        if (target == null) {
+            return new BasicResponse("404", "예약을 찾을 수 없습니다.");
+        }
+
+        target.setStatus("완료");
+        ReservationRepository.getInstance().saveToFile();
+        return new BasicResponse("200", "예약 상태가 완료로 변경되었습니다.");
     }
+
 
     // 예약 상태가 "대기" 인 모든 예약 내역 반환
     public BasicResponse findAllRoomReservation() {
-        return null;
+        List<RoomReservation> result = ReservationRepository.getInstance().findAll().stream()
+                .filter(r -> "대기".equals(r.getStatus()))
+                .toList();
+
+        return new BasicResponse("200", "대기 상태 예약 조회 완료");
     }
+
 
     // =================================================================================================================
 }
