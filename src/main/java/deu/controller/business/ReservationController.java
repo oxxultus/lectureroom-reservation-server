@@ -1,6 +1,7 @@
 package deu.controller.business;
 
 import deu.model.dto.request.data.reservation.DeleteRoomReservationRequest;
+import deu.model.dto.request.data.reservation.RoomReservationLocationRequest;
 import deu.model.dto.request.data.reservation.RoomReservationRequest;
 import deu.model.dto.response.BasicResponse;
 import deu.model.entity.RoomReservation;
@@ -17,7 +18,7 @@ public class ReservationController {
     private final ReservationService reservationService = ReservationService.getInstance();
 
     // 예약 신청
-    public BasicResponse handleAddRoomReservation(RoomReservation payload) {
+    public BasicResponse handleAddRoomReservation(RoomReservationRequest payload) {
         return reservationService.createRoomReservation(payload);
     }
 
@@ -39,12 +40,12 @@ public class ReservationController {
     // 어래 기능은 관리자에서도 동일하다.=======================================================================================
 
     // 예약 수정
-    public BasicResponse handleModifyRoomReservation(RoomReservation payload) {
+    public BasicResponse handleModifyRoomReservation(RoomReservationRequest payload) {
         return reservationService.modifyRoomReservation(payload);
     }
 
     // 건물, 층, 강의실별 주간 예약 배열 조회 (당일 +6일 까지) TODO: RoomReservation[7][13]
-    public BasicResponse handleWeekRoomReservationByLectureroom(RoomReservationRequest payload) {
+    public BasicResponse handleWeekRoomReservationByLectureroom(RoomReservationLocationRequest payload) {
         return reservationService.weekRoomReservationByLectureroom(payload);
     }
 }

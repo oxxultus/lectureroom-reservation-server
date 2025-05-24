@@ -1,9 +1,6 @@
 package deu.model.dto.response;
 
 import java.io.Serializable;
-import lombok.Getter;
-
-@Getter
 
 public class BasicResponse implements Serializable {
     public String code;

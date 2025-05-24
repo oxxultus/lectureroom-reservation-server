@@ -17,7 +17,7 @@ public class RoomReservation implements Serializable {
     private String lectureRoom;
 
     private String number;
-    private String status;
+    private String status = "대기";
 
     private String title; // 제목
     private String description; // 설명
