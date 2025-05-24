@@ -6,27 +6,26 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
+@Getter
+@Setter
 @NoArgsConstructor
 public class RoomReservationRequest implements Serializable {
-    @Getter
-    @Setter
     private String id;
-    public String buildingName;
-    public String floor;
-    public String lectureRoom;
-    public String title; // 제목
-    public String description; // 설명
+    private String buildingName;
+    private String floor;
+    private String lectureRoom;
+    private String title;
+    private String description;
+    private String date;
+    private String dayOfTheWeek;
+    private String startTime;
+    private String endTime;
+    private String number;
+    private String status = "대기"; // 기본값 지정
 
-    public String date; // 날짜
-    public String dayOfTheWeek; // 요일
-    public String startTime;
-    public String endTime;
-
-    public String number;
-    @Getter
-    private String status;
-
-    public RoomReservationRequest(String buildingName, String floor, String lectureRoom, String title, String description, String date, String dayOfTheWeek, String startTime, String endTime,String number) {
+    public RoomReservationRequest(String buildingName, String floor, String lectureRoom,
+                                  String title, String description, String date, String dayOfTheWeek,
+                                  String startTime, String endTime, String number) {
         this.buildingName = buildingName;
         this.floor = floor;
         this.lectureRoom = lectureRoom;
@@ -37,6 +36,6 @@ public class RoomReservationRequest implements Serializable {
         this.startTime = startTime;
         this.endTime = endTime;
         this.number = number;
+        this.status = "대기";
     }
-
 }

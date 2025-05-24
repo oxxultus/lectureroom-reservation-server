@@ -30,58 +30,71 @@ public class ReservationService {
 
     // 예약 신청
     public BasicResponse createRoomReservation(RoomReservationRequest payload) {
-        RoomReservation roomReservation = new RoomReservation();
-        roomReservation.setBuildingName(payload.buildingName);
-        roomReservation.setFloor(payload.floor);
-        roomReservation.setLectureRoom(payload.lectureRoom);
-        roomReservation.setNumber(payload.number);
-        roomReservation.setTitle(payload.title);
-        roomReservation.setDescription(payload.description);
-        roomReservation.setDate(payload.date);
-        roomReservation.setDayOfTheWeek(payload.dayOfTheWeek);
-        roomReservation.setStartTime(payload.startTime);
-        roomReservation.setEndTime(payload.endTime);
+        try {
+            // RoomReservation 엔티티 생성
+            RoomReservation roomReservation = new RoomReservation();
+            roomReservation.setBuildingName(payload.getBuildingName());
+            roomReservation.setFloor(payload.getFloor());
+            roomReservation.setLectureRoom(payload.getLectureRoom());
+            roomReservation.setNumber(payload.getNumber());
+            roomReservation.setTitle(payload.getTitle());
+            roomReservation.setDescription(payload.getDescription());
+            roomReservation.setDate(payload.getDate());
+            roomReservation.setDayOfTheWeek(payload.getDayOfTheWeek());
+            roomReservation.setStartTime(payload.getStartTime());
+            roomReservation.setEndTime(payload.getEndTime());
 
-        ReservationRepository repo = ReservationRepository.getInstance();
+            ReservationRepository repo = ReservationRepository.getInstance();
 
-        // 날짜 필터: 오늘부터 7일간
-        LocalDate today = LocalDate.now();
-        LocalDate maxDate = today.plusDays(6);
+            // 날짜 필터: 오늘부터 7일간
+            LocalDate today = LocalDate.now();
+            LocalDate maxDate = today.plusDays(6);
 
-        // 예약 수 제한: 7일 이내 예약만 대상으로 필터링
-        List<RoomReservation> userReservations = repo.findByUser(payload.number);
-        long countWithin7Days = userReservations.stream()
-                .filter(r -> {
-                    LocalDate date = LocalDate.parse(r.getDate());
-                    return !date.isBefore(today) && !date.isAfter(maxDate);
-                })
-                .count();
+            List<RoomReservation> userReservations = repo.findByUser(payload.getNumber());
 
-        if (countWithin7Days >= 5) {
-            return new BasicResponse("403", "오늘부터 7일 간 최대 5개의 예약만 가능합니다.");
-        }
+            // 예약 수 제한
+            long countWithin7Days = userReservations.stream()
+                    .filter(r -> {
+                        try {
+                            LocalDate date = LocalDate.parse(r.getDate());
+                            return !date.isBefore(today) && !date.isAfter(maxDate);
+                        } catch (Exception e) {
+                            return false; // 날짜 파싱 실패한 항목은 무시
+                        }
+                    })
+                    .count();
 
-        // 동일 시간 중복 예약 제한
-        for (RoomReservation r : userReservations) {
-            if (r.getDate().equals(payload.date) &&
-                    r.getStartTime().equals(payload.startTime)) {
-                return new BasicResponse("409", "같은 시간대에 이미 예약이 존재합니다.");
+            if (countWithin7Days >= 5) {
+                return new BasicResponse("403", "오늘부터 7일 간 최대 5개의 예약만 가능합니다.");
             }
-        }
 
-        // 강의실 시간 중복
-        boolean isDup = repo.isDuplicate(
-                roomReservation.getDate(),
-                roomReservation.getStartTime(),
-                roomReservation.getLectureRoom()
-        );
-        if (isDup) {
-            return new BasicResponse("409", "해당 시간에 다른 예약이 존재합니다.");
-        }
+            // 동일 시간 사용자 중복 예약 체크
+            for (RoomReservation r : userReservations) {
+                if (r.getDate().equals(payload.getDate()) &&
+                        r.getStartTime().equals(payload.getStartTime())) {
+                    return new BasicResponse("409", "같은 시간대에 이미 예약이 존재합니다.");
+                }
+            }
 
-        // 저장
-        repo.save(roomReservation);
-        return new BasicResponse("200", "예약이 완료되었습니다.");
+            // 강의실 동일 시간 중복 체크
+            boolean isDup = repo.isDuplicate(
+                    roomReservation.getDate(),
+                    roomReservation.getStartTime(),
+                    roomReservation.getLectureRoom()
+            );
+
+            if (isDup) {
+                return new BasicResponse("409", "해당 시간에 다른 예약이 존재합니다.");
+            }
+
+            // 최종 저장
+            repo.save(roomReservation);
+            return new BasicResponse("200", "예약이 완료되었습니다.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new BasicResponse("500", "서버 오류: " + e.getMessage());
+        }
     }
 
     // 개인별 예약 삭제 TODO: number 와 id에 해당하는 RoomReservation 의 number가 동일하면 삭제 / 다르면 비정상적인 접근 처리
@@ -131,8 +144,22 @@ public class ReservationService {
 
     // 사용자별 예약 리스트 조회 TODO: 동일하게 당일 + 6 일 뒤의정보를 반환해야 한다.
     public BasicResponse getReservationsByUser(String payload) {
-        List<RoomReservation> reservations = ReservationRepository.getInstance().findByUser(payload);
-        System.out.println("개인별 주간 예약 조회 중");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate today = LocalDate.now();
+        LocalDate endDate = today.plusDays(6); // 오늘부터 6일 후까지 포함
+
+        List<RoomReservation> reservations = ReservationRepository.getInstance()
+                .findByUser(payload).stream()
+                .filter(r -> {
+                    try {
+                        LocalDate date = LocalDate.parse(r.getDate(), formatter);
+                        return !date.isBefore(today) && !date.isAfter(endDate); // today ≤ date ≤ today+6
+                    } catch (Exception e) {
+                        return false;
+                    }
+                })
+                .toList();
+
         return new BasicResponse("200", reservations);
     }
 
@@ -141,25 +168,33 @@ public class ReservationService {
 
     // 예약 수정
     public BasicResponse modifyRoomReservation(RoomReservationRequest payload) {
+        try {
+            ReservationRepository repo = ReservationRepository.getInstance();
 
-        RoomReservation original = ReservationRepository.getInstance().findById(payload.getId());
-        if (original == null) {
-            return new BasicResponse("404", "예약을 찾을 수 없습니다.");
+            RoomReservation original = repo.findById(payload.getId());
+            if (original == null) {
+                return new BasicResponse("404", "예약을 찾을 수 없습니다.");
+            }
+
+            // 필드 업데이트
+            original.setBuildingName(payload.getBuildingName());
+            original.setFloor(payload.getFloor());
+            original.setLectureRoom(payload.getLectureRoom());
+            original.setTitle(payload.getTitle());
+            original.setDescription(payload.getDescription());
+            original.setDate(payload.getDate());
+            original.setDayOfTheWeek(payload.getDayOfTheWeek());
+            original.setStartTime(payload.getStartTime());
+            original.setEndTime(payload.getEndTime());
+
+            // 파일 저장
+            repo.saveToFile();
+
+            return new BasicResponse("200", "예약이 수정되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new BasicResponse("500", "예약 수정 중 오류가 발생했습니다: " + e.getMessage());
         }
-
-        original.setBuildingName(payload.buildingName);
-        original.setFloor(payload.floor);
-        original.setLectureRoom(payload.lectureRoom);
-        original.setTitle(payload.title);
-        original.setDescription(payload.description);
-
-        original.setDate(payload.date);
-        original.setDayOfTheWeek(payload.dayOfTheWeek);
-        original.setStartTime(payload.startTime);
-        original.setEndTime(payload.endTime);
-
-        ReservationRepository.getInstance().saveToFile();
-        return new BasicResponse("200", "예약이 수정되었습니다.");
     }
 
     // 건물 강의실별 주간 예약 조회 반환: 7x13 배열 (당일 +6일 까지) TODO: RoomReservation[7][13]
