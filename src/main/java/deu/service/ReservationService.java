@@ -22,10 +22,6 @@ public class ReservationService {
 
     private ReservationService() {}
 
-
-    // TODO: 위 서비를 수정해서 아래 서비스 메서드에 맞게 수정해주세요.
-    //  1. 해당 서비스에서 반환값을 BasicResponse로 맞춰서 컨트롤러로 반환해주세요.
-
     // 사용자 관점 ========================================================================================================
 
     // 예약 신청
@@ -242,7 +238,6 @@ public class ReservationService {
         return new BasicResponse("404", "예약을 찾을 수 없습니다.");
     }
 
-
     // 예약 상태 변경 "대기 -> 완료"
     public BasicResponse changeRoomReservationStatus(String payload) {
         RoomReservation target = ReservationRepository.getInstance().findById(payload);
@@ -254,7 +249,6 @@ public class ReservationService {
         ReservationRepository.getInstance().saveToFile();
         return new BasicResponse("200", "예약 상태가 승인로 변경되었습니다.");
     }
-
 
     // 예약 상태가 "대기" 인 모든 예약 내역 반환
     public BasicResponse findAllRoomReservation() {
