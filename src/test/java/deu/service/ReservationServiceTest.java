@@ -164,6 +164,102 @@ public class ReservationServiceTest {
         assertEquals("승인", r.getStatus());
     }
 
+    @Test
+    @DisplayName("예약 수정 성공")
+    void testModifyRoomReservation() {
+        RoomReservation existing = new RoomReservation();
+        existing.setId("resv123");
+        when(mockRepo.findById("resv123")).thenReturn(existing);
+
+        RoomReservationRequest req = new RoomReservationRequest();
+        req.setId("resv123");
+        req.setTitle("변경된 제목");
+        req.setBuildingName("신관");
+        req.setLectureRoom("202");
+        req.setFloor("2층");
+        req.setDate(LocalDate.now().toString());
+        req.setStartTime("09:00");
+        req.setEndTime("10:00");
+        req.setDayOfTheWeek("월");
+
+        BasicResponse response = service.modifyRoomReservation(req);
+
+        assertEquals("200", response.code);
+        verify(mockRepo).saveToFile();
+    }
+
+    @Test
+    @DisplayName("강의실 기준 주간 예약 조회")
+    void testWeekRoomReservationByLectureroom() {
+        RoomReservationLocationRequest req = new RoomReservationLocationRequest("신관", "2층", "202");
+        RoomReservation r = new RoomReservation();
+        r.setBuildingName("신관");
+        r.setFloor("2층");
+        r.setLectureRoom("202");
+        r.setDate(LocalDate.now().toString());
+        r.setStartTime("09:00");
+
+        when(mockRepo.findAll()).thenReturn(List.of(r));
+
+        BasicResponse response = service.weekRoomReservationByLectureroom(req);
+
+        assertEquals("200", response.code);
+        RoomReservation[][] result = (RoomReservation[][]) response.data;
+        assertNotNull(result[0][0]);
+    }
+
+    @Test
+    @DisplayName("사용자 기준 주간 예약 조회")
+    void testWeekRoomReservationByUser() {
+        String number = "S123";
+        RoomReservation r = new RoomReservation();
+        r.setNumber(number);
+        r.setDate(LocalDate.now().toString());
+        r.setStartTime("09:00");
+
+        when(mockRepo.findByUser(number)).thenReturn(List.of(r));
+
+        BasicResponse response = service.weekRoomReservationByUserNumber(number);
+        assertEquals("200", response.code);
+
+        RoomReservation[][] result = (RoomReservation[][]) response.data;
+        assertNotNull(result[0][0]);
+    }
+
+    @Test
+    @DisplayName("사용자 예약 리스트 조회")
+    void testGetReservationsByUser() {
+        String number = "S123";
+        RoomReservation r = new RoomReservation();
+        r.setNumber(number);
+        r.setDate(LocalDate.now().toString());
+
+        when(mockRepo.findByUser(number)).thenReturn(List.of(r));
+
+        BasicResponse response = service.getReservationsByUser(number);
+        assertEquals("200", response.code);
+        assertTrue(((List<?>) response.data).contains(r));
+    }
+
+    @Test
+    @DisplayName("대기 상태 예약 목록 반환")
+    void testFindAllRoomReservation() {
+        RoomReservation r1 = new RoomReservation();
+        r1.setStatus("대기");
+
+        RoomReservation r2 = new RoomReservation();
+        r2.setStatus("승인");
+
+        when(mockRepo.findAll()).thenReturn(List.of(r1, r2));
+
+        BasicResponse response = service.findAllRoomReservation();
+
+        assertEquals("200", response.code);
+        List<?> result = (List<?>) response.data;
+        assertTrue(result.contains(r1));
+        assertFalse(result.contains(r2));
+    }
+
     // 헬퍼
     private RoomReservationRequest getRequest() {
         RoomReservationRequest req = new RoomReservationRequest();
