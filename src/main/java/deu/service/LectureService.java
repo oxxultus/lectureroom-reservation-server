@@ -20,7 +20,7 @@ public class LectureService {
         return instance;
     }
 
-    // 특정 강의실의 금일 + 7일 까지의 강의 데이터를 배열로 반환한다.
+    // 특정 강의실의 금일 + 6일 까지의 강의 데이터를 배열로 반환한다.
     public BasicResponse returnLectureOfWeek(LectureRequest payload) {
         String building = payload.building;
         String floor = payload.floor;
